@@ -1,0 +1,344 @@
+from collections import defaultdict
+
+def barra(valor, maximo=100, longitud=20):
+    valor = max(0, min(valor, maximo))
+
+    llenos = int((valor / maximo) * longitud)
+
+    vacios = longitud - llenos
+
+    return "█" * llenos + "░" * vacios
+
+class Jugador:
+
+
+    def __init__(self,nombre):
+
+        self.nombre = nombre
+
+        self.nivel = 1
+
+        self.experiencia = 0
+
+        self.municion = 6
+
+        self.defendiendo = False
+
+
+        self.vida = 100
+
+        self.hambre = 0
+
+        self.sed = 0
+
+        self.moral = 100
+
+
+        self.dia = 1
+
+        self.hora = 8
+
+
+        self.clima = "Soleado"
+
+
+        self.localizacion="Refugio"
+
+
+        self.inventario=[]
+
+
+        self.companeros=[]
+
+    def comprobar_nivel(self):
+
+        necesario = self.nivel * 100
+
+        if self.experiencia >= necesario:
+            self.nivel += 1
+
+            self.experiencia = 0
+
+            self.vida += 20
+
+            print(
+                "\n🎉 Has subido al nivel",
+                self.nivel
+            )
+
+
+
+
+
+    def avanzar_tiempo(self,horas):
+        import random
+
+
+        self.hora += horas
+
+
+        while self.hora >= 24:
+
+            self.hora -= 24
+
+            self.dia += 1
+
+            print(f"\n🌅 Comienza el día {self.dia}")
+
+            self.consumir_diario()
+
+
+        self.hambre += horas * 2
+
+        self.sed += horas * 3
+
+
+        self.control_supervivencia()
+        self.limitar_estadisticas()
+
+        if random.randint(1, 5) == 1:
+            self.clima = random.choice(
+                [
+                    "Soleado",
+                    "Lluvia",
+                    "Tormenta",
+                    "Niebla"
+                ]
+            )
+
+    def control_supervivencia(self):
+
+        self.hambre = min(self.hambre, 100)
+        self.sed = min(self.sed, 100)
+
+        if self.hambre >= 80:
+            daño = (self.hambre - 79) // 5
+
+            self.vida -= daño
+
+            print(f"\n🍖 El hambre te debilita (-{daño} vida).")
+            input("\nPulsa ENTER para continuar...")
+
+        if self.sed >= 80:
+            daño = (self.sed - 79) // 4
+
+            self.vida -= daño
+
+            print(f"\n💧 La sed te debilita (-{daño} vida).")
+            input("\nPulsa ENTER para continuar...")
+
+        if self.vida < 0:
+            self.vida = 0
+
+    def limitar_estadisticas(self):
+
+        self.vida = max(0, min(100, self.vida))
+        self.moral = max(0, min(100, self.moral))
+        self.hambre = max(0, min(100, self.hambre))
+        self.sed = max(0, min(100, self.sed))
+
+    def estado(self):
+
+
+        print("\n==========================")
+
+        print(self.nombre)
+
+        print("==========================")
+
+        print(f"❤️ Vida     [{barra(self.vida)}] {self.vida}/100")
+        print(f"🍖 Hambre   [{barra(self.hambre)}] {self.hambre}/100")
+        print(f"💧 Sed      [{barra(self.sed)}] {self.sed}/100")
+        print(f"😊 Moral    [{barra(self.moral)}] {self.moral}/100")
+        print("---")
+        print(f"📅 Día {self.dia}")
+        print(f"⏰ Hora {self.hora}:00")
+        print(f"🌦️ Clima: {self.clima}")
+        print(f" Munición: {self.municion}")
+        print("🎒 Inventario:")
+
+
+        if len(self.inventario)==0:
+
+            print("- Vacío")
+
+        else:
+
+            for objeto in self.inventario:
+
+                if objeto.es_consumible():
+
+                    print(
+                        f"- {objeto.nombre} x{objeto.cantidad} : {objeto.usos_restantes} usos"
+                    )
+
+                elif objeto.tiene_durabilidad():
+
+                    print(
+                        f"- {objeto.nombre} ({objeto.durabilidad}/100)"
+                    )
+
+                else:
+
+                    print(f"- {objeto.nombre}")
+
+
+
+        print("==========================")
+
+    def consumir_diario(self):
+
+        comida = None
+        agua = None
+
+        for objeto in self.inventario:
+
+            if objeto.nombre == "Lata de comida" and comida is None:
+                comida = objeto
+
+            elif objeto.nombre == "Botella de agua" and agua is None:
+                agua = objeto
+
+        # ---------- COMIDA ----------
+
+        if comida:
+
+            comida.usar(self)
+
+            print("\n🍖 Has comido una ración.")
+
+            if comida.usos_restantes <= 0:
+                self.inventario.remove(comida)
+
+                print("La lata se ha terminado.")
+
+        else:
+
+            print("\n⚠️ No tienes comida.")
+            self.vida -= 8
+            self.moral -= 8
+
+        # ---------- AGUA ----------
+
+        if agua:
+
+            agua.usar(self)
+
+            print("💧 Has bebido agua.")
+
+            if agua.usos_restantes <= 0:
+                self.inventario.remove(agua)
+
+                print("La botella está vacía.")
+
+        else:
+
+            print("⚠️ No tienes agua.")
+            self.vida -= 12
+            self.moral -= 15
+
+        self.limitar_estadisticas()
+
+
+
+    def datos_guardado(self):
+
+
+        return {
+
+            "nombre":self.nombre,
+
+            "vida":self.vida,
+
+            "hambre":self.hambre,
+
+            "sed":self.sed,
+
+            "moral":self.moral,
+
+            "dia":self.dia,
+
+            "hora":self.hora,
+
+            "clima":self.clima,
+
+            "localizacion":self.localizacion,
+
+            "municion": self.municion,
+
+            "inventario":
+                [
+                    objeto.datos()
+                    for objeto in self.inventario
+                ],
+            "companeros": self.companeros
+
+        }
+
+
+
+
+    def cargar_datos(self, datos):
+
+        self.nombre = datos["nombre"]
+
+        self.vida = datos["vida"]
+
+        self.hambre = datos["hambre"]
+
+        self.sed = datos["sed"]
+
+        self.moral = datos["moral"]
+
+        self.dia = datos["dia"]
+
+        self.hora = datos["hora"]
+
+        self.clima = datos.get(
+            "clima",
+            "Soleado"
+        )
+
+        self.localizacion = datos["localizacion"]
+
+        self.inventario = datos.get(
+            "inventario",
+            []
+        )
+
+        self.companeros = datos.get(
+            "companeros",
+            []
+        )
+
+        self.municion = datos.get(
+            "municion",
+            0
+        )
+
+    def tiene_pistola(self):
+
+        for objeto in self.inventario:
+
+            if objeto.nombre == "Pistola":
+                return objeto
+
+        return None
+
+    def arma_cuerpo_a_cuerpo(self):
+
+        for objeto in self.inventario:
+
+            if objeto.tipo == "arma" and objeto.nombre != "Pistola":
+                return objeto
+
+        return None
+
+    def inventario_agrupado(self):
+
+        grupos = defaultdict(list)
+
+        for objeto in self.inventario:
+            grupos[objeto.nombre].append(objeto)
+
+        return grupos

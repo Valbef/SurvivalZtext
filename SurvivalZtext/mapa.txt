@@ -1,0 +1,39 @@
+       [Hospital]
+            │
+┌───────────┴───────────┐
+│                       │
+[Comisaría]       [Laboratorio]
+│                       │
+[Centro Ciudad]──────[Centro Comercial]
+│                       │
+[Gasolinera]    [Estación de Bomberos]
+            │
+┌───────────┴───────────┐
+│                       │
+[Bosque]             [Escuela]
+│                         │
+[Cabaña]         [Supermercado]
+  │                       │
+[Refugio]────────────[Camping]
+           │
+    [Torre de Radio]
+
+
+
+    | Localización         | Función                                                                                        |
+| -------------------- | ---------------------------------------------------------------------------------------------- |
+| Refugio              | Base principal y punto de guardado.                                                            |
+| Bosque               | Recursos naturales y eventos.                                                                  |
+| Cabaña               | Descanso y un NPC opcional.                                                                    |
+| Gasolinera           | Combustible y saqueadores.                                                                     |
+| Centro Ciudad        | Cruce principal con muchos riesgos.                                                            |
+| Comisaría            | Armas y munición.                                                                              |
+| Hospital             | Medicinas y misiones.                                                                          |
+| Laboratorio          | Historia principal y uno de los finales.                                                       |
+| Centro Comercial     | Mucha comida, muchos infectados.                                                               |
+| Escuela              | Refugio improvisado con NPC.                                                                   |
+| Supermercado         | Alimentos y herramientas.                                                                      |
+| Estación de Bomberos | Herramientas, hachas y equipo.                                                                 |
+| Camping              | Objetos de supervivencia.                                                                      |
+| Torre de Radio       | Misión principal.                                                                              |
+| Refugio Final        | Zona del desenlace (o integrar el desenlace en el Refugio, según cómo evolucione la historia). |
