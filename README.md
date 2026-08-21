@@ -1,2 +1,19 @@
 # SurvivalZtext
-Esto es un prototipo de videojuego de supervivencia zombie para terminal, es completamente jugable pero no está terminado.
+Esto es un prototipo de videojuego de supervivencia zombie creado en Python, para terminal, es completamente jugable pero no está terminado. (Aproximadamente al 20% de el proyecto final en mente)
+
+Requisitos:
+
+python3
+git
+
+descargar:
+
+ git clone https://github.com/Valbef/SurvivalZtext.git
+
+
+Abrir:
+
+cd SurvivalZtext
+
+puython3 main.py
+
