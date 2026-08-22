@@ -4,10 +4,11 @@ from enemigos import enemigo_aleatorio
 from combate import iniciar_combate
 
 
+
 TABLAS_BOTIN = {
 
     "Hospital": [
-        ("Botiquín", 40),
+        ("Botiquín", 30),
         ("Botella de agua", 20),
         ("Radio", 1)
     ],
@@ -33,15 +34,15 @@ TABLAS_BOTIN = {
 
     "Comisaría": [
         ("Lata de comida", 10),
-        ("Caja de munición", 60),
+        ("Caja de munición", 30),
         ("Botiquín", 15)
     ],
 
     "Gasolinera": [
         ("Botella de agua", 15),
         ("Lata de comida", 10),
-        ("Herramientas", 10),
-        ("Mapa", 5)
+        ("Herramientas", 7),
+        ("Mapa", 4)
     ],
 
     "Bosque": [
@@ -68,7 +69,7 @@ def saquear(jugador, objetos):
     # POSIBLE EMBOSCADA
     # =========================
 
-    if random.randint(1, 100) <= 20:
+    if random.randint(1, 100) <= 25:
 
 
         enemigo = enemigo_aleatorio()
@@ -143,7 +144,7 @@ def saquear(jugador, objetos):
                 return
 
     encontrados = 0
-    maximo_botin = random.randint(1, 2)
+    maximo_botin = random.randint(1,1)
 
 
     encontrado = False
