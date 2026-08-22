@@ -15,5 +15,5 @@ Abrir:
 
 cd SurvivalZtext
 
-puython3 main.py
+python3 main.py
 
