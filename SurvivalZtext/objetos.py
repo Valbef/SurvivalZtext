@@ -7,9 +7,12 @@ from objeto import Objeto
 
 def comer_lata(jugador):
 
-    jugador.hambre -= 35
-    jugador.vida += 5
+    jugador.hambre -= 25
+    jugador.vida += 10
     jugador.moral += 3
+
+    if jugador.vida > 100:
+        jugador.vida = 100
 
 
 def beber_agua(jugador):
@@ -17,6 +20,9 @@ def beber_agua(jugador):
     jugador.sed -= 40
     jugador.vida += 3
     jugador.moral += 2
+
+    if jugador.vida > 100:
+        jugador.vida = 100
 
 
 def curar(jugador):
@@ -26,6 +32,15 @@ def curar(jugador):
     if jugador.vida > 100:
         jugador.vida = 100
 
+def fumar_cigarrillos(jugador):
+
+
+    jugador.sed += 2
+    jugador.vida += 3
+    jugador.moral += 4
+
+    if jugador.vida > 100:
+        jugador.vida = 100
 
 def abrir_caja_municion(jugador, objeto):
 
@@ -265,7 +280,7 @@ def lista_objetos():
     return {
 
         # -------------------------
-        # COMIDA
+        # COMIDA (consumibles)
         # -------------------------
 
         "Lata de comida":
@@ -273,7 +288,7 @@ def lista_objetos():
             Objeto(
                 "Lata de comida",
                 "comida",
-                1,
+                2,
                 "Una lata que todavía parece segura.",
                 efecto=comer_lata,
                 apilable=True,
@@ -286,7 +301,7 @@ def lista_objetos():
             Objeto(
                 "Botella de agua",
                 "agua",
-                1,
+                3,
                 "Agua potable.",
                 efecto=beber_agua,
                 apilable=True,
@@ -304,6 +319,19 @@ def lista_objetos():
                 "Material médico básico.",
                 apilable=True,
                 efecto=curar
+            ),
+
+        "Caja de cigarrillos":
+
+            Objeto(
+                "Caja de cigarrillos",
+                "tabaco",
+                1,
+                "Una caja de cigarillos.",
+                efecto=fumar_cigarrillos,
+                apilable=True,
+                cantidad=1,
+                usos=20
             ),
 
         # -------------------------

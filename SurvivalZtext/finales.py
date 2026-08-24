@@ -1,5 +1,5 @@
 import sys
-
+from efectos import write, writefast
 
 def comprobar_final(estado):
 
@@ -11,7 +11,7 @@ def comprobar_final(estado):
 
     if estado["hambre"] >= 100:
 
-        print("\nMuertes de hambre.")
+        print("\nMueres de hambre.")
         print("FINAL 2 - Sin alimentos.")
         sys.exit()
 
@@ -23,8 +23,8 @@ def comprobar_final(estado):
 
     if estado["moral"] <= 0:
 
-        print("\nPierdes completamente la esperanza.")
-        print("FINAL 4 - Rendición.")
+        writefast("\nPierdes completamente la esperanza y te dejas morir.")
+        write("FINAL 4 - Suicidio.")
         sys.exit()
 
     if len(estado["companeros"]) >= 3:

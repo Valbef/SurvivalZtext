@@ -120,6 +120,10 @@ class Objeto:
 
         return self.nombre == "Botella de agua"
 
+    def es_tabaco(self):
+
+        return self.nombre == "Caja de cigarrillos"
+
     def estado(self):
 
         if self.durabilidad is None:
