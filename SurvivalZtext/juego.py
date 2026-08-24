@@ -442,7 +442,7 @@ class Juego:
                 input("\nPulsa ENTER para continuar...")
 
                 # Eventos
-                if random.randint(1, 100) <= 35:
+                if random.randint(1, 100) <= 25:
                     evento_aleatorio(
                         self.jugador,
                         self.objetos
