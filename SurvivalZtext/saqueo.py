@@ -2,15 +2,60 @@ import random
 from copy import deepcopy
 from enemigos import enemigo_aleatorio
 from combate import iniciar_combate
-
-
+from efectos import write, writefast
 
 TABLAS_BOTIN = {
 
+    "Bosque": [
+        ("Botella de agua", 2)
+    ],
+
+    "Cabaña": [
+        ("Botella de agua", 5)
+    ],
+
+    "Gasolinera": [
+        ("Botella de agua", 15),
+        ("Lata de comida", 15),
+        ("Caja de cigarrillos", 10),
+        ("Herramientas", 7),
+        ("Mapa", 3)
+    ],
+
+    "Centro Ciudad": [
+        ("Lata de comida", 10),
+        ("Botella de agua", 15),
+        ("Caja de cigarrillos", 8),
+        ("Pilas", 5)
+    ],
+
+    "Comisaría": [
+        ("Lata de comida", 10),
+        ("Caja de munición", 25),
+        ("Caja de cigarrillos", 7),
+        ("Botiquín", 5)
+    ],
+
     "Hospital": [
         ("Botiquín", 30),
-        ("Botella de agua", 20),
-        ("Radio", 1)
+        ("Botella de agua", 10),
+    ],
+
+    "Laboratorio": [
+        ("Botiquín", 20),
+        ("Botella de agua", 5)
+    ],
+
+    "Centro Comercial": [
+        ("Lata de comida", 10),
+        ("Botella de agua", 15),
+        ("Caja de cigarrillos", 3),
+        ("Herramientas", 3),
+        ("Radio", 2)
+    ],
+
+    "Escuela": [
+        ("Botella de agua", 10)
     ],
 
     "Supermercado": [
@@ -19,35 +64,22 @@ TABLAS_BOTIN = {
         ("Pilas", 10)
     ],
 
-    "Centro Ciudad": [
-        ("Lata de comida", 10),
-        ("Botella de agua", 15),
-        ("Pilas", 5)
+    "Estación de bomberos": [
+        ("Botella de agua", 20),
+        ("Botiquín", 5)
     ],
 
-    "Centro Comercial": [
-        ("Lata de comida", 10),
+    "Camping": [
         ("Botella de agua", 15),
-        ("Herramientas", 3),
+        ("Lata de comida", 12),
+        ("Caja de cigarrillos", 10)
+    ],
+
+    "Torre Radio": [
+        ("Pilas", 10),
         ("Radio", 5)
-    ],
-
-    "Comisaría": [
-        ("Lata de comida", 10),
-        ("Caja de munición", 30),
-        ("Botiquín", 15)
-    ],
-
-    "Gasolinera": [
-        ("Botella de agua", 15),
-        ("Lata de comida", 10),
-        ("Herramientas", 7),
-        ("Mapa", 4)
-    ],
-
-    "Bosque": [
-        ("Botella de agua", 10)
     ]
+
 }
 
 def saquear(jugador, objetos):
@@ -83,7 +115,9 @@ def saquear(jugador, objetos):
 
         if random.randint(1, 100) <= 50:
 
-            print(
+            jugador.moral -= 2
+
+            write(
                 f"\n🧟 Aparece un {enemigo.nombre}."
             )
 
@@ -101,14 +135,16 @@ def saquear(jugador, objetos):
             )
 
             jugador.vida -= daño
+            jugador.moral -= 6
 
-            print(
+            writefast(
                 f"""
         🩸 ¡Ataque sorpresa!
 
         Un {enemigo.nombre} te golpea antes de que puedas reaccionar.
 
         Pierdes {daño} de vida.
+        Tu moral ha bajado.
         """
             )
 
@@ -137,7 +173,7 @@ def saquear(jugador, objetos):
             if not resultado and jugador.vida <= 0:
                 jugador.vida = 0
 
-                print(
+                write(
                     "\n☠️ Has muerto durante el combate."
                 )
 
@@ -164,7 +200,8 @@ def saquear(jugador, objetos):
                     "Botella de agua",
                     "Lata de comida",
                     "Pilas",
-                    "Herramientas"
+                    "Herramientas",
+                    "Caja de cigarrillos"
             ):
 
                 for obj in jugador.inventario:
@@ -191,6 +228,8 @@ def saquear(jugador, objetos):
             encontrados += 1
 
     if not encontrado:
+
+        jugador.moral -= 1
 
         print("No encuentras nada.")
 
