@@ -1,5 +1,5 @@
 import time
-import sys
+#import sys
 
 
 def write(texto, velocidad=0.07):
