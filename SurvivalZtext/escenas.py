@@ -14,12 +14,14 @@ Parece que alguien vivió aquí recientemente.
             "1": {
                 "texto": "Entrar y registrar",
                 "destino": None,
-                "objeto": "Herramientas"
+                "objeto": "Herramientas",
+                "moral": 2
             },
 
             "2": {
                 "texto": "Alejarte",
-                "destino": None
+                "destino": None,
+                "moral": -2
             }
         }
     },
@@ -38,12 +40,14 @@ Dentro todavía quedan algunos suministros.
             "1": {
                 "texto": "Buscar comida",
                 "destino": None,
-                "objeto": "Lata de comida"
+                "objeto": "Lata de comida",
+                "moral": 2
             },
 
             "2": {
                 "texto": "Salir",
-                "destino": None
+                "destino": None,
+                "moral": -2
             }
         }
     },
@@ -67,7 +71,8 @@ Parece un superviviente, pero no sabes si confiar.
 
             "2": {
                 "texto": "Ignorarlo",
-                "destino": None
+                "destino": None,
+                "moral": -3
             }
         }
     },
@@ -86,12 +91,15 @@ Encuentras herramientas y agua.
             "1": {
                 "texto": "Registrar almacén",
                 "destino": None,
-                "objeto": "Herramientas"
+                "objeto": "Herramientas",
+                "objeto": "Botella de agua",
+                "moral": 3
             },
 
             "2": {
                 "texto": "Marcharte",
-                "destino": None
+                "destino": None,
+                "moral": -2
             }
         }
     },
@@ -135,12 +143,14 @@ Todavía hay cosas útiles dentro.
             "1": {
                 "texto": "Abrir el maletero",
                 "destino": None,
-                "objeto": "Botiquín"
+                "objeto": "Botiquín",
+                "moral": 2
             },
 
             "2": {
                 "texto": "Continuar",
-                "destino": None
+                "destino": None,
+                "moral": -2
             }
         }
     },
@@ -159,12 +169,14 @@ Las taquillas siguen cerradas.
             "1": {
                 "texto": "Forzar una taquilla",
                 "destino": None,
-                "objeto": "Caja de munición"
+                "objeto": "Caja de munición",
+                "moral": 2
             },
 
             "2": {
                 "texto": "Salir",
-                "destino": None
+                "destino": None,
+                "moral": -2
             }
         }
     },
@@ -183,12 +195,13 @@ Necesita ayuda.
             "1": {
                 "texto": "Ayudarlo",
                 "destino": None,
-                "moral": 15
+                "moral": 10
             },
 
             "2": {
                 "texto": "Continuar",
-                "destino": None
+                "destino": None,
+                "moral": -3
             }
         }
     },
@@ -207,7 +220,7 @@ Quizá esta información sea importante.
             "1": {
                 "texto": "Guardar los documentos",
                 "destino": None,
-                "moral": 20
+                "moral": 15
             }
         }
     },
@@ -224,12 +237,15 @@ Los almacenes del centro comercial están intactos.
             "1": {
                 "texto": "Buscar suministros",
                 "destino": None,
-                "objeto": "Lata de comida"
+                "objeto": "Lata de comida",
+                "objeto": "Botella de agua",
+                "moral": 2
             },
 
             "2": {
                 "texto": "Marcharte",
-                "destino": None
+                "destino": None,
+                "moral": -2
             }
         }
     },
@@ -248,7 +264,8 @@ Algunas mochilas siguen en las aulas.
             "1": {
                 "texto": "Registrar mochilas",
                 "destino": None,
-                "objeto": "Botella de agua"
+                "objeto": "Botella de agua",
+                "moral": 2
             }
         }
     },
@@ -257,7 +274,7 @@ Algunas mochilas siguen en las aulas.
     "bomberos": {
 
         "texto": """
-La estación de bomberos está vacía.
+La estación de bomberos no está vacía.
 
 Todavía quedan herramientas útiles.
 """,
@@ -267,7 +284,8 @@ Todavía quedan herramientas útiles.
             "1": {
                 "texto": "Buscar equipo",
                 "destino": None,
-                "objeto": "Herramientas"
+                "objeto": "Herramientas",
+                "moral": 2
             }
         }
     },
@@ -286,7 +304,8 @@ Alguien dejó suministros atrás.
             "1": {
                 "texto": "Registrar tiendas",
                 "destino": None,
-                "objeto": "Lata de comida"
+                "objeto": "Lata de comida",
+                "moral": 2
             }
         }
     },
@@ -305,12 +324,14 @@ Una señal débil llega desde algún lugar.
             "1": {
                 "texto": "Intentar comunicarse",
                 "destino": None,
-                "objeto": "Radio"
+                "objeto": "Radio",
+                "moral": 1
             },
 
             "2": {
                 "texto": "Bajar",
-                "destino": None
+                "destino": None,
+                "moral": -2
             }
         }
     },

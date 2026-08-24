@@ -8,7 +8,7 @@ EVENTOS_POR_ZONA = {
     "Bosque": [
 
         {
-            "texto": "\n📦 Encuentras una mochila abandonada entre los árboles.",
+            "texto": "\n📦 Encuentras una mochila entre los árboles.",
             "objeto": "Lata de comida",
             "moral": 2
         },
@@ -27,8 +27,8 @@ EVENTOS_POR_ZONA = {
 
         {
             "texto": "\n🔥 Encuentras una hoguera abandonada y descansas.",
-            "vida": 10,
-            "moral": 5
+            "vida": 20,
+            "moral": 15
         },
 
         {
