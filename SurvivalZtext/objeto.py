@@ -23,6 +23,7 @@ class Objeto:
         self.peso = peso
         self.descripcion = descripcion
         self.reparable = reparable
+        self.apilable = apilable
         self.accion_principal = accion_principal
 
 
@@ -147,7 +148,6 @@ class Objeto:
         else:
             return "Roto"
 
-
     def datos(self):
 
         return {
@@ -160,8 +160,11 @@ class Objeto:
             "durabilidad": self.durabilidad,
             "desgaste": self.desgaste,
             "atasco": self.atasco,
+            "apilable": self.apilable,
             "cantidad": self.cantidad,
             "usos": self.usos,
-            "usos_restantes": self.usos_restantes
+            "usos_restantes": self.usos_restantes,
+            "reparable": self.reparable,
+            "accion_principal": self.accion_principal
 
         }

@@ -268,7 +268,6 @@ class Juego:
                 print("\n❌ Opción no válida.")
 
 
-
     def menu_acciones(self, objeto):
 
         while True:
@@ -427,6 +426,25 @@ class Juego:
 
                     continue
 
+                # Comprobar peso antes de viajar
+                if not self.jugador.puede_viajar():
+
+                    print("\n⚠️ Llevas demasiadas cosas.")
+                    print(
+                        f"⚖️ Peso actual: "
+                        f"{self.jugador.peso_total()} / "
+                        f"{self.jugador.capacidad_peso} kg"
+                    )
+                    print(
+                        "\nNo puedes viajar hasta que reduzcas "
+                        "el peso de tu inventario."
+                    )
+
+                    input("\nPulsa ENTER para continuar...")
+
+                    continue
+
+
                 print(f"\n🚶 Viajas hacia {destino}...")
 
                 self.jugador.localizacion = destino
@@ -477,6 +495,12 @@ class Juego:
                 print("\n====================")
                 print("    INVENTARIO")
                 print("====================")
+
+                print(
+                    f"⚖️ Peso: "
+                    f"{self.jugador.peso_total()} / "
+                    f"{self.jugador.capacidad_peso} kg"
+                )
 
                 grupos = self.jugador.inventario_agrupado()
 

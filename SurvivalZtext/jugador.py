@@ -1,4 +1,5 @@
 from collections import defaultdict
+from objeto import Objeto
 
 def barra(valor, maximo=100, longitud=20):
     valor = max(0, min(valor, maximo))
@@ -15,38 +16,22 @@ class Jugador:
     def __init__(self,nombre):
 
         self.nombre = nombre
-
         self.nivel = 1
-
         self.experiencia = 0
-
         self.municion = 6
-
         self.defendiendo = False
-
-
         self.vida = 100
-
         self.hambre = 0
-
         self.sed = 0
-
         self.moral = 100
 
-
         self.dia = 1
-
         self.hora = 8
-
-
         self.clima = "Soleado"
-
-
         self.localizacion="Refugio"
-
-
         self.inventario=[]
 
+        self.capacidad_peso = 40
 
         self.companeros=[]
 
@@ -156,6 +141,11 @@ class Jugador:
         print(f"🌦️ Clima: {self.clima}")
         print(f" Munición: {self.municion}")
         print("🎒 Inventario:")
+        print(
+            f"⚖️ Peso: "
+            f"{self.peso_total()} / "
+            f"{self.capacidad_peso} kg"
+        )
 
 
         if len(self.inventario)==0:
@@ -301,10 +291,34 @@ class Jugador:
 
         self.localizacion = datos["localizacion"]
 
-        self.inventario = datos.get(
-            "inventario",
-            []
-        )
+        self.inventario = []
+
+        for datos_objeto in datos.get("inventario", []):
+            objeto = Objeto(
+                nombre=datos_objeto["nombre"],
+                tipo=datos_objeto["tipo"],
+                peso=datos_objeto["peso"],
+                descripcion=datos_objeto["descripcion"],
+                daño=datos_objeto.get("daño", 0),
+                durabilidad=datos_objeto.get("durabilidad"),
+                desgaste=datos_objeto.get("desgaste", 0),
+                atasco=datos_objeto.get("atasco", 0),
+                apilable=datos_objeto.get("apilable", True),
+                cantidad=datos_objeto.get("cantidad", 1),
+                usos=datos_objeto.get("usos"),
+                reparable=datos_objeto.get("reparable", False),
+                accion_principal=datos_objeto.get(
+                    "accion_principal",
+                    "Usar"
+                )
+            )
+
+            objeto.usos_restantes = datos_objeto.get(
+                "usos_restantes",
+                objeto.usos_restantes
+            )
+
+            self.inventario.append(objeto)
 
         self.companeros = datos.get(
             "companeros",
@@ -333,6 +347,16 @@ class Jugador:
                 return objeto
 
         return None
+
+    def peso_total(self):
+
+        return sum(
+            objeto.peso * objeto.cantidad
+            for objeto in self.inventario
+        )
+
+    def puede_viajar(self):
+        return self.peso_total() <= self.capacidad_peso
 
     def inventario_agrupado(self):
 
