@@ -76,6 +76,7 @@ def reparar_objeto(jugador, objeto):
     import random
 
     herramientas = None
+    kit = None
 
     for obj in jugador.inventario:
 
@@ -83,13 +84,22 @@ def reparar_objeto(jugador, objeto):
             herramientas = obj
             break
 
+        elif obj.nombre == "Kit de reparación":
+            kit = obj
 
-    if herramientas is None:
+    # =========================
+    # COMPROBAR RECURSO
+    # =========================
+
+    if herramientas is None and kit is None:
 
         print("\n❌ No tienes herramientas para reparar.")
 
         return
 
+    # =========================
+    # COMPROBAR OBJETO
+    # =========================
 
     if objeto.durabilidad is None:
 
@@ -97,38 +107,89 @@ def reparar_objeto(jugador, objeto):
 
         return
 
-
     if objeto.durabilidad >= 100:
 
         print("\n🔧 El objeto ya está en perfecto estado.")
 
         return
 
+    # =========================
+    # CAJA DE HERRAMIENTAS
+    # =========================
 
-    reparacion = random.randint(10, 30)
+    if herramientas is not None:
 
+        reparacion = random.randint(10, 30)
+
+        herramientas.usar(jugador)
+
+        print(
+            f"\n🔧 Has reparado {objeto.nombre} "
+            f"+{reparacion} durabilidad."
+        )
+
+        if herramientas.usos_restantes <= 0:
+
+            jugador.inventario.remove(herramientas)
+
+            print(
+                "\n🔧 La caja de herramientas se ha agotado."
+            )
+
+    # =========================
+    # KIT DE REPARACIÓN
+    # =========================
+
+    else:
+
+        reparacion = random.randint(5, 15)
+
+        kit.cantidad -= 1
+
+        kit.usos_restantes -= 1
+
+        print(
+            f"\n🧰 Has usado un Kit de reparación."
+        )
+
+        print(
+            f"🔧 Has reparado {objeto.nombre} "
+            f"+{reparacion} durabilidad."
+        )
+
+        if kit.cantidad <= 0:
+
+            jugador.inventario.remove(kit)
+
+            print(
+                "\n🧰 Te has quedado sin Kits de reparación."
+            )
+
+    # =========================
+    # APLICAR REPARACIÓN
+    # =========================
 
     objeto.durabilidad += reparacion
 
+    if objeto.durabilidad > 100:
+
+        objeto.durabilidad = 100
+
+def reparar_con_kit(jugador, objeto):
+
+    import random
+
+    reparacion = random.randint(5, 15)
+
+    objeto.durabilidad += reparacion
 
     if objeto.durabilidad > 100:
         objeto.durabilidad = 100
 
-
-    herramientas.usar(jugador)
-
-
     print(
-        f"\n🔧 Has reparado {objeto.nombre} +{reparacion} durabilidad."
+        f"\n🔧 Has reparado {objeto.nombre} "
+        f"+{reparacion} durabilidad."
     )
-
-
-    if herramientas.usos_restantes <= 0:
-
-        jugador.inventario.remove(herramientas)
-
-        print("🔧 La caja de herramientas se ha agotado.")
-
 
 def escuchar_radio(jugador):
 
@@ -351,12 +412,15 @@ def lista_objetos():
         "Botiquín":
 
             Objeto(
-                "Botiquín",
-                "medicina",
-                2,
-                "Material médico básico.",
+                nombre="Botiquín",
+                tipo="medicina",
+                peso=2,
+                descripcion="Material médico básico.",
+                efecto=curar,
                 apilable=True,
-                efecto=curar
+                cantidad=1,
+                usos=1,
+                accion_principal="Usar"
             ),
 
         "Caja de cigarrillos":
@@ -455,6 +519,20 @@ def lista_objetos():
                 apilable=True,
                 cantidad=1,
                 usos=4,
+                accion_principal="Reparar"
+            ),
+
+        "Kit de reparación":
+
+            Objeto(
+                nombre="Kit de reparación",
+                tipo="utilidad",
+                peso=1,
+                descripcion="Un pequeño kit para reparar objetos dañados.",
+                apilable=True,
+                cantidad=1,
+                usos=1,
+                reparable=False,
                 accion_principal="Reparar"
             ),
 

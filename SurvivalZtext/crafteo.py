@@ -199,16 +199,7 @@ def fabricar(jugador, objetos, nombre_receta):
         return
 
     # =========================
-    # CONSUMIR MATERIALES
-    # =========================
-
-    consumir_materiales(
-        jugador,
-        receta
-    )
-
-    # =========================
-    # CREAR OBJETO
+    # COMPROBAR QUE EXISTE
     # =========================
 
     if nombre_receta not in objetos:
@@ -221,19 +212,65 @@ def fabricar(jugador, objetos, nombre_receta):
 
         return
 
-    nuevo_objeto = deepcopy(
+    # =========================
+    # CONSUMIR MATERIALES
+    # =========================
+
+    consumir_materiales(
+        jugador,
+        receta
+    )
+
+    # =========================
+    # CREAR OBJETO
+    # =========================
+
+    objeto_nuevo = deepcopy(
         objetos[nombre_receta]
     )
 
+    # =========================
+    # OBJETO APILABLE
+    # =========================
+
+    if objeto_nuevo.apilable:
+
+        for objeto in jugador.inventario:
+
+            if objeto.nombre == nombre_receta:
+
+                objeto.cantidad += 1
+
+                if objeto.usos is not None:
+
+                    objeto.usos_restantes += objeto.usos
+
+                print(
+                    f"\n🔨 Has fabricado: {nombre_receta}"
+                )
+
+                input(
+                    "\nPulsa ENTER para continuar..."
+                )
+
+                return
+
+    # =========================
+    # OBJETO NUEVO
+    # =========================
+
     jugador.inventario.append(
-        nuevo_objeto
+        objeto_nuevo
     )
 
     print(
         f"\n🔨 Has fabricado: {nombre_receta}"
     )
 
-    input("\nPulsa ENTER para continuar...")
+    input(
+        "\nPulsa ENTER para continuar..."
+    )
+
 
 
 def menu_crafteo(jugador, objetos):

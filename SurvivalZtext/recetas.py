@@ -41,13 +41,13 @@ RECETAS = {
     # UTILIDADES
     # =========================
 
-    "Antorcha": {
-        "materiales": {
-            "Madera": 2,
-            "Tela": 1
-        },
-        "tipo": "cualquier_lugar"
-    },
+    #"Antorcha": {
+    #    "materiales": {
+    #        "Madera": 2,
+    #        "Tela": 1
+    #    },
+    #    "tipo": "cualquier_lugar"
+    #},
 
     "Kit de reparación": {
         "materiales": {
@@ -68,7 +68,7 @@ RECETAS = {
         "tipo": "cualquier_lugar"
     },
 
-    "Botiquin": {
+    "Botiquín": {
         "materiales": {
             "Hierbas": 4
         },

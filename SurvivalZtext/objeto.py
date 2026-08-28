@@ -89,7 +89,7 @@ class Objeto:
 
     def es_consumible(self):
 
-        return self.usos is not None and self.usos > 1
+        return self.usos is not None
 
     def tiene_durabilidad(self):
 
