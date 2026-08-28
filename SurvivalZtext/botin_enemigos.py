@@ -9,11 +9,15 @@ from copy import deepcopy
 BOTIN_ENEMIGOS = {
 
     # -------------------------
-    # PERRO
+    # Animales
     # -------------------------
 
     "Perro infectado": [
         ("Piel", 80, 1, 2)
+    ],
+
+    "Gato infectado": [
+        ("Piel", 70)
     ],
 
     # -------------------------

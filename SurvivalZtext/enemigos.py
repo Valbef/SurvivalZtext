@@ -32,7 +32,7 @@ def crear_enemigos():
             10,
             2,
             20,
-            probabilidad=40
+            probabilidad=35
         ),
 
         "perro": Enemigo(
@@ -41,7 +41,16 @@ def crear_enemigos():
             6,
             2,
             10,
-            probabilidad=30
+            probabilidad=40
+        ),
+
+        "gato": Enemigo(
+            "Gato infectado",
+            15,
+            5,
+            2,
+            10,
+            probabilidad=40
         ),
 
 
@@ -61,7 +70,7 @@ def crear_enemigos():
             "Infectado bruto",
             100,
             25,
-            8,
+            6,
             100,
             probabilidad=8
         ),
@@ -74,7 +83,7 @@ def crear_enemigos():
             20,
             5,
             75,
-            probabilidad=15
+            probabilidad=10
         ),
 
         "vagabundo": Enemigo(
