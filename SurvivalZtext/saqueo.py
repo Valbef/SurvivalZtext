@@ -74,9 +74,11 @@ TABLAS_BOTIN = {
         ("Pilas", 10)
     ],
 
-    "Estación de bomberos": [
-        ("Botella de agua", 20),
-        ("Botiquín", 5)
+    "Estación Bomberos": [
+        ("Botella de agua", 25),
+        ("Botiquín", 10),
+        ("Tela", 5),
+        ("Cuerda", 10)
     ],
 
     "Camping": [
