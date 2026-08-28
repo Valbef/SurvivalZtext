@@ -68,11 +68,11 @@ def crear_enemigos():
 
         "bruto": Enemigo(
             "Infectado bruto",
-            100,
-            25,
+            90,
+            20,
             6,
             100,
-            probabilidad=8
+            probabilidad=5
         ),
 
 
