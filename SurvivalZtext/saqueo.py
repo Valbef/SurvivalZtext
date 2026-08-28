@@ -7,11 +7,16 @@ from efectos import write, writefast
 TABLAS_BOTIN = {
 
     "Bosque": [
+        ("Madera", 25),
+        ("Hierbas", 15),
         ("Botella de agua", 2)
     ],
 
     "Cabaña": [
-        ("Botella de agua", 5)
+        ("Botella de agua", 5),
+        ("Madera", 10),
+        ("Cuerda", 8),
+        ("Tela", 10)
     ],
 
     "Gasolinera": [
@@ -31,36 +36,41 @@ TABLAS_BOTIN = {
 
     "Comisaría": [
         ("Lata de comida", 10),
-        ("Caja de munición", 25),
+        ("Caja de munición", 20),
         ("Caja de cigarrillos", 7),
         ("Botiquín", 5)
     ],
 
     "Hospital": [
         ("Botiquín", 30),
+        ("Componentes electronicos", 8),
         ("Botella de agua", 10),
     ],
 
     "Laboratorio": [
-        ("Botiquín", 20),
-        ("Botella de agua", 5)
+        ("Botiquín", 30),
+        ("Botella de agua", 5),
+        ("Componentes electronicos", 20)
     ],
 
     "Centro Comercial": [
-        ("Lata de comida", 10),
+        ("Lata de comida", 20),
         ("Botella de agua", 15),
-        ("Caja de cigarrillos", 3),
+        ("Caja de cigarrillos", 10),
         ("Herramientas", 3),
+        ("Cuerda", 10),
         ("Radio", 2)
     ],
 
     "Escuela": [
-        ("Botella de agua", 10)
+        ("Botella de agua", 10),
+        ("Tela", 15)
     ],
 
     "Supermercado": [
         ("Lata de comida", 40),
         ("Botella de agua", 30),
+        ("Cuerda", 10),
         ("Pilas", 10)
     ],
 
@@ -71,12 +81,15 @@ TABLAS_BOTIN = {
 
     "Camping": [
         ("Botella de agua", 15),
+        ("Cuerda", 10),
         ("Lata de comida", 12),
         ("Caja de cigarrillos", 10)
     ],
 
     "Torre Radio": [
         ("Pilas", 10),
+        ("Hierbas", 15),
+        ("Componentes electronicos", 20),
         ("Radio", 5)
     ]
 
@@ -123,7 +136,8 @@ def saquear(jugador, objetos):
 
             iniciar_combate(
                 jugador,
-                enemigo
+                enemigo,
+                objetos
             )
 
 
@@ -167,14 +181,15 @@ def saquear(jugador, objetos):
 
             resultado = iniciar_combate(
                 jugador,
-                enemigo
+                enemigo,
+                objetos
             )
 
             if not resultado and jugador.vida <= 0:
                 jugador.vida = 0
 
                 write(
-                    "\n☠️ Has muerto durante el combate."
+                    "\n☠️ Has muerto en combate."
                 )
 
                 return

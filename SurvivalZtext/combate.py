@@ -1,7 +1,8 @@
 import random
+from botin_enemigos import obtener_botin
 
 
-def iniciar_combate(jugador, enemigo):
+def iniciar_combate(jugador, enemigo, objetos):
 
     print("\n⚔️ COMIENZA EL COMBATE")
     print(f"\nUn {enemigo.nombre} aparece.")
@@ -185,6 +186,11 @@ def iniciar_combate(jugador, enemigo):
     print(f"\n🏆 Has derrotado a {enemigo.nombre}.")
 
     jugador.experiencia += enemigo.experiencia
+
+    obtener_botin(
+        jugador,
+        enemigo
+    )
 
     input("\nPulsa ENTER para continuar...")
 

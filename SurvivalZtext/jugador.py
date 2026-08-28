@@ -30,8 +30,10 @@ class Jugador:
         self.clima = "Soleado"
         self.localizacion="Refugio"
         self.inventario=[]
+        self.almacen = []
 
-        self.capacidad_peso = 40
+        self.capacidad_base = 25
+        self.mochila = None
 
         self.companeros=[]
 
@@ -144,7 +146,7 @@ class Jugador:
         print(
             f"⚖️ Peso: "
             f"{self.peso_total()} / "
-            f"{self.capacidad_peso} kg"
+            f"{self.capacidad_peso()} kg"
         )
 
 
@@ -261,6 +263,13 @@ class Jugador:
                     objeto.datos()
                     for objeto in self.inventario
                 ],
+
+            "almacen":
+                [
+                    objeto.datos()
+                    for objeto in self.almacen
+                ],
+
             "companeros": self.companeros
 
         }
@@ -320,6 +329,35 @@ class Jugador:
 
             self.inventario.append(objeto)
 
+        self.almacen = []
+
+        for datos_objeto in datos.get("almacen", []):
+            objeto = Objeto(
+                nombre=datos_objeto["nombre"],
+                tipo=datos_objeto["tipo"],
+                peso=datos_objeto["peso"],
+                descripcion=datos_objeto["descripcion"],
+                daño=datos_objeto.get("daño", 0),
+                durabilidad=datos_objeto.get("durabilidad"),
+                desgaste=datos_objeto.get("desgaste", 0),
+                atasco=datos_objeto.get("atasco", 0),
+                apilable=datos_objeto.get("apilable", True),
+                cantidad=datos_objeto.get("cantidad", 1),
+                usos=datos_objeto.get("usos"),
+                reparable=datos_objeto.get("reparable", False),
+                accion_principal=datos_objeto.get(
+                    "accion_principal",
+                    "Usar"
+                )
+            )
+
+            objeto.usos_restantes = datos_objeto.get(
+                "usos_restantes",
+                objeto.usos_restantes
+            )
+
+            self.almacen.append(objeto)
+
         self.companeros = datos.get(
             "companeros",
             []
@@ -355,14 +393,39 @@ class Jugador:
             for objeto in self.inventario
         )
 
+    def peso_almacen(self):
+
+        return sum(
+            objeto.peso * objeto.cantidad
+            for objeto in self.almacen
+        )
+
+    def capacidad_peso(self):
+
+        capacidad = self.capacidad_base
+
+        if self.mochila is not None:
+            capacidad += self.mochila.capacidad
+
+        return capacidad
+
     def puede_viajar(self):
-        return self.peso_total() <= self.capacidad_peso
+        return self.peso_total() <= self.capacidad_peso()
 
     def inventario_agrupado(self):
 
         grupos = defaultdict(list)
 
         for objeto in self.inventario:
+            grupos[objeto.nombre].append(objeto)
+
+        return grupos
+
+    def inventario_agrupado_almacen(self):
+
+        grupos = defaultdict(list)
+
+        for objeto in self.almacen:
             grupos[objeto.nombre].append(objeto)
 
         return grupos

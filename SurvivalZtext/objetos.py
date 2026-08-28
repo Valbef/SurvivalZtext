@@ -130,6 +130,44 @@ def reparar_objeto(jugador, objeto):
         print("🔧 La caja de herramientas se ha agotado.")
 
 
+def escuchar_radio(jugador):
+
+    pilas = None
+
+    for objeto in jugador.inventario:
+
+        if objeto.nombre == "Pilas":
+            pilas = objeto
+            break
+
+    if pilas is None or pilas.usos_restantes <= 0:
+
+        print("\n🔋 La radio no tiene pilas.")
+
+        return False
+
+    # Consumir una pila
+    pilas.usos_restantes -= 1
+
+    jugador.moral += 30
+
+    if jugador.moral > 100:
+        jugador.moral = 100
+
+    print("\n📻 Escuchas la radio.")
+
+    print("🔋 Has gastado 1 pila.")
+
+    if pilas.usos_restantes <= 0:
+
+        print("\n🔋 Te has quedado sin pilas.")
+
+        jugador.inventario.remove(pilas)
+
+    return True
+
+
+
 def consultar_mapa(jugador):
     posicion = jugador.localizacion
 
@@ -346,9 +384,26 @@ def lista_objetos():
                 peso=1,
                 descripcion="Un cuchillo de supervivencia.",
                 daño=20,
+                reparable=True,
                 apilable=False,
                 durabilidad=100,
                 desgaste=10,
+                accion_principal="Equipar"
+            ),
+
+        "Lanza":
+
+            Objeto(
+                nombre="Lanza",
+                tipo="arma",
+                peso=3,
+                descripcion="Una lanza improvisada fabricada con madera y metal.",
+                daño=25,
+                durabilidad=100,
+                desgaste=15,
+                reparable=True,
+                apilable=False,
+                cantidad=1,
                 accion_principal="Equipar"
             ),
 
@@ -360,12 +415,15 @@ def lista_objetos():
                 peso=2,
                 descripcion="Una pistola de 9 mm.",
                 daño=35,
+                reparable=True,
                 apilable=False,
                 durabilidad=100,
                 desgaste=15,
                 atasco=10,
                 accion_principal="Equipar"
             ),
+
+
 
         # -------------------------
         # MUNICIÓN
@@ -427,6 +485,131 @@ def lista_objetos():
             ),
 
         # -------------------------
+        # MATERIALES
+        # -------------------------
+
+        "Tela":
+
+            Objeto(
+                nombre="Tela",
+                tipo="material",
+                peso=1,
+                descripcion="Un trozo de tela útil para fabricar objetos.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Hierbas":
+
+            Objeto(
+                nombre="Hierbas",
+                tipo="material",
+                peso=1,
+                descripcion="Hierbas medicinales de el campo.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Cuerda":
+
+            Objeto(
+                nombre="Cuerda",
+                tipo="material",
+                peso=1,
+                descripcion="Una cuerda resistente.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Piel":
+
+            Objeto(
+                nombre="Piel",
+                tipo="material",
+                peso=1,
+                descripcion="Piel que puede utilizarse para fabricar equipo.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Madera":
+
+            Objeto(
+                nombre="Madera",
+                tipo="material",
+                peso=2,
+                descripcion="Madera útil para fabricar objetos.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Metal":
+
+            Objeto(
+                nombre="Metal",
+                tipo="material",
+                peso=2,
+                descripcion="Piezas de metal recuperadas.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Componentes electronicos":
+
+            Objeto(
+                nombre="Componentes electronicos",
+                tipo="material",
+                peso=1,
+                descripcion="Componentes electronicos de dispositivos.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        # -------------------------
+        # MOCHILAS
+        # -------------------------
+
+        "Mochila pequeña":
+
+            Objeto(
+                nombre="Mochila pequeña",
+                tipo="mochila",
+                peso=1,
+                descripcion="Una mochila pequeña que aumenta la capacidad de carga en 15 kg.",
+                apilable=False,
+                accion_principal="Equipar"
+            ),
+
+        "Mochila mediana":
+
+            Objeto(
+                nombre="Mochila mediana",
+                tipo="mochila",
+                peso=2,
+                descripcion="Una mochila mediana que aumenta la capacidad de carga en 25 kg.",
+                apilable=False,
+                accion_principal="Equipar"
+            ),
+
+        "Mochila grande":
+
+            Objeto(
+                nombre="Mochila grande",
+                tipo="mochila",
+                peso=3,
+                descripcion="Una mochila grande que aumenta la capacidad de carga en 35 kg.",
+                apilable=False,
+                accion_principal="Equipar"
+            ),
+
+        # -------------------------
         # OBJETOS DE HISTORIA
         # -------------------------
 
@@ -438,6 +621,7 @@ def lista_objetos():
                 peso=2,
                 descripcion="Una radio portátil que puede captar señales.",
                 apilable=False,
+                efecto=escuchar_radio,
                 durabilidad=100,
                 desgaste=5,
                 reparable=True,

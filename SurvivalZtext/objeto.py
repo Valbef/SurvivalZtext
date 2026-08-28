@@ -9,6 +9,7 @@ class Objeto:
             efecto=None,
             daño=0,
             durabilidad=None,
+            capacidad = 0,
             desgaste=0,
             atasco=0,
             apilable=True,
@@ -22,6 +23,7 @@ class Objeto:
         self.tipo = tipo
         self.peso = peso
         self.descripcion = descripcion
+        self.capacidad = capacidad
         self.reparable = reparable
         self.apilable = apilable
         self.accion_principal = accion_principal
