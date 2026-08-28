@@ -97,6 +97,7 @@ TABLAS_BOTIN = {
 
 }
 
+
 def saquear(jugador, objetos):
 
     lugar = jugador.localizacion
@@ -108,8 +109,6 @@ def saquear(jugador, objetos):
 
         return
 
-
-
     print("\n🔍 Buscando...")
 
     # =========================
@@ -118,12 +117,10 @@ def saquear(jugador, objetos):
 
     if random.randint(1, 100) <= 25:
 
-
         enemigo = enemigo_aleatorio()
 
-
         print(
-            f"\n⚠️ Algo se mueve entre las sombras..."
+            "\n⚠️ Algo se mueve entre las sombras..."
         )
 
         # 50% combate normal / 50% ataque sorpresa
@@ -141,7 +138,6 @@ def saquear(jugador, objetos):
                 enemigo,
                 objetos
             )
-
 
         else:
 
@@ -165,6 +161,7 @@ def saquear(jugador, objetos):
             )
 
             if jugador.vida <= 0:
+
                 jugador.vida = 0
 
                 print(
@@ -178,7 +175,7 @@ def saquear(jugador, objetos):
             )
 
             print(
-                f"\n🧟 Defiendete de el {enemigo.nombre}."
+                f"\n🧟 Defiéndete del {enemigo.nombre}."
             )
 
             resultado = iniciar_combate(
@@ -188,6 +185,7 @@ def saquear(jugador, objetos):
             )
 
             if not resultado and jugador.vida <= 0:
+
                 jugador.vida = 0
 
                 write(
@@ -196,61 +194,110 @@ def saquear(jugador, objetos):
 
                 return
 
-    encontrados = 0
-    maximo_botin = random.randint(1,1)
+    # =========================
+    # BOTÍN
+    # =========================
 
+    encontrados = 0
+
+    maximo_botin = random.randint(1, 1)
 
     encontrado = False
-
 
     for nombre, probabilidad in TABLAS_BOTIN[lugar]:
 
         if encontrados >= maximo_botin:
             break
 
-        if random.randint(1,100) <= probabilidad:
+        if random.randint(1, 100) > probabilidad:
+            continue
 
-            objeto = deepcopy(objetos[nombre])
+        # =========================
+        # COMPROBAR QUE EXISTE
+        # =========================
 
-            # Objetos consumibles apilables
-            if nombre in (
-                    "Botella de agua",
-                    "Lata de comida",
-                    "Pilas",
-                    "Herramientas",
-                    "Caja de cigarrillos"
-            ):
+        if nombre not in objetos:
 
-                for obj in jugador.inventario:
+            print(
+                f"\n⚠️ El objeto '{nombre}' "
+                f"no existe en objetos.py."
+            )
 
-                    if obj.nombre == nombre:
-                        obj.cantidad += 1
-                        obj.usos_restantes += obj.usos
+            continue
 
-                        break
+        objeto = deepcopy(
+            objetos[nombre]
+        )
 
-                else:
+        # =========================
+        # OBJETOS APILABLES
+        # =========================
 
-                    jugador.inventario.append(objeto)
+        if objeto.apilable:
 
-            # Objetos únicos o con durabilidad individual
+            objeto_existente = None
+
+            for obj in jugador.inventario:
+
+                if obj.nombre == nombre:
+
+                    objeto_existente = obj
+
+                    break
+
+            if objeto_existente:
+
+                objeto_existente.cantidad += objeto.cantidad
+
+                if objeto.usos is not None:
+
+                    objeto_existente.usos_restantes += (
+                        objeto.usos_restantes
+                    )
+
             else:
 
-                jugador.inventario.append(objeto)
+                jugador.inventario.append(
+                    objeto
+                )
 
-            print(f"Has encontrado {nombre}")
+        # =========================
+        # OBJETOS NO APILABLES
+        # =========================
 
-            encontrado = True
+        else:
 
-            encontrados += 1
+            jugador.inventario.append(
+                objeto
+            )
+
+        print(
+            f"Has encontrado {nombre}"
+        )
+
+        encontrado = True
+
+        encontrados += 1
+
+    # =========================
+    # SIN BOTÍN
+    # =========================
 
     if not encontrado:
 
         jugador.moral -= 1
 
-        print("No encuentras nada.")
+        print(
+            "No encuentras nada."
+        )
 
+    # =========================
+    # PASO DEL TIEMPO
+    # =========================
 
     jugador.avanzar_tiempo(1)
 
-    input("\nPulsa ENTER para continuar...")
+    input(
+        "\nPulsa ENTER para continuar..."
+    )
+
