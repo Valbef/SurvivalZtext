@@ -39,7 +39,7 @@ BOTIN_ENEMIGOS = {
 
     "Infectado bruto": [
         ("Metal", 5),
-        ("Tela", 30, 1,2)
+        ("Tela", 30, 1, 2)
     ],
 
     # -------------------------
@@ -74,7 +74,6 @@ BOTIN_ENEMIGOS = {
 def obtener_botin(jugador, enemigo, objetos):
 
     if enemigo.nombre not in BOTIN_ENEMIGOS:
-
         return
 
     botin_enemigo = BOTIN_ENEMIGOS[enemigo.nombre]
@@ -83,56 +82,113 @@ def obtener_botin(jugador, enemigo, objetos):
 
     print("\n🎒 Buscando entre los restos...")
 
-    for nombre, probabilidad in botin_enemigo:
+    for botin in botin_enemigo:
 
-        if random.randint(1, 100) <= probabilidad:
+        nombre = botin[0]
+        probabilidad = botin[1]
 
-            objeto = deepcopy(objetos[nombre])
+        if len(botin) >= 4:
+            cantidad_minima = botin[2]
+            cantidad_maxima = botin[3]
+        else:
+            cantidad_minima = 1
+            cantidad_maxima = 1
 
-            # -------------------------
-            # OBJETOS APILABLES
-            # -------------------------
+        if random.randint(1, 100) > probabilidad:
+            continue
 
-            if objeto.apilable:
+        if nombre not in objetos:
 
-                for obj in jugador.inventario:
+            print(
+                f"\n⚠️ El objeto '{nombre}' "
+                f"no existe en objetos.py."
+            )
 
-                    if obj.nombre == nombre:
+            continue
 
-                        obj.cantidad += objeto.cantidad
+        cantidad = random.randint(
+            cantidad_minima,
+            cantidad_maxima
+        )
 
-                        if obj.usos is not None:
-                            obj.usos_restantes += obj.usos
+        objeto = deepcopy(
+            objetos[nombre]
+        )
 
-                        print(f"📦 Has conseguido {nombre}.")
+        objeto.cantidad = cantidad
 
-                        encontrado = True
+        if objeto.usos is not None:
 
-                        break
+            objeto.usos_restantes = (
+                objeto.usos * cantidad
+            )
 
-                else:
+        # =========================
+        # OBJETOS APILABLES
+        # =========================
 
-                    jugador.inventario.append(objeto)
+        if objeto.apilable:
 
-                    print(f"📦 Has conseguido {nombre}.")
+            for obj in jugador.inventario:
+
+                if obj.nombre == nombre:
+
+                    obj.cantidad += cantidad
+
+                    if obj.usos is not None:
+                        obj.usos_restantes += (
+                            objeto.usos * cantidad
+                        )
+
+                    print(
+                        f"📦 Has conseguido "
+                        f"{cantidad} x {nombre}."
+                    )
 
                     encontrado = True
 
-            # -------------------------
-            # OBJETOS NO APILABLES
-            # -------------------------
+                    break
 
             else:
 
-                jugador.inventario.append(objeto)
+                jugador.inventario.append(
+                    objeto
+                )
 
-                print(f"📦 Has conseguido {nombre}.")
+                print(
+                    f"📦 Has conseguido "
+                    f"{cantidad} x {nombre}."
+                )
 
                 encontrado = True
 
+        # =========================
+        # OBJETOS NO APILABLES
+        # =========================
+
+        else:
+
+            for _ in range(cantidad):
+
+                nuevo_objeto = deepcopy(
+                    objetos[nombre]
+                )
+
+                jugador.inventario.append(
+                    nuevo_objeto
+                )
+
+            print(
+                f"📦 Has conseguido "
+                f"{cantidad} x {nombre}."
+            )
+
+            encontrado = True
+
     if not encontrado:
 
-        print("No encuentras nada útil.")
+        print(
+            "No encuentras nada útil."
+        )
 
     return encontrado
-

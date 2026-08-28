@@ -743,7 +743,8 @@ class Juego:
                 print("2. Saquear")
                 print("3. Inventario")
                 print("4. Guardar")
-                print("5. Salir")
+                print("5. Crafteo")
+                print("6. Salir")
 
             opcion = input("> ")
 
@@ -1026,19 +1027,10 @@ class Juego:
 
             elif opcion == "5":
 
-                if (
-                        self.jugador.localizacion
-                        == "Refugio"
-                ):
-
-                    menu_crafteo(
-                        self.jugador,
-                        self.objetos
-                    )
-
-                else:
-
-                    break
+                menu_crafteo(
+                    self.jugador,
+                    self.objetos
+                )
 
             # =========================
             # GUARDAR
