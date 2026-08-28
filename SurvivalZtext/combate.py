@@ -189,7 +189,8 @@ def iniciar_combate(jugador, enemigo, objetos):
 
     obtener_botin(
         jugador,
-        enemigo
+        enemigo,
+        objetos
     )
 
     input("\nPulsa ENTER para continuar...")
