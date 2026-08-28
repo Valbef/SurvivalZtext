@@ -450,12 +450,32 @@ class Jugador:
     def puede_viajar(self):
         return self.peso_total() <= self.capacidad_peso()
 
+
+
     def inventario_agrupado(self):
 
         grupos = defaultdict(list)
 
         for objeto in self.inventario:
             grupos[objeto.nombre].append(objeto)
+
+        # Unificar cantidades del mismo objeto
+        for nombre, objetos in grupos.items():
+
+            if len(objetos) > 1:
+
+                principal = objetos[0]
+
+                for objeto in objetos[1:]:
+
+                    principal.cantidad += objeto.cantidad
+
+                    if principal.usos_restantes is not None:
+                        principal.usos_restantes += (
+                            objeto.usos_restantes
+                        )
+
+                grupos[nombre] = [principal]
 
         return grupos
 
@@ -466,4 +486,24 @@ class Jugador:
         for objeto in self.almacen:
             grupos[objeto.nombre].append(objeto)
 
+        # Unificar cantidades del mismo objeto
+        for nombre, objetos in grupos.items():
+
+            if len(objetos) > 1:
+
+                principal = objetos[0]
+
+                for objeto in objetos[1:]:
+
+                    principal.cantidad += objeto.cantidad
+
+                    if principal.usos_restantes is not None:
+                        principal.usos_restantes += (
+                            objeto.usos_restantes
+                        )
+
+                grupos[nombre] = [principal]
+
         return grupos
+
+

@@ -400,7 +400,7 @@ def lista_objetos():
             Objeto(
                 "Botella de agua",
                 "agua",
-                3,
+                2,
                 "Agua potable.",
                 efecto=beber_agua,
                 apilable=True,

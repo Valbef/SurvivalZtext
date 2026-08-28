@@ -48,21 +48,39 @@ class Objeto:
 
 
     def usar(self, jugador):
+
         if not self.efecto:
             return False
 
         self.efecto(jugador)
         jugador.limitar_estadisticas()
 
-        # Si el objeto tiene varios usos
+        # =========================
+        # OBJETO CON USOS
+        # =========================
+
         if self.usos is not None:
+
             self.usos_restantes -= 1
 
-            self.cantidad = (self.usos_restantes + self.usos - 1) // self.usos
+            # Actualizar cantidad de objetos físicos
+            self.cantidad = (
+                                    self.usos_restantes + self.usos - 1
+                            ) // self.usos
 
-            return self.usos_restantes <= 0
+            # Todavía quedan usos
+            if self.usos_restantes > 0:
+                return False
+
+            # Se han gastado todos los usos
+            return True
+
+        # =========================
+        # OBJETO SIN USOS
+        # =========================
 
         return True
+
 
 
     def desgastar(self):
