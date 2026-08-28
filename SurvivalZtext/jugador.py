@@ -99,23 +99,55 @@ class Jugador:
         self.sed = min(self.sed, 100)
 
         if self.hambre >= 80:
+
             daño = (self.hambre - 79) // 5
 
             self.vida -= daño
 
-            print(f"\n🍖 El hambre te debilita (-{daño} vida).")
+            print(
+                f"\n🍖 El hambre te debilita (-{daño} vida)."
+            )
+
+            if self.hambre >= 100:
+                self.moral -= 8
+
+                print(
+                    "\n😞 Estás completamente hambriento."
+                )
+
+                print(
+                    "🧠 Has perdido 8 de moral."
+                )
+
             input("\nPulsa ENTER para continuar...")
 
         if self.sed >= 80:
+
             daño = (self.sed - 79) // 4
 
             self.vida -= daño
 
-            print(f"\n💧 La sed te debilita (-{daño} vida).")
+            print(
+                f"\n💧 La sed te debilita (-{daño} vida)."
+            )
+
+            if self.sed >= 100:
+                self.moral -= 10
+
+                print(
+                    "\n😞 Estás completamente deshidratado."
+                )
+
+                print(
+                    "🧠 Has perdido 10 de moral."
+                )
+
             input("\nPulsa ENTER para continuar...")
 
         if self.vida < 0:
             self.vida = 0
+
+        self.limitar_estadisticas()
 
     def limitar_estadisticas(self):
 
@@ -208,7 +240,7 @@ class Jugador:
 
             print("\n⚠️ No tienes comida.")
             self.vida -= 8
-            self.moral -= 8
+            self.moral -= 10
 
         # ---------- AGUA ----------
 
