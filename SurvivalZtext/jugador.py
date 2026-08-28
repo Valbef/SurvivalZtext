@@ -181,34 +181,40 @@ class Jugador:
             f"{self.capacidad_peso()} kg"
         )
 
+        grupos = self.inventario_agrupado()
 
-        if len(self.inventario)==0:
+        if not grupos:
 
             print("- Vacío")
 
         else:
 
-            for objeto in self.inventario:
+            for nombre, objetos in grupos.items():
 
-                if objeto.es_consumible():
+                cantidad = sum(
+                    objeto.cantidad
+                    for objeto in objetos
+                )
 
-                    print(
-                        f"- {objeto.nombre} x{objeto.cantidad} : {objeto.usos_restantes} usos"
+                primero = objetos[0]
+
+                if primero.es_consumible():
+
+                    usos_totales = sum(
+                        objeto.usos_restantes
+                        for objeto in objetos
                     )
 
-                elif objeto.tiene_durabilidad():
-
                     print(
-                        f"- {objeto.nombre} ({objeto.durabilidad}/100)"
+                        f"- {nombre} x{cantidad} : "
+                        f"{usos_totales} usos"
                     )
 
                 else:
 
-                    print(f"- {objeto.nombre}")
-
-
-
-        print("==========================")
+                    print(
+                        f"- {nombre} x{cantidad}"
+                    )
 
     def consumir_diario(self):
 

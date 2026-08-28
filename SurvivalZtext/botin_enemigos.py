@@ -25,7 +25,7 @@ BOTIN_ENEMIGOS = {
     # -------------------------
 
     "Infectado": [
-        ("Tela", 20)
+        ("Tela", 30)
     ],
 
     "Infectado corredor": [
@@ -38,8 +38,8 @@ BOTIN_ENEMIGOS = {
     # -------------------------
 
     "Infectado bruto": [
-        ("Metal", 5),
-        ("Tela", 30, 1, 2)
+        ("Metal", 10),
+        ("Tela", 35, 1, 2)
     ],
 
     # -------------------------
