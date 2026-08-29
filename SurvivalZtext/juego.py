@@ -10,6 +10,7 @@ from motor_escenas import ejecutar_escena,comprobar_escena
 from efectos import write, writefast
 from copy import deepcopy
 from crafteo import menu_crafteo
+from collections import defaultdict
 import random
 
 import guardar
@@ -227,30 +228,53 @@ class Juego:
             print(nombre.upper())
             print("====================")
 
-            for i, objeto in enumerate(objetos, start=1):
+            # Agrupar objetos por nombre
+            grupos = defaultdict(list)
+
+            for objeto in objetos:
+                grupos[objeto.nombre].append(objeto)
+
+            lista_grupos = list(grupos.items())
+
+            for i, (nombre_objeto, grupo) in enumerate(
+                    lista_grupos,
+                    start=1
+            ):
+
+                primero = grupo[0]
+
+                cantidad = sum(
+                    objeto.cantidad
+                    for objeto in grupo
+                )
 
                 # =========================
                 # OBJETOS CON DURABILIDAD
                 # =========================
 
-                if objeto.tiene_durabilidad():
+                if primero.tiene_durabilidad():
 
                     print(
-                        f"{i}. {objeto.nombre} | "
-                        f"{objeto.estado()} | "
+                        f"{i}. {nombre_objeto} | "
+                        f"{primero.estado()} | "
                         f"Durabilidad: "
-                        f"{objeto.durabilidad}/100"
+                        f"{primero.durabilidad}/100"
                     )
 
                 # =========================
                 # OBJETOS CON USOS
                 # =========================
 
-                elif objeto.usos is not None:
+                elif primero.usos is not None:
+
+                    usos_totales = sum(
+                        objeto.usos_restantes
+                        for objeto in grupo
+                    )
 
                     print(
-                        f"{i}. {objeto.nombre} x{objeto.cantidad} "
-                        f": {objeto.usos_restantes} usos"
+                        f"{i}. {nombre_objeto} x{cantidad} : "
+                        f"{usos_totales} usos"
                     )
 
                 # =========================
@@ -260,7 +284,7 @@ class Juego:
                 else:
 
                     print(
-                        f"{i}. {objeto.nombre} x{objeto.cantidad}"
+                        f"{i}. {nombre_objeto} x{cantidad}"
                     )
 
             print("\n0. Volver")
@@ -272,7 +296,11 @@ class Juego:
                 if opcion == 0:
                     return
 
-                objeto = objetos[opcion - 1]
+                nombre_objeto, grupo = lista_grupos[
+                    opcion - 1
+                    ]
+
+                objeto = grupo[0]
 
                 self.menu_acciones(objeto)
 
