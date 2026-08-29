@@ -1077,19 +1077,21 @@ class Juego:
                 )
 
             # =========================
-            # GUARDAR
+            # GUARDAR / SALIR
             # =========================
 
             elif opcion == "6":
 
-                if (
-                        self.jugador.localizacion
-                        == "Refugio"
-                ):
+                if self.jugador.localizacion == "Refugio":
+
                     guardar.guardar(
                         self.jugador.nombre,
                         self.jugador.datos_guardado()
                     )
+
+                else:
+
+                    break
 
             # =========================
             # SALIR
@@ -1097,10 +1099,5 @@ class Juego:
 
             elif opcion == "7":
 
-                if (
-                        self.jugador.localizacion
-                        == "Refugio"
-                ):
+                if self.jugador.localizacion == "Refugio":
                     break
-
-
