@@ -661,6 +661,7 @@ def lista_objetos():
                 tipo="mochila",
                 peso=1,
                 descripcion="Una mochila pequeña que aumenta la capacidad de carga en 15 kg.",
+                capacidad=15,
                 apilable=False,
                 accion_principal="Equipar"
             ),
@@ -672,6 +673,7 @@ def lista_objetos():
                 tipo="mochila",
                 peso=2,
                 descripcion="Una mochila mediana que aumenta la capacidad de carga en 25 kg.",
+                capacidad=25,
                 apilable=False,
                 accion_principal="Equipar"
             ),
@@ -683,6 +685,7 @@ def lista_objetos():
                 tipo="mochila",
                 peso=3,
                 descripcion="Una mochila grande que aumenta la capacidad de carga en 35 kg.",
+                capacidad=35,
                 apilable=False,
                 accion_principal="Equipar"
             ),

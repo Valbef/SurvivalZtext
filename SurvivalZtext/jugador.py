@@ -156,8 +156,9 @@ class Jugador:
         self.hambre = max(0, min(100, self.hambre))
         self.sed = max(0, min(100, self.sed))
 
-    def estado(self):
 
+
+    def estado(self):
 
         print("\n==========================")
 
@@ -174,7 +175,9 @@ class Jugador:
         print(f"⏰ Hora {self.hora}:00")
         print(f"🌦️ Clima: {self.clima}")
         print(f" Munición: {self.municion}")
+
         print("🎒 Inventario:")
+
         print(
             f"⚖️ Peso: "
             f"{self.peso_total()} / "
@@ -198,7 +201,24 @@ class Jugador:
 
                 primero = objetos[0]
 
-                if primero.es_consumible():
+                # =========================
+                # OBJETOS CON DURABILIDAD
+                # =========================
+
+                if primero.tiene_durabilidad():
+
+                    print(
+                        f"- {nombre} "
+                        f"| {primero.estado()} "
+                        f"| Durabilidad: "
+                        f"{primero.durabilidad}/100"
+                    )
+
+                # =========================
+                # OBJETOS CON USOS
+                # =========================
+
+                elif primero.usos is not None:
 
                     usos_totales = sum(
                         objeto.usos_restantes
@@ -210,11 +230,17 @@ class Jugador:
                         f"{usos_totales} usos"
                     )
 
+                # =========================
+                # OBJETOS NORMALES
+                # =========================
+
                 else:
 
                     print(
                         f"- {nombre} x{cantidad}"
                     )
+
+
 
     def consumir_diario(self):
 
@@ -450,7 +476,7 @@ class Jugador:
     def puede_viajar(self):
         return self.peso_total() <= self.capacidad_peso()
 
-    
+
 
     def inventario_agrupado(self):
 

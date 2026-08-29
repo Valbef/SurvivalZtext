@@ -217,6 +217,8 @@ class Juego:
 
             self.jugar()
 
+
+
     def menu_objetos(self, nombre, objetos):
 
         while True:
@@ -227,25 +229,38 @@ class Juego:
 
             for i, objeto in enumerate(objetos, start=1):
 
+                # =========================
+                # OBJETOS CON DURABILIDAD
+                # =========================
+
                 if objeto.tiene_durabilidad():
 
-                    if objeto.tiene_durabilidad():
-                        print(
-                            f"{i}. {objeto.nombre} | "
-                            f"{objeto.estado()} | "
-                            f"Durabilidad: {objeto.durabilidad}/100"
-                        )
+                    print(
+                        f"{i}. {objeto.nombre} | "
+                        f"{objeto.estado()} | "
+                        f"Durabilidad: "
+                        f"{objeto.durabilidad}/100"
+                    )
 
-                elif objeto.es_consumible():
+                # =========================
+                # OBJETOS CON USOS
+                # =========================
+
+                elif objeto.usos is not None:
 
                     print(
-                        f"{i}. {objeto.nombre} ({objeto.usos_restantes} usos)"
+                        f"{i}. {objeto.nombre} x{objeto.cantidad} "
+                        f": {objeto.usos_restantes} usos"
                     )
+
+                # =========================
+                # OBJETOS NORMALES
+                # =========================
 
                 else:
 
                     print(
-                        f"{i}. {objeto.nombre}"
+                        f"{i}. {objeto.nombre} x{objeto.cantidad}"
                     )
 
             print("\n0. Volver")
@@ -267,6 +282,7 @@ class Juego:
             except (ValueError, IndexError):
 
                 print("\n❌ Opción no válida.")
+
 
 
     def menu_acciones(self, objeto):
