@@ -256,7 +256,7 @@ Los almacenes del centro comercial están intactos.
         "texto": """
 Encuentras una escuela abandonada.
 
-Algunas mochilas siguen en las aulas.
+Algunas cosas siguen en las aulas.
 """,
 
         "opciones": {
@@ -322,7 +322,7 @@ Una señal débil llega desde algún lugar.
         "opciones": {
 
             "1": {
-                "texto": "Intentar comunicarse",
+                "texto": "Cojer la Radio de la torre",
                 "destino": None,
                 "objeto": "Radio",
                 "moral": 1

@@ -26,7 +26,7 @@ EVENTOS_POR_ZONA = {
         },
 
         {
-            "texto": "\n🔥 Encuentras una hoguera abandonada y descansas.",
+            "texto": "\n🔥 Encuentras un lugar tranquilo y descansas.",
             "vida": 20,
             "moral": 15
         },
@@ -89,7 +89,7 @@ EVENTOS_POR_ZONA = {
     "Centro Ciudad": [
 
         {
-            "texto": "\n☠️ Un grupo de infectados aparece entre los coches.",
+            "texto": "\n☠️ Un grupo de infectados te sorprende entre los coches, consigues escapar con algunos daños.",
             "vida": -25,
             "moral": -15
         },
@@ -124,7 +124,7 @@ EVENTOS_POR_ZONA = {
         },
 
         {
-            "texto": "\n👮 Un policía infectado te sorprende.",
+            "texto": "\n👮 Un policía infectado te sorprende, huyes con daños.",
             "vida": -20,
             "moral": -15
         }
@@ -146,7 +146,7 @@ EVENTOS_POR_ZONA = {
         },
 
         {
-            "texto": "\n☠️ Los pasillos están llenos de infectados.",
+            "texto": "\n☠️ te atacan unos infectados antes de conseguir huir.",
             "vida": -30,
             "moral": -15
         }
@@ -191,7 +191,7 @@ EVENTOS_POR_ZONA = {
     "Escuela": [
 
         {
-            "texto": "\n🎒 Encuentras mochilas con suministros.",
+            "texto": "\n🎒 Encuentras algunos suministros.",
             "objeto": "Botella de agua",
             "moral": 2
         },
@@ -247,7 +247,7 @@ EVENTOS_POR_ZONA = {
         },
 
         {
-            "texto": "\n📡 La antena está dañada pero funciona.",
+            "texto": "\n📡 Encuentras una radio, la antena está doblada pero funciona.",
             "objeto": "Radio"
         }
 

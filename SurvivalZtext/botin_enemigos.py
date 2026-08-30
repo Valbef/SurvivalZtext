@@ -13,11 +13,13 @@ BOTIN_ENEMIGOS = {
     # -------------------------
 
     "Perro infectado": [
-        ("Piel", 80, 1, 2)
+        ("Piel", 80, 1, 2),
+        ("Carne infectada cruda", 20)
     ],
 
     "Gato infectado": [
-        ("Piel", 70)
+        ("Piel", 70),
+        ("Carne infectada cruda", 15)
     ],
 
     # -------------------------
@@ -25,12 +27,14 @@ BOTIN_ENEMIGOS = {
     # -------------------------
 
     "Infectado": [
-        ("Tela", 30)
+        ("Tela", 40),
+        ("Carne infectada cruda", 10)
     ],
 
     "Infectado corredor": [
         ("Tela", 30, 1, 2),
-        ("Metal", 5)
+        ("Metal", 5),
+        ("Carne infectada cruda", 20)
     ],
 
     # -------------------------
@@ -38,8 +42,9 @@ BOTIN_ENEMIGOS = {
     # -------------------------
 
     "Infectado bruto": [
-        ("Metal", 10),
-        ("Tela", 35, 1, 2)
+        ("Metal", 15),
+        ("Tela", 40, 1, 2),
+        ("Carne infectada cruda", 20, 1, 2)
     ],
 
     # -------------------------
@@ -50,7 +55,8 @@ BOTIN_ENEMIGOS = {
         ("Metal", 40),
         ("Tela", 30),
         ("Hierbas", 15),
-        ("Cuerda", 20)
+        ("Cuerda", 20),
+        ("Carne cruda", 20, 1, 2)
     ],
 
     # -------------------------
@@ -59,9 +65,11 @@ BOTIN_ENEMIGOS = {
 
     "Vagabundo": [
         ("Tela", 25),
-        ("Hierbas", 20),
+        ("Metal", 20),
+        ("Hierbas", 20, 1 , 2),
         ("Cuerda", 15, 1, 2),
-        ("Componentes electronicos", 30)
+        ("Componentes electronicos", 30),
+        ("Carne cruda", 20, 1, 2)
     ]
 
 }

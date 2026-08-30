@@ -118,50 +118,173 @@ def quitar_materiales(lista, materiales):
                 break
 
 
+
+
 def consumir_materiales(jugador, receta):
 
     materiales = receta["materiales"]
 
-    # Primero utilizamos los materiales del inventario
-    materiales_restantes = {}
-
     for nombre, cantidad_necesaria in materiales.items():
 
-        cantidad_inventario = obtener_cantidad(
-            jugador.inventario,
-            nombre
-        )
+        cantidad_restante = cantidad_necesaria
 
-        usado = min(
-            cantidad_inventario,
-            cantidad_necesaria
-        )
+        # =====================================
+        # 1. BUSCAR OBJETOS POR USOS
+        # =====================================
 
-        materiales_restantes[nombre] = (
-            cantidad_necesaria - usado
-        )
+        objetos_por_usos = []
 
-    quitar_materiales(
-        jugador.inventario,
-        {
-            nombre: cantidad
-            for nombre, cantidad in materiales.items()
-        }
-    )
+        for objeto in jugador.inventario:
 
-    # Lo que falte se obtiene del almacén
-    if jugador.localizacion == "Refugio":
+            if (
+                objeto.nombre == nombre
+                and objeto.usos is not None
+            ):
+                objetos_por_usos.append(objeto)
 
-        for nombre, cantidad in materiales_restantes.items():
+        # -------------------------------------
+        # CONSUMIR USOS DEL INVENTARIO
+        # -------------------------------------
 
-            if cantidad > 0:
+        for objeto in objetos_por_usos:
+
+            if cantidad_restante <= 0:
+                break
+
+            usos_disponibles = objeto.usos_restantes
+
+            consumir = min(
+                usos_disponibles,
+                cantidad_restante
+            )
+
+            objeto.usos_restantes -= consumir
+
+            cantidad_restante -= consumir
+
+            # Recalcular cantidad de objetos
+            objeto.cantidad = (
+                objeto.usos_restantes
+                + objeto.usos
+                - 1
+            ) // objeto.usos
+
+            if objeto.usos_restantes <= 0:
+
+                if objeto in jugador.inventario:
+                    jugador.inventario.remove(objeto)
+
+        # =====================================
+        # 2. BUSCAR USOS EN EL ALMACÉN
+        # =====================================
+
+        if (
+            cantidad_restante > 0
+            and jugador.localizacion == "Refugio"
+        ):
+
+            objetos_por_usos = []
+
+            for objeto in jugador.almacen:
+
+                if (
+                    objeto.nombre == nombre
+                    and objeto.usos is not None
+                ):
+                    objetos_por_usos.append(objeto)
+
+            # ---------------------------------
+            # CONSUMIR USOS DEL ALMACÉN
+            # ---------------------------------
+
+            for objeto in objetos_por_usos:
+
+                if cantidad_restante <= 0:
+                    break
+
+                usos_disponibles = objeto.usos_restantes
+
+                consumir = min(
+                    usos_disponibles,
+                    cantidad_restante
+                )
+
+                objeto.usos_restantes -= consumir
+
+                cantidad_restante -= consumir
+
+                objeto.cantidad = (
+                    objeto.usos_restantes
+                    + objeto.usos
+                    - 1
+                ) // objeto.usos
+
+                if objeto.usos_restantes <= 0:
+
+                    if objeto in jugador.almacen:
+                        jugador.almacen.remove(objeto)
+
+        # =====================================
+        # 3. MATERIALES NORMALES
+        # =====================================
+
+        if cantidad_restante > 0:
+
+            # ---------------------------------
+            # INVENTARIO
+            # ---------------------------------
+
+            cantidad_inventario = obtener_cantidad(
+                jugador.inventario,
+                nombre
+            )
+
+            quitar_inventario = min(
+                cantidad_inventario,
+                cantidad_restante
+            )
+
+            if quitar_inventario > 0:
 
                 quitar_materiales(
-                    jugador.almacen,
+                    jugador.inventario,
                     {
-                        nombre: cantidad
+                        nombre: quitar_inventario
                     }
                 )
+
+                cantidad_restante -= quitar_inventario
+
+            # ---------------------------------
+            # ALMACÉN
+            # ---------------------------------
+
+            if (
+                cantidad_restante > 0
+                and jugador.localizacion == "Refugio"
+            ):
+
+                cantidad_almacen = obtener_cantidad(
+                    jugador.almacen,
+                    nombre
+                )
+
+                quitar_almacen = min(
+                    cantidad_almacen,
+                    cantidad_restante
+                )
+
+                if quitar_almacen > 0:
+
+                    quitar_materiales(
+                        jugador.almacen,
+                        {
+                            nombre: quitar_almacen
+                        }
+                    )
+
+                    cantidad_restante -= quitar_almacen
+
 
 
 def fabricar(jugador, objetos, nombre_receta):
@@ -184,6 +307,18 @@ def fabricar(jugador, objetos, nombre_receta):
 
             return
 
+    elif receta["tipo"] == "hoguera":
+
+        if not jugador.tiene_hoguera():
+
+            print(
+                "\n❌ Necesitas una hoguera para cocinar esto."
+            )
+
+            input("\nPulsa ENTER para continuar...")
+
+            return
+
     # =========================
     # COMPROBAR MATERIALES
     # =========================
@@ -199,16 +334,54 @@ def fabricar(jugador, objetos, nombre_receta):
         return
 
     # =========================
+    # HOGUERA
+    # =========================
+
+    if nombre_receta == "Hoguera":
+
+        consumir_materiales(
+            jugador,
+            receta
+        )
+
+        jugador.encender_hoguera()
+
+        input(
+            "\nPulsa ENTER para continuar..."
+        )
+
+        return
+
+    # =========================
     # COMPROBAR QUE EXISTE
     # =========================
 
-    if nombre_receta not in objetos:
+    # La hoguera no es un objeto del inventario
+    if nombre_receta == "Hoguera":
+        # Consumir los materiales
+        consumir_materiales(
+            jugador,
+            receta
+        )
 
+        # Encender la hoguera
+        jugador.encender_hoguera()
+
+        input(
+            "\nPulsa ENTER para continuar..."
+        )
+
+        return
+
+    # Los demás objetos sí deben existir en objetos.py
+    if nombre_receta not in objetos:
         print(
             "\n❌ Este objeto todavía no existe en objetos.py"
         )
 
-        input("\nPulsa ENTER para continuar...")
+        input(
+            "\nPulsa ENTER para continuar..."
+        )
 
         return
 
@@ -220,6 +393,7 @@ def fabricar(jugador, objetos, nombre_receta):
         jugador,
         receta
     )
+
 
     # =========================
     # CREAR OBJETO

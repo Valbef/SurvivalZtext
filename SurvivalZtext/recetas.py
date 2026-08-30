@@ -63,9 +63,10 @@ RECETAS = {
 
     "Hoguera": {
         "materiales": {
-            "Madera": 3
+            "Madera": 3,
+            "Caja de cerillas": 1
         },
-        "tipo": "cualquier_lugar"
+        "tipo": "especial"
     },
 
     "Botiquín": {
@@ -81,8 +82,25 @@ RECETAS = {
             "Metal": 2
         },
         "tipo": "cualquier_lugar"
-    }
+    },
 
+    # =========================
+    # cocina
+    # =========================
+
+    "Carne cocinada": {
+        "materiales": {
+        "Carne cruda": 1
+        },
+        "tipo": "hoguera"
+    },
+
+    "Carne infectada cocinada": {
+        "materiales": {
+        "Carne infectada cruda": 1
+        },
+        "tipo": "hoguera"
+    },
 
 
 }

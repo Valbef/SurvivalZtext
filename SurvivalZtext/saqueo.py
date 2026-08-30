@@ -16,13 +16,15 @@ TABLAS_BOTIN = {
         ("Botella de agua", 5),
         ("Madera", 15),
         ("Cuerda", 10),
-        ("Tela", 10)
+        ("Tela", 10),
+        ("Caja de cerillas", 5),
     ],
 
     "Gasolinera": [
         ("Botella de agua", 20),
         ("Lata de comida", 15),
         ("Caja de cigarrillos", 10),
+        ("Caja de cerillas", 15),
         ("Herramientas", 7),
         ("Mapa", 3)
     ],
@@ -31,13 +33,15 @@ TABLAS_BOTIN = {
         ("Lata de comida", 15),
         ("Botella de agua", 15),
         ("Caja de cigarrillos", 8),
+        ("Caja de cerillas", 10),
         ("Pilas", 5)
     ],
 
     "Comisaría": [
         ("Lata de comida", 15),
-        ("Caja de munición", 20),
+        ("Caja de munición", 25),
         ("Caja de cigarrillos", 10),
+        ("Caja de cerillas", 15),
         ("Botiquín", 5)
     ],
 
@@ -57,6 +61,7 @@ TABLAS_BOTIN = {
         ("Lata de comida", 20),
         ("Botella de agua", 15),
         ("Caja de cigarrillos", 10),
+        ("Caja de cerillas", 15),
         ("Herramientas", 3),
         ("Cuerda", 10),
         ("Radio", 2)
@@ -71,6 +76,7 @@ TABLAS_BOTIN = {
         ("Lata de comida", 40),
         ("Botella de agua", 30),
         ("Cuerda", 10),
+        ("Caja de cerillas", 20),
         ("Pilas", 10)
     ],
 
@@ -82,10 +88,11 @@ TABLAS_BOTIN = {
     ],
 
     "Camping": [
-        ("Botella de agua", 15),
+        ("Botella de agua", 20),
         ("Cuerda", 10),
-        ("Lata de comida", 12),
-        ("Caja de cigarrillos", 10)
+        ("Lata de comida", 20),
+        ("Caja de cigarrillos", 10),
+        ("Caja de cerillas", 10),
     ],
 
     "Torre Radio": [

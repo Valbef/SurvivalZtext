@@ -34,6 +34,7 @@ class Jugador:
 
         self.capacidad_base = 25
         self.mochila = None
+        self.hoguera = None
 
         self.companeros=[]
 
@@ -53,6 +54,31 @@ class Jugador:
                 self.nivel
             )
 
+    def encender_hoguera(self):
+
+        self.hoguera = {
+            "localizacion": self.localizacion,
+            "tiempo_restante": 24
+        }
+
+        print(
+            "\n🔥 Has encendido una hoguera."
+        )
+
+        print(
+            "🔥 Durará 24 horas."
+        )
+
+    def tiene_hoguera(self):
+
+        if self.hoguera is None:
+            return False
+
+        if self.hoguera["localizacion"] != self.localizacion:
+            return False
+
+        return self.hoguera["tiempo_restante"] > 0
+
 
 
 
@@ -62,6 +88,22 @@ class Jugador:
 
 
         self.hora += horas
+
+        # =========================
+        # DURACIÓN DE LA HOGUERA
+        # =========================
+
+        if self.hoguera is not None:
+
+            self.hoguera["tiempo_restante"] -= horas
+
+            if self.hoguera["tiempo_restante"] <= 0:
+
+                self.hoguera = None
+
+                print(
+                    "\n🔥 La hoguera se ha apagado."
+                )
 
 
         while self.hora >= 24:
@@ -319,6 +361,8 @@ class Jugador:
             "clima":self.clima,
 
             "localizacion":self.localizacion,
+
+            "hoguera": self.hoguera,
 
             "municion": self.municion,
 

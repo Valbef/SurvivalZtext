@@ -1,4 +1,5 @@
 from objeto import Objeto
+from efectos import write, writefast
 
 
 # ===========================
@@ -24,6 +25,58 @@ def beber_agua(jugador):
     if jugador.vida > 100:
         jugador.vida = 100
 
+def comer_carne_cruda(jugador):
+
+    jugador.hambre -= 10
+    jugador.vida += 5
+    jugador.moral -= 5
+
+    write("Lo importante es sobrevivir...")
+
+    if jugador.vida > 100:
+        jugador.vida = 100
+
+def comer_carne_infectada_cruda(jugador):
+
+    jugador.hambre -= 5
+    jugador.vida -= 15
+    jugador.moral -= 15
+
+    write("¿En serio te has comido esto?..")
+    write("...")
+    write("...")
+    write("Te encuentras mal, tu salud y tu moral bajan...")
+
+    if jugador.vida > 100:
+        jugador.vida = 100
+
+def comer_carne_cocinada(jugador):
+    jugador.hambre -= 35
+    jugador.vida += 15
+    jugador.moral += 5
+
+    write("Parece que sabe mejor cocinada...")
+
+    if jugador.vida > 100:
+        jugador.vida = 100
+
+
+def comer_carne_infectada_cocinada(jugador):
+    jugador.hambre -= 15
+    jugador.vida += 2
+    jugador.moral -= 10
+
+    write("¿En que estabas pensando?")
+    write("...")
+    write("Esto sabe realmente mal...")
+    write("...")
+    write("Por lo menos no te duele el estomago.")
+
+
+    if jugador.vida > 100:
+        jugador.vida = 100
+
+
 
 def curar(jugador):
 
@@ -32,8 +85,65 @@ def curar(jugador):
     if jugador.vida > 100:
         jugador.vida = 100
 
+
 def fumar_cigarrillos(jugador):
 
+    # =====================================
+    # BUSCAR CAJA DE CERILLAS
+    # =====================================
+
+    caja_cerillas = None
+
+    for objeto in jugador.inventario:
+
+        if (
+            objeto.nombre == "Caja de cerillas"
+            and objeto.usos_restantes > 0
+        ):
+            caja_cerillas = objeto
+            break
+
+    # =====================================
+    # COMPROBAR CERILLAS
+    # =====================================
+
+    if caja_cerillas is None:
+
+        print(
+            "\n❌ No tienes cerillas para encender el cigarrillo."
+        )
+
+        input(
+            "\nPulsa ENTER para continuar..."
+        )
+
+        return False
+
+    # =====================================
+    # CONSUMIR 1 CERILLA
+    # =====================================
+
+    caja_cerillas.usos_restantes -= 1
+
+    caja_cerillas.cantidad = (
+        caja_cerillas.usos_restantes
+        + caja_cerillas.usos
+        - 1
+    ) // caja_cerillas.usos
+
+    if caja_cerillas.usos_restantes <= 0:
+
+        jugador.inventario.remove(
+            caja_cerillas
+        )
+
+        print(
+            "\n🔥 Has usado la última cerilla."
+        )
+
+    # =====================================
+    # EFECTO DEL CIGARRILLO
+    # =====================================
 
     jugador.sed += 2
     jugador.vida += 3
@@ -41,6 +151,13 @@ def fumar_cigarrillos(jugador):
 
     if jugador.vida > 100:
         jugador.vida = 100
+
+    print(
+        "\n🚬 Has fumado un cigarrillo."
+    )
+
+    return True
+
 
 def abrir_caja_municion(jugador, objeto):
 
@@ -409,6 +526,58 @@ def lista_objetos():
 
             ),
 
+        "Carne infectada cruda":
+
+            Objeto(
+                "Carne infectada cruda",
+                "comida",
+                1,
+                "Carne infectada cruda, esto huele horrible...",
+                efecto=comer_carne_infectada_cruda,
+                apilable=True,
+                cantidad=1,
+                usos=1
+            ),
+
+        "Carne cruda":
+
+            Objeto(
+                "Carne cruda",
+                "comida",
+                1,
+                "Carne cruda, mejor no saber mas...",
+                efecto=comer_carne_cruda,
+                apilable=True,
+                cantidad=1,
+                usos=1
+            ),
+
+        "Carne infectada cocinada":
+
+            Objeto(
+                "Carne infectada cocinada",
+                "comida",
+                1,
+                "Carne infectada cocinada, no tiene buena pinta...",
+                efecto=comer_carne_infectada_cocinada,
+                apilable=True,
+                cantidad=1,
+                usos=1
+            ),
+
+        "Carne cocinada":
+
+            Objeto(
+                "Carne cocinada",
+                "comida",
+                1,
+                "Carne cocinada, no estarías comiendo carne cruda, verdad?...",
+                efecto=comer_carne_cocinada,
+                apilable=True,
+                cantidad=1,
+                usos=1
+            ),
+
         "Botiquín":
 
             Objeto(
@@ -428,7 +597,7 @@ def lista_objetos():
             Objeto(
                 "Caja de cigarrillos",
                 "tabaco",
-                1,
+                0.5,
                 "Una caja de cigarillos.",
                 efecto=fumar_cigarrillos,
                 apilable=True,
@@ -553,13 +722,25 @@ def lista_objetos():
             Objeto(
                 nombre="Pilas",
                 tipo="utilidad",
-                peso=1,
+                peso=0.5,
                 descripcion="Pilas nuevas para dispositivos.",
                 apilable=True,
                 cantidad=1,
                 usos=4,
                 reparable=False,
                 accion_principal="Recargar"
+            ),
+
+        "Caja de cerillas":
+
+            Objeto(
+                nombre="Caja de cerillas",
+                tipo="utilidad",
+                peso=0.5,
+                descripcion="Una caja con 30 cerillas.",
+                apilable=True,
+                cantidad=1,
+                usos=30
             ),
 
         # -------------------------
@@ -643,12 +824,14 @@ def lista_objetos():
             Objeto(
                 nombre="Componentes electronicos",
                 tipo="material",
-                peso=1,
+                peso=0.5,
                 descripcion="Componentes electronicos de dispositivos.",
                 apilable=True,
                 cantidad=1,
                 accion_principal="Usar"
             ),
+
+
 
         # -------------------------
         # MOCHILAS
@@ -699,7 +882,7 @@ def lista_objetos():
             Objeto(
                 nombre="Radio",
                 tipo="historia",
-                peso=2,
+                peso=1.5,
                 descripcion="Una radio portátil que puede captar señales.",
                 apilable=False,
                 efecto=escuchar_radio,
@@ -714,7 +897,7 @@ def lista_objetos():
             Objeto(
                 nombre="Mapa",
                 tipo="historia",
-                peso=1,
+                peso=0.5,
                 descripcion="Un mapa de la ciudad.",
                 apilable=False,
                 durabilidad=100,
