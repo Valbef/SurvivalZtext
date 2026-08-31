@@ -583,7 +583,7 @@ def lista_objetos():
             Objeto(
                 nombre="Botiquín",
                 tipo="medicina",
-                peso=2,
+                peso=1.5,
                 descripcion="Material médico básico.",
                 efecto=curar,
                 apilable=True,
@@ -752,7 +752,7 @@ def lista_objetos():
             Objeto(
                 nombre="Tela",
                 tipo="material",
-                peso=1,
+                peso=0.75,
                 descripcion="Un trozo de tela útil para fabricar objetos.",
                 apilable=True,
                 cantidad=1,
@@ -764,7 +764,7 @@ def lista_objetos():
             Objeto(
                 nombre="Hierbas",
                 tipo="material",
-                peso=1,
+                peso=0.5,
                 descripcion="Hierbas medicinales de el campo.",
                 apilable=True,
                 cantidad=1,

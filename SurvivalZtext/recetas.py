@@ -78,7 +78,8 @@ RECETAS = {
 
     "Lanza": {
         "materiales": {
-            "Madera": 3,
+            "Madera": 2,
+            "Cuerda": 1,
             "Metal": 2
         },
         "tipo": "cualquier_lugar"

@@ -399,16 +399,53 @@ class Juego:
                 elif (opcion == 4 and opcion_reparar == 2) or \
                         (opcion == 3 and opcion_reparar is None):
 
+                    # Elegir cuántas unidades tirar
+                    if objeto.cantidad > 1:
+
+                        while True:
+                            try:
+                                cantidad_tirar = int(input(
+                                    f"\n¿Cuántas unidades quieres tirar? "
+                                    f"(1-{objeto.cantidad}): "
+                                ))
+
+                                if 1 <= cantidad_tirar <= objeto.cantidad:
+                                    break
+
+                                print(
+                                    f"Introduce un número entre 1 y {objeto.cantidad}."
+                                )
+
+                            except ValueError:
+                                print("Introduce un número válido.")
+
+                    else:
+                        cantidad_tirar = 1
+
+                    # Confirmación
                     confirmar = input(
-                        "\n¿Seguro que quieres tirarlo? (s/n): "
+                        f"\n¿Seguro que quieres tirar {cantidad_tirar} "
+                        f"unidad(es) de {objeto.nombre}? (s/n): "
                     ).lower()
 
                     if confirmar == "s":
-                        self.jugador.inventario.remove(objeto)
 
-                        print("Has tirado el objeto.")
+                        # Quitar los usos correspondientes
+                        if objeto.usos is not None:
+                            usos_a_quitar = cantidad_tirar * objeto.usos
+                            objeto.usos_restantes -= usos_a_quitar
+
+                        # Quitar las unidades
+                        objeto.cantidad -= cantidad_tirar
+
+                        # Si no quedan unidades, eliminar el objeto
+                        if objeto.cantidad <= 0:
+                            self.jugador.inventario.remove(objeto)
+
+                        print(f"Has tirado {cantidad_tirar} unidad(es).")
 
                         return
+
 
             except ValueError:
 
