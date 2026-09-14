@@ -26,6 +26,35 @@ Parece que alguien vivió aquí recientemente.
         }
     },
 
+    "bosque_superviviente": {
+
+        "texto": """
+Escuchas pasos entre los árboles.
+
+Un hombre aparece entre la vegetación.
+Parece un superviviente, pero algo no encaja.
+
+De repente, saca un arma y te apunta con ella.
+""",
+
+        "opciones": {
+
+            "1": {
+                "texto": "Enfrentarte a él",
+                "destino": None,
+                "combate": "saqueador"
+            },
+
+            "2": {
+                "texto": "Intentar huir",
+                "destino": None,
+                "vida": -10,
+                "moral": -5
+            }
+        }
+    },
+
+
 
     "casa_abandonada": {
 
@@ -91,8 +120,7 @@ Encuentras herramientas y agua.
             "1": {
                 "texto": "Registrar almacén",
                 "destino": None,
-                "objeto": "Herramientas",
-                "objeto": "Botella de agua",
+                "objeto": ["Herramientas","Botella de agua"],
                 "moral": 3
             },
 
@@ -237,8 +265,7 @@ Los almacenes del centro comercial están intactos.
             "1": {
                 "texto": "Buscar suministros",
                 "destino": None,
-                "objeto": "Lata de comida",
-                "objeto": "Botella de agua",
+                "objeto": ["Lata de comida", "Botella de agua"],
                 "moral": 2
             },
 

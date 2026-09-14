@@ -62,15 +62,14 @@ def ejecutar_escena(jugador, nombre_escena, objetos):
 
             resultado = escena["opciones"][eleccion]
 
-
             aplicar_efectos(
                 jugador,
                 resultado,
                 objetos
             )
 
-
             return resultado.get("destino")
+
 
 
         else:
@@ -81,8 +80,9 @@ def ejecutar_escena(jugador, nombre_escena, objetos):
 
 def aplicar_efectos(jugador, opcion, objetos):
 
-
+    # =========================
     # VIDA
+    # =========================
 
     if "vida" in opcion:
 
@@ -90,11 +90,12 @@ def aplicar_efectos(jugador, opcion, objetos):
 
         jugador.vida = max(
             0,
-            min(jugador.vida,100)
+            min(jugador.vida, 100)
         )
 
-
+    # =========================
     # MORAL
+    # =========================
 
     if "moral" in opcion:
 
@@ -102,63 +103,75 @@ def aplicar_efectos(jugador, opcion, objetos):
 
         jugador.moral = max(
             0,
-            min(jugador.moral,100)
+            min(jugador.moral, 100)
         )
 
-
-    # MUNICIÓN SUELTA
+    # =========================
+    # MUNICIÓN
+    # =========================
 
     if "municion" in opcion:
 
         jugador.municion += opcion["municion"]
 
         print(
-            f"\n🔫 Has conseguido {opcion['municion']} balas."
+            f"\n🔫 Has conseguido "
+            f"{opcion['municion']} balas."
         )
 
-
+    # =========================
     # OBJETOS
+    # =========================
 
     if "objeto" in opcion:
 
-        nombre = opcion["objeto"]
+        objetos_encontrados = opcion["objeto"]
 
+        # Si es un solo objeto, lo convertimos en lista
+        if isinstance(objetos_encontrados, str):
+            objetos_encontrados = [objetos_encontrados]
 
-        if nombre in objetos:
+        for nombre in objetos_encontrados:
 
+            if nombre not in objetos:
+                print(
+                    f"\n❌ El objeto '{nombre}' no existe."
+                )
+                continue
 
             nuevo = deepcopy(
                 objetos[nombre]
             )
 
+            # =========================
+            # OBJETOS APILABLES
+            # =========================
 
-            # Objetos apilables
+            if nuevo.apilable:
 
-            if nombre in (
-                "Botella de agua",
-                "Lata de comida",
-                "Herramientas",
-                "Pilas"
-            ):
-
+                encontrado = False
 
                 for objeto in jugador.inventario:
-
 
                     if objeto.nombre == nombre:
 
                         objeto.cantidad += nuevo.cantidad
 
-                        objeto.usos_restantes += nuevo.usos
+                        if objeto.usos is not None:
+
+                            objeto.usos_restantes += (
+                                nuevo.usos_restantes
+                            )
 
                         print(
-                            f"\n🎒 Has encontrado otro {nombre}."
+                            f"\n🎒 Has conseguido otro "
+                            f"{nombre}."
                         )
 
+                        encontrado = True
                         break
 
-
-                else:
+                if not encontrado:
 
                     jugador.inventario.append(
                         nuevo
@@ -168,6 +181,9 @@ def aplicar_efectos(jugador, opcion, objetos):
                         f"\n🎒 Has conseguido: {nombre}"
                     )
 
+            # =========================
+            # OBJETOS NO APILABLES
+            # =========================
 
             else:
 
@@ -178,4 +194,45 @@ def aplicar_efectos(jugador, opcion, objetos):
                 print(
                     f"\n🎒 Has conseguido: {nombre}"
                 )
+
+
+    # =========================
+    # COMBATE
+    # =========================
+
+    if "combate" in opcion:
+
+        from enemigos import crear_enemigos
+        from combate import iniciar_combate
+
+        enemigos = crear_enemigos()
+
+        nombre_enemigo = opcion["combate"]
+
+        if nombre_enemigo in enemigos:
+
+            enemigo = deepcopy(
+                enemigos[nombre_enemigo]
+            )
+
+            iniciar_combate(
+                jugador,
+                enemigo,
+                objetos
+            )
+
+        else:
+
+            print(
+                f"\n❌ Enemigo no encontrado: "
+                f"{nombre_enemigo}"
+            )
+
+
+    # =========================
+    # ESTADÍSTICAS
+    # =========================
+
     jugador.limitar_estadisticas()
+
+    return opcion.get("destino")

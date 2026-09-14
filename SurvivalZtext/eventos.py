@@ -8,7 +8,7 @@ EVENTOS_POR_ZONA = {
     "Bosque": [
 
         {
-            "texto": "\n📦 Encuentras una mochila entre los árboles.",
+            "texto": "\n📦 Encuentras una lata entre los árboles.",
             "objeto": "Lata de comida",
             "moral": 2
         },

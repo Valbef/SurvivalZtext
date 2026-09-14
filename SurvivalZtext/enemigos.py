@@ -32,7 +32,8 @@ def crear_enemigos():
             10,
             2,
             20,
-            probabilidad=35
+            probabilidad=35,
+            zonas=None
         ),
 
         "perro": Enemigo(
@@ -41,7 +42,19 @@ def crear_enemigos():
             6,
             2,
             10,
-            probabilidad=40
+            probabilidad=40,
+            zonas=None
+        ),
+
+        "lobo": Enemigo(
+            "Lobo infectado",
+            25,
+            7,
+            2,
+            12,
+            probabilidad=40,
+            zonas=["Bosque",
+                   "Camping"]
         ),
 
         "gato": Enemigo(
@@ -50,7 +63,8 @@ def crear_enemigos():
             5,
             2,
             10,
-            probabilidad=40
+            probabilidad=40,
+            zonas=None
         ),
 
 
@@ -61,7 +75,8 @@ def crear_enemigos():
             15,
             3,
             35,
-            probabilidad=20
+            probabilidad=20,
+            zonas=None
         ),
 
 
@@ -72,7 +87,8 @@ def crear_enemigos():
             20,
             6,
             100,
-            probabilidad=5
+            probabilidad=5,
+            zonas=None
         ),
 
 
@@ -83,7 +99,12 @@ def crear_enemigos():
             20,
             5,
             75,
-            probabilidad=10
+            probabilidad=10,
+            zonas=["Centro Ciudad",
+                   "Comisaria",
+                   "Supermercado",
+                   "Gasolinera",
+                   "Camping"]
         ),
 
         "vagabundo": Enemigo(
@@ -92,7 +113,12 @@ def crear_enemigos():
             10,
             1,
             25,
-            probabilidad=10
+            probabilidad=10,
+            zonas=["Centro Ciudad",
+                   "Comisaria",
+                   "Supermercado",
+                   "Gasolinera",
+                   "Camping"]
         )
 
     }

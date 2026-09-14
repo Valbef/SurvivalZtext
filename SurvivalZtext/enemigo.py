@@ -11,7 +11,8 @@ class Enemigo:
             daño,
             defensa,
             experiencia,
-            probabilidad=10
+            probabilidad=10,
+            zonas=None
     ):
 
         self.nombre = nombre
@@ -20,8 +21,7 @@ class Enemigo:
         self.defensa = defensa
         self.experiencia = experiencia
         self.probabilidad = probabilidad
-
-
+        self.zonas = zonas
 
     def atacar(self):
 
