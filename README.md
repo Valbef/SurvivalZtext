@@ -19,11 +19,16 @@ descargar:
 
 Abrir:
 
-cd SurvivalZtext
-
-cd SurvivalZtext
+cd SurvivalZtext/SurvivalZtext
 
 python3 main.py
+
+
+-Actualizar:
+
+cd SurvivalZtext/SurvivalZtext
+
+git pull
 
 ---Instalacion en Windows:
 
