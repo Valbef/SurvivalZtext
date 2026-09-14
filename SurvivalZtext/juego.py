@@ -1,6 +1,6 @@
 from jugador import Jugador
 from mapa import Mapa
-from objetos import lista_objetos
+from objetos import lista_objetos, reparar_objeto
 from enemigos import crear_enemigos
 from enemigos import enemigo_aleatorio
 from combate import iniciar_combate
@@ -311,7 +311,136 @@ class Juego:
 
                 print("\n❌ Opción no válida.")
 
+    def menu_reparar(self):
 
+        while True:
+
+            print("\n====================")
+            print("   REPARAR OBJETO")
+            print("====================")
+
+            objetos_reparables = []
+
+            for objeto in self.jugador.inventario:
+
+                if (
+                        objeto.reparable
+                        and objeto.durabilidad is not None
+                        and objeto.durabilidad < 100
+                ):
+                    objetos_reparables.append(objeto)
+
+            # =========================
+            # NO HAY NADA QUE REPARAR
+            # =========================
+
+            if not objetos_reparables:
+                print(
+                    "\n❌ No tienes objetos que necesiten reparación."
+                )
+
+                input("\nPulsa ENTER para continuar...")
+
+                return
+
+            # =========================
+            # BUSCAR RECURSOS
+            # =========================
+
+            kit = None
+            herramientas = None
+
+            for objeto in self.jugador.inventario:
+
+                if (
+                        objeto.nombre == "Kit de reparación"
+                        and objeto.usos_restantes is not None
+                        and objeto.usos_restantes > 0
+                ):
+                    kit = objeto
+
+                elif (
+                        objeto.nombre == "Herramientas"
+                        and objeto.usos_restantes is not None
+                        and objeto.usos_restantes > 0
+                ):
+                    herramientas = objeto
+
+            # =========================
+            # NO HAY RECURSOS
+            # =========================
+
+            if kit is None and herramientas is None:
+                print(
+                    "\n❌ No tienes Kits de reparación "
+                    "ni Herramientas."
+                )
+
+                input("\nPulsa ENTER para continuar...")
+
+                return
+
+            # =========================
+            # MOSTRAR RECURSOS
+            # =========================
+
+            print()
+
+            if kit is not None:
+                print(
+                    f"🧰 Kits de reparación: "
+                    f"{kit.cantidad}"
+                )
+
+            if herramientas is not None:
+                print(
+                    f"🔧 Herramientas: "
+                    f"{herramientas.usos_restantes} usos"
+                )
+
+            print()
+
+            # =========================
+            # MOSTRAR OBJETOS
+            # =========================
+
+            for i, objeto in enumerate(
+                    objetos_reparables,
+                    start=1
+            ):
+                print(
+                    f"{i}. {objeto.nombre} | "
+                    f"{objeto.estado()} | "
+                    f"{objeto.durabilidad}/100"
+                )
+
+            print("\n0. Volver")
+
+            try:
+
+                opcion = int(input("\n> "))
+
+                if opcion == 0:
+                    return
+
+                objeto = objetos_reparables[opcion - 1]
+
+                # =========================
+                # REPARAR
+                # =========================
+
+                reparar_objeto(
+                    self.jugador,
+                    objeto
+                )
+
+                input("\nPulsa ENTER para continuar...")
+
+                return
+
+            except (ValueError, IndexError):
+
+                print("\n❌ Opción no válida.")
 
     def menu_acciones(self, objeto):
 
@@ -354,8 +483,13 @@ class Juego:
                 if opcion == 0:
                     return
 
+
                 # Acción principal
                 if opcion == 1:
+
+                    # =========================
+                    # CAJA DE MUNICIÓN
+                    # =========================
 
                     if objeto.tipo == "municion":
 
@@ -363,6 +497,20 @@ class Juego:
 
                         if abrir_caja_municion(self.jugador, objeto):
                             return
+
+                    # =========================
+                    # HERRAMIENTAS
+                    # =========================
+
+                    elif objeto.nombre in ("Herramientas", "Kit de reparacion"):
+
+                        self.menu_reparar()
+
+                        return
+
+                    # =========================
+                    # OBJETOS CON EFECTO
+                    # =========================
 
                     elif objeto.efecto:
 
@@ -375,12 +523,16 @@ class Juego:
 
                         return
 
+                    # =========================
+                    # OBJETO SIN ACCIÓN
+                    # =========================
 
                     else:
 
                         print(
                             f"\nNo puedes usar {objeto.nombre} ahora."
                         )
+
 
                 # Reparar
                 elif opcion_reparar == 2 and opcion == 2:
@@ -993,6 +1145,10 @@ class Juego:
                 ):
 
                     primero = objetos[0]
+                    cantidad_total = sum(
+                        obj.cantidad
+                        for obj in objetos
+                    )
 
                     # =========================
                     # OBJETOS CON USOS
@@ -1010,7 +1166,7 @@ class Juego:
 
                         print(
                             f"{i}. {nombre} "
-                            f"x{len(objetos)} : "
+                            f"x{cantidad_total} : "
                             f"{usos_totales} usos"
                         )
 
@@ -1022,7 +1178,7 @@ class Juego:
 
                         print(
                             f"{i}. {nombre} "
-                            f"x{len(objetos)}"
+                            f"x{cantidad_total}"
                         )
 
                     # =========================
@@ -1035,7 +1191,7 @@ class Juego:
 
                         print(
                             f"{i}. {nombre} "
-                            f"x{len(objetos)}"
+                            f"x{cantidad_total}"
                         )
 
                     # =========================
@@ -1046,7 +1202,7 @@ class Juego:
 
                         print(
                             f"{i}. {nombre} "
-                            f"x{len(objetos)}"
+                            f"x{cantidad_total}"
                         )
 
                 print("\n0. Volver")

@@ -192,27 +192,30 @@ def reparar_objeto(jugador, objeto):
 
     import random
 
-    herramientas = None
     kit = None
+    herramientas = None
+
+    # =========================
+    # BUSCAR RECURSOS
+    # =========================
 
     for obj in jugador.inventario:
 
-        if obj.nombre == "Herramientas":
-            herramientas = obj
-            break
-
-        elif obj.nombre == "Kit de reparación":
+        # El KIT tiene prioridad
+        if (
+            obj.nombre == "Kit de reparación"
+            and obj.usos_restantes is not None
+            and obj.usos_restantes > 0
+        ):
             kit = obj
 
-    # =========================
-    # COMPROBAR RECURSO
-    # =========================
-
-    if herramientas is None and kit is None:
-
-        print("\n❌ No tienes herramientas para reparar.")
-
-        return
+        # Herramientas como segunda opción
+        elif (
+            obj.nombre == "Herramientas"
+            and obj.usos_restantes is not None
+            and obj.usos_restantes > 0
+        ):
+            herramientas = obj
 
     # =========================
     # COMPROBAR OBJETO
@@ -222,48 +225,43 @@ def reparar_objeto(jugador, objeto):
 
         print("\n❌ Este objeto no se puede reparar.")
 
-        return
+        return False
 
     if objeto.durabilidad >= 100:
 
         print("\n🔧 El objeto ya está en perfecto estado.")
 
-        return
+        return False
 
     # =========================
-    # CAJA DE HERRAMIENTAS
+    # COMPROBAR RECURSOS
     # =========================
 
-    if herramientas is not None:
-
-        reparacion = random.randint(10, 30)
-
-        herramientas.usar(jugador)
+    if kit is None and herramientas is None:
 
         print(
-            f"\n🔧 Has reparado {objeto.nombre} "
-            f"+{reparacion} durabilidad."
+            "\n❌ No tienes Kits de reparación "
+            "ni Herramientas."
         )
 
-        if herramientas.usos_restantes <= 0:
-
-            jugador.inventario.remove(herramientas)
-
-            print(
-                "\n🔧 La caja de herramientas se ha agotado."
-            )
+        return False
 
     # =========================
-    # KIT DE REPARACIÓN
+    # REPARAR CON KIT
     # =========================
 
-    else:
+    if kit is not None:
 
         reparacion = random.randint(5, 15)
 
-        kit.cantidad -= 1
+        objeto.durabilidad += reparacion
 
+        if objeto.durabilidad > 100:
+            objeto.durabilidad = 100
+
+        # Consumir 1 Kit
         kit.usos_restantes -= 1
+        kit.cantidad -= 1
 
         print(
             f"\n🧰 Has usado un Kit de reparación."
@@ -274,7 +272,14 @@ def reparar_objeto(jugador, objeto):
             f"+{reparacion} durabilidad."
         )
 
-        if kit.cantidad <= 0:
+        # =========================
+        # KIT AGOTADO
+        # =========================
+
+        if (
+            kit.usos_restantes <= 0
+            or kit.cantidad <= 0
+        ):
 
             jugador.inventario.remove(kit)
 
@@ -282,31 +287,59 @@ def reparar_objeto(jugador, objeto):
                 "\n🧰 Te has quedado sin Kits de reparación."
             )
 
+        else:
+
+            print(
+                f"🧰 Kits restantes: {kit.cantidad}"
+            )
+
+        return True
+
     # =========================
-    # APLICAR REPARACIÓN
+    # REPARAR CON HERRAMIENTAS
     # =========================
+
+    reparacion = random.randint(10, 30)
 
     objeto.durabilidad += reparacion
 
     if objeto.durabilidad > 100:
-
         objeto.durabilidad = 100
 
-def reparar_con_kit(jugador, objeto):
+    # Consumir 1 uso
+    herramientas.usos_restantes -= 1
 
-    import random
-
-    reparacion = random.randint(5, 15)
-
-    objeto.durabilidad += reparacion
-
-    if objeto.durabilidad > 100:
-        objeto.durabilidad = 100
+    herramientas.cantidad = (
+        herramientas.usos_restantes
+        + herramientas.usos
+        - 1
+    ) // herramientas.usos
 
     print(
         f"\n🔧 Has reparado {objeto.nombre} "
         f"+{reparacion} durabilidad."
     )
+
+    print(
+        f"🔧 Herramientas: "
+        f"{herramientas.usos_restantes} usos restantes."
+    )
+
+    # =========================
+    # HERRAMIENTAS AGOTADAS
+    # =========================
+
+    if herramientas.usos_restantes <= 0:
+
+        jugador.inventario.remove(herramientas)
+
+        print(
+            "\n🔧 Tus Herramientas se han agotado."
+        )
+
+    return True
+
+
 
 def escuchar_radio(jugador):
 
