@@ -218,8 +218,6 @@ class Juego:
 
             self.jugar()
 
-
-
     def menu_objetos(self, nombre, objetos):
 
         while True:
@@ -228,63 +226,35 @@ class Juego:
             print(nombre.upper())
             print("====================")
 
-            # Agrupar objetos por nombre
-            grupos = defaultdict(list)
+            # =====================================
+            # MOSTRAR OBJETOS INDIVIDUALES
+            # =====================================
 
-            for objeto in objetos:
-                grupos[objeto.nombre].append(objeto)
+            for i, objeto in enumerate(objetos, start=1):
 
-            lista_grupos = list(grupos.items())
-
-            for i, (nombre_objeto, grupo) in enumerate(
-                    lista_grupos,
-                    start=1
-            ):
-
-                primero = grupo[0]
-
-                cantidad = sum(
-                    objeto.cantidad
-                    for objeto in grupo
-                )
-
-                # =========================
-                # OBJETOS CON DURABILIDAD
-                # =========================
-
-                if primero.tiene_durabilidad():
+                # Objetos con durabilidad
+                if objeto.tiene_durabilidad():
 
                     print(
-                        f"{i}. {nombre_objeto} | "
-                        f"{primero.estado()} | "
+                        f"{i}. {objeto.nombre} | "
+                        f"{objeto.estado()} | "
                         f"Durabilidad: "
-                        f"{primero.durabilidad}/100"
+                        f"{objeto.durabilidad}/100"
                     )
 
-                # =========================
-                # OBJETOS CON USOS
-                # =========================
-
-                elif primero.usos is not None:
-
-                    usos_totales = sum(
-                        objeto.usos_restantes
-                        for objeto in grupo
-                    )
+                # Objetos con usos
+                elif objeto.usos is not None:
 
                     print(
-                        f"{i}. {nombre_objeto} x{cantidad} : "
-                        f"{usos_totales} usos"
+                        f"{i}. {objeto.nombre} : "
+                        f"{objeto.usos_restantes} usos"
                     )
 
-                # =========================
-                # OBJETOS NORMALES
-                # =========================
-
+                # Objetos normales
                 else:
 
                     print(
-                        f"{i}. {nombre_objeto} x{cantidad}"
+                        f"{i}. {objeto.nombre}"
                     )
 
             print("\n0. Volver")
@@ -296,15 +266,29 @@ class Juego:
                 if opcion == 0:
                     return
 
-                nombre_objeto, grupo = lista_grupos[
-                    opcion - 1
-                    ]
+                # Seleccionar objeto INDIVIDUAL
+                objeto = objetos[opcion - 1]
 
-                objeto = grupo[0]
+                self.menu_acciones(
+                    objeto,
+                    objeto.usos_restantes
+                    if objeto.usos is not None
+                    else None,
+                    objetos
+                )
 
-                self.menu_acciones(objeto)
+                # =====================================
+                # ACTUALIZAR LA LISTA
+                # =====================================
 
-                if objeto not in self.jugador.inventario:
+                objetos = [
+                    obj
+                    for obj in objetos
+                    if obj in self.jugador.inventario
+                ]
+
+                # Si ya no quedan objetos de este tipo
+                if not objetos:
                     return
 
             except (ValueError, IndexError):
@@ -442,7 +426,7 @@ class Juego:
 
                 print("\n❌ Opción no válida.")
 
-    def menu_acciones(self, objeto):
+    def menu_acciones(self, objeto, usos_totales=None, grupo=None):
 
         while True:
 
@@ -450,27 +434,52 @@ class Juego:
             print(objeto.nombre.upper())
             print("====================")
 
+            # =========================
+            # DURABILIDAD
+            # =========================
+
             if objeto.tiene_durabilidad():
                 print(
                     f"Durabilidad: {objeto.durabilidad}/100"
                 )
 
+            # =========================
+            # USOS
+            # =========================
+
             if objeto.es_consumible():
-                print(
-                    f"Usos restantes: {objeto.usos_restantes}"
-                )
+
+                if usos_totales is not None:
+
+                    print(
+                        f"Usos restantes: {usos_totales}"
+                    )
+
+                else:
+
+                    print(
+                        f"Usos restantes: "
+                        f"{objeto.usos_restantes}"
+                    )
 
             print()
             print(f"1. {objeto.accion_principal}")
 
             opcion_reparar = None
 
-            if objeto.reparable and objeto.durabilidad is not None:
+            if (
+                    objeto.reparable
+                    and objeto.durabilidad is not None
+            ):
+
                 opcion_reparar = 2
+
                 print("2. Reparar")
                 print("3. Examinar")
                 print("4. Tirar")
+
             else:
+
                 print("2. Examinar")
                 print("3. Tirar")
 
@@ -483,8 +492,10 @@ class Juego:
                 if opcion == 0:
                     return
 
+                # ==================================================
+                # ACCIÓN PRINCIPAL
+                # ==================================================
 
-                # Acción principal
                 if opcion == 1:
 
                     # =========================
@@ -495,14 +506,20 @@ class Juego:
 
                         from objetos import abrir_caja_municion
 
-                        if abrir_caja_municion(self.jugador, objeto):
+                        if abrir_caja_municion(
+                                self.jugador,
+                                objeto
+                        ):
                             return
 
                     # =========================
                     # HERRAMIENTAS
                     # =========================
 
-                    elif objeto.nombre in ("Herramientas", "Kit de reparacion"):
+                    elif objeto.nombre in (
+                            "Herramientas",
+                            "Kit de reparación"
+                    ):
 
                         self.menu_reparar()
 
@@ -519,89 +536,225 @@ class Juego:
                         )
 
                         if resultado and objeto.es_consumible():
-                            self.jugador.inventario.remove(objeto)
+
+                            # =========================================
+                            # GASTAR 1 USO DE ESTA UNIDAD
+                            # =========================================
+
+                            objeto.usos_restantes -= 1
+
+                            # =========================================
+                            # SI SE AGOTÓ ESTA UNIDAD
+                            # =========================================
+
+                            if objeto.usos_restantes <= 0:
+
+                                print(
+                                    f"\n🔴 {objeto.nombre} se ha agotado."
+                                )
+
+                                # El objeto representa una unidad,
+                                # así que simplemente lo eliminamos.
+                                if objeto in self.jugador.inventario:
+                                    self.jugador.inventario.remove(
+                                        objeto
+                                    )
 
                         return
 
+
                     # =========================
-                    # OBJETO SIN ACCIÓN
+                    # SIN ACCIÓN
                     # =========================
 
                     else:
 
                         print(
-                            f"\nNo puedes usar {objeto.nombre} ahora."
+                            f"\nNo puedes usar "
+                            f"{objeto.nombre} ahora."
                         )
 
+                # ==================================================
+                # REPARAR
+                # ==================================================
 
-                # Reparar
-                elif opcion_reparar == 2 and opcion == 2:
+                elif (
+                        opcion_reparar == 2
+                        and opcion == 2
+                ):
 
                     from objetos import reparar_objeto
 
-                    reparar_objeto(self.jugador, objeto)
+                    reparar_objeto(
+                        self.jugador,
+                        objeto
+                    )
 
-                # Examinar
-                elif (opcion == 3 and opcion_reparar == 2) or \
-                        (opcion == 2 and opcion_reparar is None):
+                # ==================================================
+                # EXAMINAR
+                # ==================================================
 
-                    print("\n" + objeto.descripcion)
+                elif (
+                        (opcion == 3 and opcion_reparar == 2)
+                        or
+                        (opcion == 2 and opcion_reparar is None)
+                ):
 
-                # Tirar
-                elif (opcion == 4 and opcion_reparar == 2) or \
-                        (opcion == 3 and opcion_reparar is None):
+                    print(
+                        "\n" + objeto.descripcion
+                    )
 
-                    # Elegir cuántas unidades tirar
-                    if objeto.cantidad > 1:
+                # ==================================================
+                # TIRAR
+                # ==================================================
 
-                        while True:
-                            try:
-                                cantidad_tirar = int(input(
-                                    f"\n¿Cuántas unidades quieres tirar? "
-                                    f"(1-{objeto.cantidad}): "
-                                ))
+                elif (
+                        (opcion == 4 and opcion_reparar == 2)
+                        or
+                        (opcion == 3 and opcion_reparar is None)
+                ):
 
-                                if 1 <= cantidad_tirar <= objeto.cantidad:
-                                    break
+                    # =============================================
+                    # OBJETOS CON USOS
+                    # =============================================
+
+                    if objeto.usos is not None:
+
+                        # Cada objeto seleccionado representa
+                        # UNA unidad individual.
+                        #
+                        # Ejemplo:
+                        #
+                        # Botella A -> 3 usos
+                        # Botella B -> 2 usos
+                        #
+                        # Si seleccionas la Botella A y la tiras,
+                        # SOLO se elimina la Botella A.
+
+                        confirmar = input(
+                            f"\n¿Seguro que quieres tirar "
+                            f"1 unidad(es) de {objeto.nombre} "
+                            f"({objeto.usos_restantes} usos)? (s/n): "
+                        ).lower()
+
+                        if confirmar == "s":
+
+                            if objeto in self.jugador.inventario:
+                                self.jugador.inventario.remove(objeto)
 
                                 print(
-                                    f"Introduce un número entre 1 y {objeto.cantidad}."
+                                    f"Has tirado 1 unidad(es) "
+                                    f"de {objeto.nombre}."
                                 )
 
-                            except ValueError:
-                                print("Introduce un número válido.")
+                            return
+
+                        # Si responde "n", vuelve al menú
+                        continue
+
+                    # =============================================
+                    # OBJETOS SIN USOS
+                    # =============================================
 
                     else:
-                        cantidad_tirar = 1
 
-                    # Confirmación
-                    confirmar = input(
-                        f"\n¿Seguro que quieres tirar {cantidad_tirar} "
-                        f"unidad(es) de {objeto.nombre}? (s/n): "
-                    ).lower()
+                        # Buscar todas las unidades del mismo objeto
+                        objetos_iguales = [
+                            obj
+                            for obj in self.jugador.inventario
+                            if obj.nombre == objeto.nombre
+                        ]
 
-                    if confirmar == "s":
+                        cantidad_total = sum(
+                            obj.cantidad
+                            for obj in objetos_iguales
+                        )
 
-                        # Quitar los usos correspondientes
-                        if objeto.usos is not None:
-                            usos_a_quitar = cantidad_tirar * objeto.usos
-                            objeto.usos_restantes -= usos_a_quitar
+                        # =============================================
+                        # ELEGIR CANTIDAD
+                        # =============================================
 
-                        # Quitar las unidades
-                        objeto.cantidad -= cantidad_tirar
+                        if cantidad_total > 1:
 
-                        # Si no quedan unidades, eliminar el objeto
-                        if objeto.cantidad <= 0:
-                            self.jugador.inventario.remove(objeto)
+                            while True:
 
-                        print(f"Has tirado {cantidad_tirar} unidad(es).")
+                                try:
+
+                                    cantidad_tirar = int(
+                                        input(
+                                            f"\n¿Cuántas unidades quieres "
+                                            f"tirar? (1-{cantidad_total}): "
+                                        )
+                                    )
+
+                                    if 1 <= cantidad_tirar <= cantidad_total:
+                                        break
+
+                                    print(
+                                        f"Introduce un número entre "
+                                        f"1 y {cantidad_total}."
+                                    )
+
+                                except ValueError:
+
+                                    print(
+                                        "Introduce un número válido."
+                                    )
+
+                        else:
+
+                            cantidad_tirar = 1
+
+                        # =============================================
+                        # CONFIRMAR
+                        # =============================================
+
+                        confirmar = input(
+                            f"\n¿Seguro que quieres tirar "
+                            f"{cantidad_tirar} unidad(es) de "
+                            f"{objeto.nombre}? (s/n): "
+                        ).lower()
+
+                        if confirmar != "s":
+                            continue
+
+                        # =============================================
+                        # ELIMINAR UNIDADES
+                        # =============================================
+
+                        restante = cantidad_tirar
+
+                        for obj in objetos_iguales:
+
+                            if restante <= 0:
+                                break
+
+                            quitar = min(
+                                obj.cantidad,
+                                restante
+                            )
+
+                            obj.cantidad -= quitar
+
+                            restante -= quitar
+
+                            if obj.cantidad <= 0:
+                                self.jugador.inventario.remove(obj)
+
+                        print(
+                            f"Has tirado "
+                            f"{cantidad_tirar} unidad(es) "
+                            f"de {objeto.nombre}."
+                        )
 
                         return
 
 
             except ValueError:
 
-                pass
+                print(
+                    "\n❌ Introduce una opción válida."
+                )
 
     def menu_almacen(self):
 

@@ -36,6 +36,11 @@ BOTIN_ENEMIGOS = {
         ("Carne infectada cruda", 10)
     ],
 
+    "Infectado tambaleante": [
+        ("Tela", 30),
+        ("Carne infectada cruda", 10)
+    ],
+
     "Infectado corredor": [
         ("Tela", 30, 1, 2),
         ("Metal", 5),
@@ -49,6 +54,12 @@ BOTIN_ENEMIGOS = {
     "Infectado bruto": [
         ("Metal", 15),
         ("Tela", 40, 1, 2),
+        ("Carne infectada cruda", 20, 1, 2)
+    ],
+
+    "Experimento fallido": [
+        ("Metal", 20),
+        ("Componentes electronicos", 40, 1, 2),
         ("Carne infectada cruda", 20, 1, 2)
     ],
 

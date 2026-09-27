@@ -187,6 +187,8 @@ def iniciar_combate(jugador, enemigo, objetos):
 
     jugador.experiencia += enemigo.experiencia
 
+    jugador.comprobar_nivel()
+
     obtener_botin(
         jugador,
         enemigo,

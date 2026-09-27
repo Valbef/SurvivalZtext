@@ -1,5 +1,5 @@
 from collections import defaultdict
-from objeto import Objeto
+from efectos import write, writefast
 from objetos import lista_objetos
 from copy import deepcopy
 
@@ -21,12 +21,15 @@ class Jugador:
         self.nombre = nombre
         self.nivel = 1
         self.experiencia = 0
+        self.experiencia_siguiente = 150
         self.municion = 6
         self.defendiendo = False
-        self.vida = 100
+        self.vida_maxima = 100
+        self.vida = self.vida_maxima
         self.hambre = 0
         self.sed = 0
-        self.moral = 100
+        self.moral_maxima = 100
+        self.moral = self.moral_maxima
 
         self.dia = 1
         self.hora = 8
@@ -43,18 +46,28 @@ class Jugador:
 
     def comprobar_nivel(self):
 
-        necesario = self.nivel * 100
+        while self.experiencia >= self.experiencia_siguiente:
+            self.experiencia -= self.experiencia_siguiente
 
-        if self.experiencia >= necesario:
             self.nivel += 1
 
-            self.experiencia = 0
+            self.experiencia_siguiente = int(
+                self.experiencia_siguiente * 1.5
+            )
 
-            self.vida += 20
+            self.vida_maxima += 10
+            self.vida = self.vida_maxima
 
-            print(
-                "\n🎉 Has subido al nivel",
-                self.nivel
+            self.moral += 5
+
+            write(
+                f"\n🎉 Has subido al nivel {self.nivel}"
+            )
+            writefast(
+                "❤️ Tu vida máxima ha aumentado +10"
+            )
+            writefast(
+                "😊 Tu moral ha aumentado +5"
             )
 
     def encender_hoguera(self):
@@ -196,8 +209,9 @@ class Jugador:
 
     def limitar_estadisticas(self):
 
-        self.vida = max(0, min(100, self.vida))
-        self.moral = max(0, min(100, self.moral))
+        self.vida = max(0, min(self.vida_maxima, self.vida))
+        self.moral = max(0, min(self.moral_maxima, self.moral))
+        self.moral = max(0, min(self.moral_maxima, self.moral))
         self.hambre = max(0, min(100, self.hambre))
         self.sed = max(0, min(100, self.sed))
 
@@ -211,10 +225,14 @@ class Jugador:
 
         print("==========================")
 
-        print(f"❤️ Vida     [{barra(self.vida)}] {self.vida}/100")
+        print(
+            f"❤️ Vida     [{barra(self.vida, self.vida_maxima)}] "
+            f"{self.vida}/{self.vida_maxima}")
         print(f"🍖 Hambre   [{barra(self.hambre)}] {self.hambre}/100")
         print(f"💧 Sed      [{barra(self.sed)}] {self.sed}/100")
         print(f"😊 Moral    [{barra(self.moral)}] {self.moral}/100")
+        print(f"⭐ Nivel: {self.nivel}")
+        print(f"✨ Experiencia: "f"{self.experiencia}/{self.experiencia_siguiente}")
         print("---")
         print(f"📅 Día {self.dia}")
         print(f"⏰ Hora {self.hora}:00")
@@ -357,6 +375,10 @@ class Jugador:
 
             "moral":self.moral,
 
+            "nivel": self.nivel,
+            "experiencia": self.experiencia,
+            "experiencia_siguiente": self.experiencia_siguiente,
+
             "dia":self.dia,
 
             "hora":self.hora,
@@ -399,6 +421,15 @@ class Jugador:
         self.sed = datos["sed"]
 
         self.moral = datos["moral"]
+
+        self.nivel = datos.get("nivel",1)
+
+        self.experiencia = datos.get("experiencia",0)
+
+        self.experiencia_siguiente = datos.get(
+            "experiencia_siguiente",
+            100
+        )
 
         self.dia = datos["dia"]
 

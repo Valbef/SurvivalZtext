@@ -32,8 +32,23 @@ def crear_enemigos():
             10,
             2,
             20,
-            probabilidad=35,
+            probabilidad=20,
             zonas=None
+        ),
+
+        "tambaleante": Enemigo(
+            "Infectado tambaleante",
+            35,
+            10,
+            2,
+            15,
+            probabilidad=15,
+            zonas=["Bosque",
+                   "Centro Ciudad",
+                   "Gasolinera",
+                   "Hospital",
+                   "Laboratorio",
+                   "Supermercado"]
         ),
 
         "perro": Enemigo(
@@ -41,7 +56,7 @@ def crear_enemigos():
             20,
             6,
             2,
-            10,
+            8,
             probabilidad=40,
             zonas=None
         ),
@@ -62,11 +77,10 @@ def crear_enemigos():
             15,
             5,
             2,
-            10,
+            5,
             probabilidad=40,
             zonas=None
         ),
-
 
 
         "corredor": Enemigo(
@@ -74,31 +88,39 @@ def crear_enemigos():
             55,
             15,
             3,
-            35,
+            25,
             probabilidad=20,
             zonas=None
         ),
 
 
-
         "bruto": Enemigo(
             "Infectado bruto",
             90,
-            20,
+            18,
             6,
-            100,
+            40,
             probabilidad=5,
             zonas=None
         ),
 
+        "experimento": Enemigo(
+            "Experimento fallido",
+            80,
+            22,
+            7,
+            80,
+            probabilidad=2,
+            zonas=["Laboratorio"]
+        ),
 
 
         "saqueador": Enemigo(
             "Saqueador",
-            80,
+            70,
             20,
             5,
-            75,
+            70,
             probabilidad=10,
             zonas=["Centro Ciudad",
                    "Comisaria",
@@ -112,7 +134,7 @@ def crear_enemigos():
             50,
             10,
             1,
-            25,
+            35,
             probabilidad=10,
             zonas=["Centro Ciudad",
                    "Comisaria",

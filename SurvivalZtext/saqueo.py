@@ -242,31 +242,42 @@ def saquear(jugador, objetos):
 
         if objeto.apilable:
 
-            objeto_existente = None
+            # =====================================
+            # OBJETOS CON USOS
+            # =====================================
+            # Cada unidad mantiene sus propios usos.
+            # No se deben fusionar en un único objeto.
 
-            for obj in jugador.inventario:
-
-                if obj.nombre == nombre:
-
-                    objeto_existente = obj
-
-                    break
-
-            if objeto_existente:
-
-                objeto_existente.cantidad += objeto.cantidad
-
-                if objeto.usos is not None:
-
-                    objeto_existente.usos_restantes += (
-                        objeto.usos_restantes
-                    )
-
-            else:
+            if objeto.usos is not None:
 
                 jugador.inventario.append(
                     objeto
                 )
+
+            # =====================================
+            # OBJETOS SIN USOS
+            # =====================================
+            # Estos sí pueden acumularse normalmente.
+
+            else:
+
+                objeto_existente = None
+
+                for obj in jugador.inventario:
+
+                    if obj.nombre == nombre:
+                        objeto_existente = obj
+                        break
+
+                if objeto_existente:
+
+                    objeto_existente.cantidad += objeto.cantidad
+
+                else:
+
+                    jugador.inventario.append(
+                        objeto
+                    )
 
         # =========================
         # OBJETOS NO APILABLES
