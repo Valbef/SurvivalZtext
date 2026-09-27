@@ -537,15 +537,7 @@ class Juego:
 
                         if resultado and objeto.es_consumible():
 
-                            # =========================================
-                            # GASTAR 1 USO DE ESTA UNIDAD
-                            # =========================================
-
-                            objeto.usos_restantes -= 1
-
-                            # =========================================
-                            # SI SE AGOTÓ ESTA UNIDAD
-                            # =========================================
+                            # objeto.usar() YA ha restado 1 uso
 
                             if objeto.usos_restantes <= 0:
 
@@ -553,14 +545,13 @@ class Juego:
                                     f"\n🔴 {objeto.nombre} se ha agotado."
                                 )
 
-                                # El objeto representa una unidad,
-                                # así que simplemente lo eliminamos.
                                 if objeto in self.jugador.inventario:
                                     self.jugador.inventario.remove(
                                         objeto
                                     )
 
                         return
+
 
 
                     # =========================

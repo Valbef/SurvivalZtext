@@ -407,32 +407,23 @@ class Jugador:
 
         }
 
-
-
-
     def cargar_datos(self, datos):
 
         self.nombre = datos["nombre"]
 
         self.vida = datos["vida"]
-
         self.hambre = datos["hambre"]
-
         self.sed = datos["sed"]
-
         self.moral = datos["moral"]
 
-        self.nivel = datos.get("nivel",1)
-
-        self.experiencia = datos.get("experiencia",0)
-
+        self.nivel = datos.get("nivel", 1)
+        self.experiencia = datos.get("experiencia", 0)
         self.experiencia_siguiente = datos.get(
             "experiencia_siguiente",
             100
         )
 
         self.dia = datos["dia"]
-
         self.hora = datos["hora"]
 
         self.clima = datos.get(
@@ -442,13 +433,30 @@ class Jugador:
 
         self.localizacion = datos["localizacion"]
 
+        self.hoguera = datos.get(
+            "hoguera",
+            False
+        )
+
+        self.municion = datos.get(
+            "municion",
+            0
+        )
+
+        # =====================================
+        # INVENTARIO
+        # =====================================
+
         self.inventario = []
 
+        objetos_base = lista_objetos()
+
         for datos_objeto in datos.get("inventario", []):
-            objetos_base = lista_objetos()
+
+            nombre_objeto = datos_objeto["nombre"]
 
             objeto_base = objetos_base.get(
-                datos_objeto["nombre"]
+                nombre_objeto
             )
 
             if objeto_base is None:
@@ -456,25 +464,66 @@ class Jugador:
 
             objeto = deepcopy(objeto_base)
 
-            objeto.peso = datos_objeto["peso"]
-            objeto.descripcion = datos_objeto["descripcion"]
-            objeto.daño = datos_objeto.get("daño", 0)
-            objeto.durabilidad = datos_objeto.get("durabilidad")
-            objeto.desgaste = datos_objeto.get("desgaste", 0)
-            objeto.atasco = datos_objeto.get("atasco", 0)
-            objeto.apilable = datos_objeto.get("apilable", True)
-            objeto.cantidad = datos_objeto.get("cantidad", 1)
-            objeto.usos = datos_objeto.get("usos")
-            objeto.reparable = datos_objeto.get("reparable", False)
+            # Datos generales
+            objeto.peso = datos_objeto.get(
+                "peso",
+                objeto.peso
+            )
+
+            objeto.descripcion = datos_objeto.get(
+                "descripcion",
+                objeto.descripcion
+            )
+
+            objeto.daño = datos_objeto.get(
+                "daño",
+                0
+            )
+
+            objeto.durabilidad = datos_objeto.get(
+                "durabilidad",
+                objeto.durabilidad
+            )
+
+            objeto.desgaste = datos_objeto.get(
+                "desgaste",
+                0
+            )
+
+            objeto.atasco = datos_objeto.get(
+                "atasco",
+                0
+            )
+
+            objeto.apilable = datos_objeto.get(
+                "apilable",
+                True
+            )
+
+            objeto.cantidad = datos_objeto.get(
+                "cantidad",
+                1
+            )
+
+            objeto.usos = datos_objeto.get(
+                "usos",
+                objeto.usos
+            )
+
+            objeto.reparable = datos_objeto.get(
+                "reparable",
+                False
+            )
+
             objeto.accion_principal = datos_objeto.get(
                 "accion_principal",
                 "Usar"
             )
 
-            objeto.usos_restantes = datos_objeto.get(
-                "usos_restantes",
-                objeto.usos_restantes
-            )
+            # =====================================
+            # MUY IMPORTANTE:
+            # CONSERVAR LOS USOS INDIVIDUALES
+            # =====================================
 
             objeto.usos_restantes = datos_objeto.get(
                 "usos_restantes",
@@ -483,16 +532,18 @@ class Jugador:
 
             self.inventario.append(objeto)
 
-        self.almacen = []
+        # =====================================
+        # ALMACÉN
+        # =====================================
 
         self.almacen = []
-
-        objetos_base = lista_objetos()
 
         for datos_objeto in datos.get("almacen", []):
 
+            nombre_objeto = datos_objeto["nombre"]
+
             objeto_base = objetos_base.get(
-                datos_objeto["nombre"]
+                nombre_objeto
             )
 
             if objeto_base is None:
@@ -500,20 +551,64 @@ class Jugador:
 
             objeto = deepcopy(objeto_base)
 
-            objeto.peso = datos_objeto["peso"]
-            objeto.descripcion = datos_objeto["descripcion"]
-            objeto.daño = datos_objeto.get("daño", 0)
-            objeto.durabilidad = datos_objeto.get("durabilidad")
-            objeto.desgaste = datos_objeto.get("desgaste", 0)
-            objeto.atasco = datos_objeto.get("atasco", 0)
-            objeto.apilable = datos_objeto.get("apilable", True)
-            objeto.cantidad = datos_objeto.get("cantidad", 1)
-            objeto.usos = datos_objeto.get("usos")
-            objeto.reparable = datos_objeto.get("reparable", False)
+            objeto.peso = datos_objeto.get(
+                "peso",
+                objeto.peso
+            )
+
+            objeto.descripcion = datos_objeto.get(
+                "descripcion",
+                objeto.descripcion
+            )
+
+            objeto.daño = datos_objeto.get(
+                "daño",
+                0
+            )
+
+            objeto.durabilidad = datos_objeto.get(
+                "durabilidad",
+                objeto.durabilidad
+            )
+
+            objeto.desgaste = datos_objeto.get(
+                "desgaste",
+                0
+            )
+
+            objeto.atasco = datos_objeto.get(
+                "atasco",
+                0
+            )
+
+            objeto.apilable = datos_objeto.get(
+                "apilable",
+                True
+            )
+
+            objeto.cantidad = datos_objeto.get(
+                "cantidad",
+                1
+            )
+
+            objeto.usos = datos_objeto.get(
+                "usos",
+                objeto.usos
+            )
+
+            objeto.reparable = datos_objeto.get(
+                "reparable",
+                False
+            )
+
             objeto.accion_principal = datos_objeto.get(
                 "accion_principal",
                 "Usar"
             )
+
+            # =====================================
+            # CONSERVAR USOS DEL ALMACÉN
+            # =====================================
 
             objeto.usos_restantes = datos_objeto.get(
                 "usos_restantes",
@@ -522,14 +617,13 @@ class Jugador:
 
             self.almacen.append(objeto)
 
+        # =====================================
+        # COMPAÑEROS
+        # =====================================
+
         self.companeros = datos.get(
             "companeros",
             []
-        )
-
-        self.municion = datos.get(
-            "municion",
-            0
         )
 
     def tiene_pistola(self):

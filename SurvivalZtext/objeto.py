@@ -43,8 +43,7 @@ class Objeto:
         if usos is None:
             self.usos_restantes = None
         else:
-            self.usos_restantes = cantidad * usos
-
+            self.usos_restantes = usos
     
 
     def usar(self, jugador):
@@ -67,12 +66,6 @@ class Objeto:
 
         if self.usos is not None:
             self.usos_restantes -= 1
-
-            self.cantidad = (
-                                    self.usos_restantes
-                                    + self.usos
-                                    - 1
-                            ) // self.usos
 
             return self.usos_restantes <= 0
 
