@@ -57,7 +57,7 @@ def crear_enemigos():
             6,
             2,
             8,
-            probabilidad=40,
+            probabilidad=30,
             zonas=None
         ),
 
@@ -67,9 +67,10 @@ def crear_enemigos():
             7,
             2,
             12,
-            probabilidad=40,
+            probabilidad=25,
             zonas=["Bosque",
-                   "Camping"]
+                   "Camping",
+                   "Torre Radio"]
         ),
 
         "gato": Enemigo(
@@ -78,7 +79,7 @@ def crear_enemigos():
             5,
             2,
             5,
-            probabilidad=40,
+            probabilidad=35,
             zonas=None
         ),
 
@@ -100,7 +101,7 @@ def crear_enemigos():
             18,
             6,
             40,
-            probabilidad=5,
+            probabilidad=4,
             zonas=None
         ),
 
@@ -138,6 +139,7 @@ def crear_enemigos():
             probabilidad=10,
             zonas=["Centro Ciudad",
                    "Comisaria",
+                   "Hospital",
                    "Supermercado",
                    "Gasolinera",
                    "Camping"]
