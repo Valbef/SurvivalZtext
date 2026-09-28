@@ -807,7 +807,6 @@ class Juego:
             return
 
         grupos = self.jugador.inventario_agrupado()
-
         lista_grupos = list(grupos.items())
 
         print("\n====================")
@@ -815,10 +814,13 @@ class Juego:
         print("====================")
 
         for i, (nombre, objetos) in enumerate(lista_grupos, start=1):
-            primero = objetos[0]
+            cantidad_total = sum(
+                obj.cantidad
+                for obj in objetos
+            )
 
             print(
-                f"{i}. {nombre} x{primero.cantidad}"
+                f"{i}. {nombre} x{cantidad_total}"
             )
 
         print("\n0. Cancelar")
@@ -832,93 +834,194 @@ class Juego:
 
             nombre, objetos = lista_grupos[eleccion - 1]
 
-            objeto = objetos[0]
+            cantidad_total = sum(
+                obj.cantidad
+                for obj in objetos
+            )
 
-            # Objetos que se pueden dividir
-            if objeto.cantidad > 1:
+            # =====================================
+            # ELEGIR CANTIDAD
+            # =====================================
 
-                print(
-                    f"\nTienes {objeto.cantidad} unidades."
-                )
+            if cantidad_total > 1:
 
-                cantidad = int(
-                    input("¿Cuántas quieres guardar? > ")
-                )
+                while True:
 
-                if cantidad <= 0 or cantidad > objeto.cantidad:
-                    print("\n❌ Cantidad no válida.")
-                    input("\nPulsa ENTER para continuar...")
-                    return
+                    try:
+
+                        cantidad = int(
+                            input(
+                                f"\nTienes {cantidad_total} unidades."
+                                f"\n¿Cuántas quieres guardar? > "
+                            )
+                        )
+
+                        if 1 <= cantidad <= cantidad_total:
+                            break
+
+                        print(
+                            f"\n❌ Introduce una cantidad "
+                            f"entre 1 y {cantidad_total}."
+                        )
+
+                    except ValueError:
+
+                        print("\n❌ Introduce un número válido.")
 
             else:
 
                 cantidad = 1
 
-            # Buscar si ya existe en el almacén
-            for obj_almacen in self.jugador.almacen:
+            # =====================================
+            # OBJETOS CON USOS
+            # =====================================
 
-                if obj_almacen.nombre == objeto.nombre:
+            if objetos[0].usos is not None:
 
-                    obj_almacen.cantidad += cantidad
+                restantes = cantidad
 
-                    if obj_almacen.usos is not None:
-                        obj_almacen.usos_restantes += (
-                                cantidad * obj_almacen.usos
-                        )
+                # Guardamos unidades completas.
+                # Se empieza por las unidades con menos usos.
+                objetos_ordenados = sorted(
+                    objetos,
+                    key=lambda obj: obj.usos_restantes
+                )
 
-                    objeto.cantidad -= cantidad
+                for objeto in objetos_ordenados:
 
-                    if objeto.usos_restantes is not None:
-                        objeto.usos_restantes -= (
-                                cantidad * objeto.usos
-                        )
+                    if restantes <= 0:
+                        break
 
-                    if objeto.cantidad <= 0:
-                        self.jugador.inventario.remove(objeto)
-
-                    print(
-                        f"\n📦 Has guardado {cantidad} "
-                        f"x {objeto.nombre}."
+                    unidades = min(
+                        objeto.cantidad,
+                        restantes
                     )
 
-                    input("\nPulsa ENTER para continuar...")
-                    return
+                    # Buscar objeto igual en almacén
+                    objeto_almacen = None
 
-            # Crear una copia para el almacén
-            objeto_almacen = deepcopy(objeto)
+                    for obj in self.jugador.almacen:
 
-            objeto_almacen.cantidad = cantidad
+                        if obj.nombre == objeto.nombre:
+                            objeto_almacen = obj
+                            break
 
-            if objeto.usos is not None:
-                objeto_almacen.usos_restantes = (
-                        cantidad * objeto.usos
-                )
+                    # =====================================
+                    # CREAR / AÑADIR AL ALMACÉN
+                    # =====================================
 
-            self.jugador.almacen.append(
-                objeto_almacen
-            )
+                    if objeto_almacen is None:
 
-            objeto.cantidad -= cantidad
+                        objeto_almacen = deepcopy(objeto)
 
-            if objeto.usos_restantes is not None:
-                objeto.usos_restantes -= (
-                        cantidad * objeto.usos
-                )
+                        objeto_almacen.cantidad = unidades
 
-            if objeto.cantidad <= 0:
-                self.jugador.inventario.remove(objeto)
+                        objeto_almacen.usos_restantes = (
+                                objeto.usos_restantes
+                                - (
+                                        (objeto.cantidad - unidades)
+                                        * objeto.usos
+                                )
+                        )
+
+                        self.jugador.almacen.append(
+                            objeto_almacen
+                        )
+
+                    else:
+
+                        objeto_almacen.cantidad += unidades
+
+                        objeto_almacen.usos_restantes += (
+                                objeto.usos_restantes
+                                - (
+                                        (objeto.cantidad - unidades)
+                                        * objeto.usos
+                                )
+                        )
+
+                    # =====================================
+                    # RESTAR DEL INVENTARIO
+                    # =====================================
+
+                    objeto.cantidad -= unidades
+
+                    objeto.usos_restantes = (
+                            objeto.cantidad * objeto.usos
+                    )
+
+                    restantes -= unidades
+
+                    if objeto.cantidad <= 0:
+                        self.jugador.inventario.remove(
+                            objeto
+                        )
+
+            # =====================================
+            # OBJETOS NORMALES
+            # =====================================
+
+            else:
+
+                restantes = cantidad
+
+                for objeto in objetos:
+
+                    if restantes <= 0:
+                        break
+
+                    quitar = min(
+                        objeto.cantidad,
+                        restantes
+                    )
+
+                    # Buscar en almacén
+                    objeto_almacen = None
+
+                    for obj in self.jugador.almacen:
+
+                        if obj.nombre == objeto.nombre:
+                            objeto_almacen = obj
+                            break
+
+                    if objeto_almacen is None:
+
+                        objeto_almacen = deepcopy(objeto)
+                        objeto_almacen.cantidad = quitar
+
+                        self.jugador.almacen.append(
+                            objeto_almacen
+                        )
+
+                    else:
+
+                        objeto_almacen.cantidad += quitar
+
+                    objeto.cantidad -= quitar
+
+                    restantes -= quitar
+
+                    if objeto.cantidad <= 0:
+                        self.jugador.inventario.remove(
+                            objeto
+                        )
 
             print(
-                f"\n📦 Has guardado {cantidad} "
-                f"x {objeto.nombre}."
+                f"\n📦 Has guardado "
+                f"{cantidad} x {nombre}."
             )
 
-            input("\nPulsa ENTER para continuar...")
+            input(
+                "\nPulsa ENTER para continuar..."
+            )
 
         except (ValueError, IndexError):
 
             print("\n❌ Opción no válida.")
-            input("\nPulsa ENTER para continuar...")
+
+            input(
+                "\nPulsa ENTER para continuar..."
+            )
 
     def sacar_del_almacen(self):
 
