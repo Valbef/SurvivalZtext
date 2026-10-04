@@ -4,6 +4,13 @@ from enemigos import enemigo_aleatorio
 from combate import iniciar_combate
 from efectos import write, writefast
 
+RESET = "\033[0m"
+BOLD = "\033[1m"  #(Negrita)
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+RED = "\033[91m"
+WHITE = "\033[97m"
+
 TABLAS_BOTIN = {
 
     "Bosque": [
@@ -29,12 +36,37 @@ TABLAS_BOTIN = {
         ("Mapa", 3)
     ],
 
+    "Taller Mecanico": [
+        ("Botella de agua", 10),
+        ("Cerveza", 10),
+        ("Caja de cigarrillos", 7),
+        ("Caja de cerillas", 7),
+        ("Herramientas", 10),
+        ("Tuberia", 5),
+        ("Metal", 2),
+        ("Muelle", 7),
+        ("Tornillo", 10)
+    ],
+
     "Centro Ciudad": [
         ("Lata de comida", 15),
         ("Botella de agua", 15),
         ("Caja de cigarrillos", 8),
         ("Caja de cerillas", 10),
         ("Pilas", 5)
+    ],
+
+    "Bar": [
+        ("Cerveza", 25),
+        ("Caja de cigarrillos", 10),
+        ("Caja de cerillas", 10),
+        ("Botella de agua", 5)
+    ],
+
+    "Iglesia": [
+        ("Caja de munición", 2),
+        ("Botella de agua", 5),
+        ("Hierbas", 10)
     ],
 
     "Comisaría": [
@@ -83,6 +115,7 @@ TABLAS_BOTIN = {
     "Estación Bomberos": [
         ("Botella de agua", 25),
         ("Botiquín", 10),
+        ("Tuberia", 5),
         ("Tela", 5),
         ("Cuerda", 10)
     ],
@@ -100,7 +133,30 @@ TABLAS_BOTIN = {
         ("Hierbas", 15),
         ("Componentes electronicos", 20),
         ("Radio", 5)
-    ]
+    ],
+
+    "Desguace": [
+        ("Pilas", 2),
+        ("Hierbas", 15),
+        ("Componentes electronicos", 10),
+        ("Herramientas", 1),
+        ("Metal", 15),
+        ("Tuberia", 5),
+        ("Muelle", 7),
+        ("Tornillo", 10)
+    ],
+
+    "Montaña": [
+        ("Madera", 25),
+        ("Hierbas", 30),
+        ("Botella de agua", 2)
+    ],
+
+    "Cueva montaña": [
+        ("Metal", 10),
+        ("Hierbas", 20),
+        ("Botella de agua", 2)
+    ],
 
 }
 
@@ -127,7 +183,7 @@ def saquear(jugador, objetos):
         enemigo = enemigo_aleatorio()
 
         print(
-            "\n⚠️ Algo se mueve entre las sombras..."
+            f"\n{YELLOW}⚠️ Algo se mueve entre las sombras...{RESET}"
         )
 
         # 50% combate normal / 50% ataque sorpresa
@@ -137,7 +193,7 @@ def saquear(jugador, objetos):
             jugador.moral -= 2
 
             write(
-                f"\n🧟 Aparece un {enemigo.nombre}."
+                f"\n{YELLOW}🧟 Aparece un {enemigo.nombre}.{RESET}"
             )
 
             iniciar_combate(
@@ -157,13 +213,13 @@ def saquear(jugador, objetos):
             jugador.moral -= 6
 
             writefast(
-                f"""
-        🩸 ¡Ataque sorpresa!
+                f"""{RED}
+        🩸 ¡Ataque sorpresa!{RESET}
 
-        Un {enemigo.nombre} te golpea antes de que puedas reaccionar.
+        {YELLOW}¡Un {enemigo.nombre} te golpea antes de que puedas reaccionar!{RESET}
 
-        Pierdes {daño} de vida.
-        Tu moral ha bajado.
+        {RED}Pierdes {daño} de vida.
+        Tu moral ha bajado.{RESET}
         """
             )
 
@@ -172,7 +228,7 @@ def saquear(jugador, objetos):
                 jugador.vida = 0
 
                 print(
-                    "\n☠️ Has muerto durante el saqueo."
+                    f"\n{RED}☠️ Has muerto durante el saqueo.{RESET}"
                 )
 
                 return
@@ -182,7 +238,7 @@ def saquear(jugador, objetos):
             )
 
             print(
-                f"\n🧟 Defiéndete del {enemigo.nombre}."
+                f"\n{YELLOW}🧟 Defiéndete del {enemigo.nombre}.{RESET}"
             )
 
             resultado = iniciar_combate(
@@ -196,7 +252,7 @@ def saquear(jugador, objetos):
                 jugador.vida = 0
 
                 write(
-                    "\n☠️ Has muerto en combate."
+                    f"\n☠️{RED} Has muerto en combate.{RESET}"
                 )
 
                 return
@@ -290,7 +346,7 @@ def saquear(jugador, objetos):
             )
 
         print(
-            f"Has encontrado {nombre}"
+            f"{GREEN}Has encontrado {nombre}{RESET}"
         )
 
         encontrado = True
@@ -306,7 +362,7 @@ def saquear(jugador, objetos):
         jugador.moral -= 1
 
         print(
-            "No encuentras nada."
+            f"{WHITE}No encuentras nada...{RESET}"
         )
 
     # =========================

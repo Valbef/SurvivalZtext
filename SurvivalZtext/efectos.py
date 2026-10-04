@@ -2,7 +2,7 @@ import time
 #import sys
 
 
-def write(texto, velocidad=0.07):
+def write(texto, velocidad=0.06):
 
     for letra in texto:
 

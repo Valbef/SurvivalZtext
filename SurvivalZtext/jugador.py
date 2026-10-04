@@ -581,6 +581,16 @@ class Jugador:
                 0
             )
 
+            objeto.tipo_arma = datos_objeto.get(
+                "tipo_arma",
+                objeto.tipo_arma
+            )
+
+            objeto.tipo_arma = datos_objeto.get(
+                "tipo_arma",
+                objeto.tipo_arma
+            )
+
             objeto.apilable = datos_objeto.get(
                 "apilable",
                 True
@@ -626,11 +636,11 @@ class Jugador:
             []
         )
 
-    def tiene_pistola(self):
+    def arma_de_fuego(self):
 
         for objeto in self.inventario:
 
-            if objeto.nombre == "Pistola":
+            if objeto.es_arma_de_fuego():
                 return objeto
 
         return None
@@ -639,7 +649,7 @@ class Jugador:
 
         for objeto in self.inventario:
 
-            if objeto.tipo == "arma" and objeto.nombre != "Pistola":
+            if objeto.es_arma_cuerpo_a_cuerpo():
                 return objeto
 
         return None
@@ -680,16 +690,6 @@ class Jugador:
             grupos[objeto.nombre].append(objeto)
 
         return grupos
-
-    def inventario_agrupado_almacen(self):
-
-        grupos = defaultdict(list)
-
-        for objeto in self.almacen:
-            grupos[objeto.nombre].append(objeto)
-
-        return grupos
-
 
 
     def inventario_agrupado_almacen(self):

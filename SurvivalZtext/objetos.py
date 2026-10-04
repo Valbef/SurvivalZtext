@@ -1,5 +1,6 @@
 from objeto import Objeto
-from efectos import write, writefast
+from efectos import write
+
 
 
 # ===========================
@@ -12,9 +13,6 @@ def comer_lata(jugador):
     jugador.vida += 10
     jugador.moral += 3
 
-    if jugador.vida > 100:
-        jugador.vida = 100
-
 
 def beber_agua(jugador):
 
@@ -22,8 +20,14 @@ def beber_agua(jugador):
     jugador.vida += 3
     jugador.moral += 2
 
-    if jugador.vida > 100:
-        jugador.vida = 100
+
+def beber_cerveza(jugador):
+
+    jugador.sed -= 20
+    jugador.vida -= 1
+    jugador.hambre -= 1
+    jugador.moral += 1
+
 
 def comer_carne_cruda(jugador):
 
@@ -33,8 +37,6 @@ def comer_carne_cruda(jugador):
 
     write("Lo importante es sobrevivir...")
 
-    if jugador.vida > 100:
-        jugador.vida = 100
 
 def comer_carne_infectada_cruda(jugador):
 
@@ -47,18 +49,13 @@ def comer_carne_infectada_cruda(jugador):
     write("...")
     write("Te encuentras mal, tu salud y tu moral bajan...")
 
-    if jugador.vida > 100:
-        jugador.vida = 100
 
 def comer_carne_cocinada(jugador):
     jugador.hambre -= 35
     jugador.vida += 15
-    jugador.moral += 5
+    jugador.moral -= 2
 
     write("Parece que sabe mejor cocinada...")
-
-    if jugador.vida > 100:
-        jugador.vida = 100
 
 
 def comer_carne_infectada_cocinada(jugador):
@@ -73,17 +70,12 @@ def comer_carne_infectada_cocinada(jugador):
     write("Por lo menos no te duele el estomago.")
 
 
-    if jugador.vida > 100:
-        jugador.vida = 100
-
-
 
 def curar(jugador):
 
     jugador.vida += 40
 
-    if jugador.vida > 100:
-        jugador.vida = 100
+
 
 
 def fumar_cigarrillos(jugador):
@@ -146,11 +138,10 @@ def fumar_cigarrillos(jugador):
     # =====================================
 
     jugador.sed += 2
-    jugador.vida += 3
+    jugador.hambre +=1
+    jugador.vida += 2
     jugador.moral += 4
 
-    if jugador.vida > 100:
-        jugador.vida = 100
 
     print(
         "\n🚬 Has fumado un cigarrillo."
@@ -380,145 +371,65 @@ def escuchar_radio(jugador):
 
 
 def consultar_mapa(jugador):
+
     posicion = jugador.localizacion
 
     mapa = f"""
 
-==============================
-            🗺️ MAPA
-==============================
+==========================================================
+                          🗺️ MAPA
+==========================================================
+
+🏠 Refugio
+   │
+   ▼
+🌲 Bosque
+   ├── 🏚️ Cabaña
+   │
+   ├── ⛽ Gasolinera ──────────────────────────────
+   │     │                                        │
+   │     └── 🔧 Taller Mecanico                   │
+   │             │                                │
+   │             └── 💥 Desguace                  │
+   │                                              │
+   └── 🏕️ Camping                                 │
+         │                                        │
+         └── 🏔️ Montaña                           │
+               ├── 🗼 Torre Radio                 │
+               │                                  │
+               └── 🕳️ Cueva Montaña               │
+                                                  │
+                                                  │
+⛽ Gasolinera ─────────────────────────────────────
+   │
+   ▼
+🏙️ Centro Ciudad
+   
+   │     ├── 🍺 Bar 
+   ├── 🏬 Centro Comercial
+   │     └── 🏪 Supermercado
+   │     
+   ├── 🚔 Comisaría
+   │     │
+   │     └── 🏥 Hospital
+   │           │
+   │           └── 🧪 Laboratorio
+   │
+   ├── 🏫 Escuela
+   │     └── 🚒 Estación Bomberos
+   └── ⛪ Iglesia
 
 
-                 Torre Radio
-                      |
-                 Camping
-                      |
-                     Bosque
-                    /     \\
-             Cabaña       Gasolinera
-                              |
-                       Centro Ciudad
-                      /      |       \\
-             Comisaría   Escuela   Centro Comercial
-                 |          |             |
-             Hospital   Estación      Supermercado
-                 |
-            Laboratorio
+==========================================================
+          📍 Tu posición: {posicion}
+==========================================================
 
-
-==============================
-
-Tu posición:
-
-"""
-
-    # Añadimos marcador según localización
-
-    if posicion == "Refugio":
-        mapa += """
-🏠 Refugio  ◀ TU POSICIÓN
-    |
-  Bosque
-"""
-
-    elif posicion == "Bosque":
-        mapa += """
-                 Torre Radio
-                      |
-                 Camping
-                      |
-             🟢 BOSQUE ◀ TU POSICIÓN
-              /        \\
-          Cabaña     Gasolinera
-"""
-
-    elif posicion == "Gasolinera":
-        mapa += """
-             Bosque
-                |
-        ⛽ Gasolinera ◀ TU POSICIÓN
-                |
-        Centro Ciudad
-"""
-
-    elif posicion == "Centro Ciudad":
-        mapa += """
-        Gasolinera
-
-             |
-
-     🏙️ Centro Ciudad ◀ TU POSICIÓN
-
-       /        |          \\
-
-Comisaría   Escuela   Centro Comercial
-"""
-
-    elif posicion == "Hospital":
-        mapa += """
-        Comisaría
-
-            |
-
-     🏥 Hospital ◀ TU POSICIÓN
-
-            |
-
-       Laboratorio
-"""
-
-    elif posicion == "Laboratorio":
-        mapa += """
-             Hospital
-
-                |
-
-      🧪 Laboratorio ◀ TU POSICIÓN
-"""
-
-    elif posicion == "Centro Comercial":
-        mapa += """
-        Centro Ciudad
-
-             |
-
-     🛒 Centro Comercial ◀ TU POSICIÓN
-
-             |
-
-      Supermercado
-"""
-
-    elif posicion == "Supermercado":
-        mapa += """
-     Centro Comercial
-
-             |
-
-     🏪 Supermercado ◀ TU POSICIÓN
-"""
-
-    elif posicion == "Comisaría":
-        mapa += """
-       Centro Ciudad
-
-             |
-
-     🚔 Comisaría ◀ TU POSICIÓN
-
-             |
-
-        Hospital
-"""
-
-    else:
-        mapa += f"""
-📍 {posicion} ◀ TU POSICIÓN
 """
 
     print(mapa)
 
     input("\nPulsa ENTER para cerrar el mapa...")
+
 
 # ===========================
 # LISTA DE OBJETOS
@@ -556,6 +467,20 @@ def lista_objetos():
                 apilable=True,
                 cantidad=1,
                 usos=3
+
+            ),
+
+        "Cerveza":
+
+            Objeto(
+                "Cerveza",
+                "bebida",
+                2,
+                "Una lata de cerveza...",
+                efecto=beber_cerveza,
+                apilable=True,
+                cantidad=1,
+                usos=1
 
             ),
 
@@ -647,13 +572,14 @@ def lista_objetos():
             Objeto(
                 nombre="Cuchillo",
                 tipo="arma",
+                tipo_arma="cuerpo",
                 peso=1,
                 descripcion="Un cuchillo de supervivencia.",
                 daño=20,
                 reparable=True,
                 apilable=False,
-                durabilidad=100,
-                desgaste=10,
+                durabilidad=70,
+                desgaste=15,
                 accion_principal="Equipar"
             ),
 
@@ -662,11 +588,29 @@ def lista_objetos():
             Objeto(
                 nombre="Lanza",
                 tipo="arma",
-                peso=3,
+                tipo_arma="cuerpo",
+                peso=2.5,
                 descripcion="Una lanza improvisada fabricada con madera y metal.",
                 daño=25,
+                durabilidad=80,
+                desgaste=25,
+                reparable=True,
+                apilable=False,
+                cantidad=1,
+                accion_principal="Equipar"
+            ),
+
+        "Lanza buena":
+
+            Objeto(
+                nombre="Lanza buena",
+                tipo="arma",
+                tipo_arma="cuerpo",
+                peso=3,
+                descripcion="Una lanza resistente fabricada con madera y metal.",
+                daño=30,
                 durabilidad=100,
-                desgaste=15,
+                desgaste=20,
                 reparable=True,
                 apilable=False,
                 cantidad=1,
@@ -678,14 +622,49 @@ def lista_objetos():
             Objeto(
                 nombre="Pistola",
                 tipo="arma",
+                tipo_arma="fuego",
                 peso=2,
                 descripcion="Una pistola de 9 mm.",
                 daño=35,
                 reparable=True,
                 apilable=False,
                 durabilidad=100,
-                desgaste=15,
-                atasco=10,
+                desgaste=20,
+                atasco=12,
+                accion_principal="Equipar"
+            ),
+
+        "Pistola casera":
+
+            Objeto(
+                nombre="Pistola casera",
+                tipo="arma",
+                tipo_arma="fuego",
+                peso=2,
+                descripcion="Una pistola casera de 9 mm.",
+                daño=30,
+                reparable=True,
+                apilable=False,
+                durabilidad=75,
+                desgaste=25,
+                atasco=20,
+                accion_principal="Equipar"
+            ),
+
+        "Rifle casero":
+
+            Objeto(
+                nombre="Rifle casero",
+                tipo="arma",
+                tipo_arma="fuego",
+                peso=3,
+                descripcion="Un rifle casero de 9 mm.",
+                daño=45,
+                reparable=True,
+                apilable=False,
+                durabilidad=80,
+                desgaste=25,
+                atasco=15,
                 accion_principal="Equipar"
             ),
 
@@ -700,7 +679,7 @@ def lista_objetos():
             Objeto(
                 nombre="Caja de munición",
                 tipo="municion",
-                peso=1,
+                peso=0.5,
                 descripcion="Una caja con 6 balas.",
                 cantidad=1,
                 usos=1,
@@ -786,7 +765,7 @@ def lista_objetos():
                 nombre="Tela",
                 tipo="material",
                 peso=0.75,
-                descripcion="Un trozo de tela útil para fabricar objetos.",
+                descripcion="Un trozo de tela, útil para fabricar objetos.",
                 apilable=True,
                 cantidad=1,
                 accion_principal="Usar"
@@ -822,7 +801,7 @@ def lista_objetos():
                 nombre="Piel",
                 tipo="material",
                 peso=1,
-                descripcion="Piel que puede utilizarse para fabricar equipo.",
+                descripcion="Piel, puede utilizarse para fabricar equipo.",
                 apilable=True,
                 cantidad=1,
                 accion_principal="Usar"
@@ -846,7 +825,55 @@ def lista_objetos():
                 nombre="Metal",
                 tipo="material",
                 peso=2,
-                descripcion="Piezas de metal recuperadas.",
+                descripcion="Trozos de metal recuperados.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Piezas de metal":
+
+            Objeto(
+                nombre="Piezas de metal",
+                tipo="material",
+                peso=0.5,
+                descripcion="Piezas metalicas de metal recuperado.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Tuberia":
+
+            Objeto(
+                nombre="Tuberia",
+                tipo="material",
+                peso=1.5,
+                descripcion="Tuberia vieja de metal.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Muelle":
+
+            Objeto(
+                nombre="Muelle",
+                tipo="material",
+                peso=0.5,
+                descripcion="Muelle de metal.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Tornillo":
+
+            Objeto(
+                nombre="Tornillo",
+                tipo="material",
+                peso=0.25,
+                descripcion="Tornillo de metal.",
                 apilable=True,
                 cantidad=1,
                 accion_principal="Usar"

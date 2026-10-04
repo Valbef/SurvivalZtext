@@ -20,7 +20,10 @@ class Mapa:
             "Bosque",
             "Cabaña",
             "Gasolinera",
+            "Taller Mecanico",
             "Centro Ciudad",
+            "Bar",
+            "Iglesia",
             "Comisaría",
             "Hospital",
             "Laboratorio",
@@ -29,7 +32,10 @@ class Mapa:
             "Supermercado",
             "Estación Bomberos",
             "Camping",
-            "Torre Radio"
+            "Torre Radio",
+            "Desguace",
+            "Montaña",
+            "Cueva Montaña"
 
         ]
 
@@ -49,23 +55,31 @@ class Mapa:
             ("Bosque","Gasolinera"),
 
             ("Gasolinera","Centro Ciudad"),
+            ("Gasolinera","Taller Mecanico"),
+            ("Taller Mecanico", "Desguace"),
 
             ("Centro Ciudad","Comisaría"),
             ("Centro Ciudad","Centro Comercial"),
+            ("Centro Ciudad", "Bar"),
+            ("Bar","Centro Comercial"),
 
             ("Comisaría","Hospital"),
 
             ("Hospital","Laboratorio"),
 
             ("Centro Comercial","Supermercado"),
-
             ("Centro Ciudad","Escuela"),
+            ("Centro Ciudad","Iglesia"),
 
             ("Escuela","Estación Bomberos"),
 
             ("Camping","Bosque"),
+            ("Camping","Montaña"),
 
-            ("Camping","Torre Radio")
+            ("Montaña","Torre Radio"),
+            ("Montaña","Cueva Montaña"),
+
+            ("Torre Radio","Cueva Montaña")
 
         ]
 

@@ -85,7 +85,8 @@ BOTIN_ENEMIGOS = {
         ("Hierbas", 20, 1 , 2),
         ("Cuerda", 15, 1, 2),
         ("Componentes electronicos", 30),
-        ("Carne cruda", 20, 1, 2)
+        ("Carne cruda", 20, 1, 2),
+        ("Cerveza", 5)
     ]
 
 }

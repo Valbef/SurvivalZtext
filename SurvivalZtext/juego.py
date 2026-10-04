@@ -10,12 +10,13 @@ from motor_escenas import ejecutar_escena,comprobar_escena
 from efectos import write, writefast
 from copy import deepcopy
 from crafteo import menu_crafteo
-from collections import defaultdict
+#from collections import defaultdict
 import random
-
 import guardar
 
-
+RESET = "\033[0m"
+RED = "\033[91m"
+WHITE = "\033[97m"
 
 class Juego:
 
@@ -32,11 +33,11 @@ class Juego:
 
     def introduccion(self):
 
-        print("""
+        print(f"""{RED}
     =========================================================
                         SURVIVAL Z 2030
-    =========================================================""")
-        write("""
+    ========================================================={RESET}""")
+        write(f"""{WHITE}
     Año 2030.
 
     Todo comenzó hace apenas una semana.
@@ -53,11 +54,11 @@ class Juego:
     Ahora los supermercados están vacíos, las calles son un
     cementerio y cada superviviente lucha únicamente por seguir
     con vida un día más.
-    """)
+    {RESET}""")
 
         input("\nPulsa ENTER para continuar...")
 
-        write("""
+        write(f"""{WHITE}
     Has conseguido refugiarte en una pequeña casa a las
     afueras de la ciudad.
 
@@ -68,12 +69,12 @@ class Juego:
     Solo sabes una cosa...
 
     Si quieres vivir, tendrás que salir ahí fuera.
+    {RESET}""")
+        writefast(f"""{RED}  ========================================================={RESET}""")
+        write(f"""{WHITE}                Comienza tu historia...{RESET}""")
+        writefast(f"""{RED}  ========================================================={RESET}
     """)
-        writefast("""  =========================================================""")
-        write("""                Comienza tu historia...""")
-        writefast("""  =========================================================
-    """)
-        write("   Cuanto tiempo crees que sobrevivirás?")
+        write(f"{WHITE}   Cuanto tiempo crees que sobrevivirás?{RESET}")
 
         input("\nPulsa ENTER para comenzar...")
 
@@ -83,10 +84,10 @@ class Juego:
 
         while True:
 
-            print("""
-============================
-       SURVIVAL Z
-============================
+            writefast(f"""
+{WHITE}============================{RESET}
+       {RED}Llámalo juego...{RESET}
+{WHITE}============================{RESET}
 
 1. Nueva partida
 2. Cargar partida

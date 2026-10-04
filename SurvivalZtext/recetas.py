@@ -38,6 +38,34 @@ RECETAS = {
     },
 
     # =========================
+    # ARMAS
+    # =========================
+
+    "Pistola casera": {
+        "materiales": {
+            "Metal": 1,
+            "Piezas de metal": 1,
+            "Madera":1,
+            "Tuberia": 1,
+            "Muelle": 1,
+            "Tornillo": 2
+        },
+        "tipo": "refugio"
+    },
+
+    "Rifle casero": {
+        "materiales": {
+            "Metal": 1,
+            "Piezas de metal": 2,
+            "Tuberia": 2,
+            "Muelle": 1,
+            "Tornillo": 4,
+            "Madera": 2
+        },
+        "tipo": "refugio"
+    },
+
+    # =========================
     # UTILIDADES
     # =========================
 
@@ -83,6 +111,28 @@ RECETAS = {
             "Metal": 2
         },
         "tipo": "cualquier_lugar"
+    },
+
+    "Lanza buena": {
+        "materiales": {
+            "Madera": 3,
+            "Cuerda": 1,
+            "Metal": 3,
+            "Tuberia": 1,
+            "Tornillo": 3
+        },
+        "tipo": "cualquier_lugar"
+    },
+
+    # =========================
+    # piezas crafting
+    # =========================
+
+    "Piezas de metal": {
+        "materiales": {
+            "Metal": 2
+        },
+        "tipo": "refugio"
     },
 
     # =========================

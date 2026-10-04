@@ -1,6 +1,14 @@
 import random
 from botin_enemigos import obtener_botin
 
+RESET = "\033[0m"
+BOLD = "\033[1m"  #(Negrita)
+GREEN = "\033[92m"
+LIGHT_GREEN = "\033[92m"
+CYAN = "\033[96m"
+YELLOW = "\033[93m"
+RED = "\033[91m"
+WHITE = "\033[97m"
 
 def iniciar_combate(jugador, enemigo, objetos):
 
@@ -42,8 +50,8 @@ def iniciar_combate(jugador, enemigo, objetos):
 
                 enemigo.vida -= daño
 
-                print(f"\n🔪 Atacas con {arma.nombre}.")
-                print(f"Causas {daño} de daño.")
+                print(f"\n{WHITE}🔪 Atacas con {arma.nombre}.{RESET}")
+                print(f"{LIGHT_GREEN}Causas {daño} de daño.{RESET}")
 
                 if arma.desgastar():
 
@@ -62,9 +70,10 @@ def iniciar_combate(jugador, enemigo, objetos):
 
                 enemigo.vida -= daño
 
-                print(f"\n👊 Golpeas con los puños.")
-                print(f"Causas {daño} de daño.")
+                print(f"\n👊{WHITE} Golpeas con los puños.{RESET}")
+                print(f"{LIGHT_GREEN}Causas {daño} de daño.{RESET}")
                 input("\nPulsa ENTER para continuar...")
+
 
         # ==========================
         # DISPARAR
@@ -72,30 +81,47 @@ def iniciar_combate(jugador, enemigo, objetos):
 
         elif opcion == "2":
 
-            pistola = jugador.tiene_pistola()
+            arma = jugador.arma_de_fuego()
 
-            if pistola is None:
+            if arma is None:
 
-                print("\n❌ No tienes una pistola.")
+                print(f"\n❌{YELLOW} No tienes un arma de fuego.{RESET}")
                 input("\nPulsa ENTER para continuar...")
 
             elif jugador.municion <= 0:
 
-                print("\n❌ No tienes munición.")
+                print(f"\n❌{YELLOW} No tienes munición.{RESET}")
                 input("\nPulsa ENTER para continuar...")
 
             else:
 
-                if random.randint(1, 100) <= pistola.atasco:
+                # ==========================
+                # COMPROBAR ENCASQUILLAMIENTO
+                # ==========================
 
-                    print("\n🔫 ¡La pistola se ha encasquillado!")
-                    input("\nPulsa ENTER para continuar...")
+                if random.randint(1, 100) <= arma.atasco:
+
+                    print(
+                        f"\n🔫{RED} ¡Tu {arma.nombre} se ha encasquillado!{RESET}"
+                    )
+
+                    input(
+                        "\nPulsa ENTER para continuar..."
+                    )
 
                 else:
 
+                    # ==========================
+                    # CONSUMIR MUNICIÓN
+                    # ==========================
+
                     jugador.municion -= 1
 
-                    daño = pistola.daño + random.randint(-5, 5)
+                    # ==========================
+                    # CALCULAR DAÑO
+                    # ==========================
+
+                    daño = arma.daño + random.randint(-5, 5)
 
                     daño -= enemigo.defensa
 
@@ -104,16 +130,34 @@ def iniciar_combate(jugador, enemigo, objetos):
 
                     enemigo.vida -= daño
 
-                    print(f"\n🔫 Disparas.")
-                    print(f"Causas {daño} de daño.")
-                    input("\nPulsa ENTER para continuar...")
+                    print(
+                        f"\n🔫{WHITE} Disparas con {arma.nombre}.{RESET}"
+                    )
 
-                if pistola.desgastar():
+                    print(
+                        f"{LIGHT_GREEN}Causas {daño} de daño.{RESET}"
+                    )
 
-                    print("\n💥 La pistola se ha roto.")
+                    input(
+                        "\nPulsa ENTER para continuar..."
+                    )
 
-                    jugador.inventario.remove(pistola)
-                    input("\nPulsa ENTER para continuar...")
+                # ==========================
+                # DESGASTAR ARMA
+                # ==========================
+
+                if arma.desgastar():
+
+                    print(
+                        f"\n💥{YELLOW} Tu {arma.nombre} se ha roto.{RESET}"
+                    )
+
+                    jugador.inventario.remove(arma)
+
+                    input(
+                        "\nPulsa ENTER para continuar..."
+                    )
+
 
         # ==========================
         # DEFENDER
@@ -121,7 +165,7 @@ def iniciar_combate(jugador, enemigo, objetos):
 
         elif opcion == "3":
 
-            print("\n🛡️ Adoptas una posición defensiva.")
+            print(f"\n🛡️{CYAN} Adoptas una posición defensiva.{RESET}")
 
             jugador.defendiendo = True
             input("\nPulsa ENTER para continuar...")
@@ -134,14 +178,14 @@ def iniciar_combate(jugador, enemigo, objetos):
 
             if random.randint(1, 100) <= 50:
 
-                print("\n🏃 Consigues escapar.")
+                print(f"\n🏃{CYAN} Consigues escapar.{RESET}")
                 input("\nPulsa ENTER para continuar...")
 
                 return False
 
             else:
 
-                print("\n❌ No consigues escapar.")
+                print(f"\n❌{YELLOW} No consigues escapar.{RESET}")
                 input("\nPulsa ENTER para continuar...")
 
         else:
@@ -170,7 +214,7 @@ def iniciar_combate(jugador, enemigo, objetos):
 
                 jugador.vida = 0
 
-            print(f"\n{enemigo.nombre} te causa {daño} de daño.")
+            print(f"{RED}\n{enemigo.nombre} te causa {daño} de daño.{RESET}")
             input("\nPulsa ENTER para continuar...")
 
     # ==========================
@@ -179,11 +223,11 @@ def iniciar_combate(jugador, enemigo, objetos):
 
     if jugador.vida <= 0:
 
-        print("\n☠️ Has muerto.")
+        print(f"{RED}\n☠️ Has muerto.{RESET}")
 
         return False
 
-    print(f"\n🏆 Has derrotado a {enemigo.nombre}.")
+    print(f"{GREEN}\n🏆 Has derrotado a {enemigo.nombre}.{RESET}")
 
     jugador.experiencia += enemigo.experiencia
 

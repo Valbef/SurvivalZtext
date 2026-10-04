@@ -12,6 +12,7 @@ class Objeto:
             capacidad = 0,
             desgaste=0,
             atasco=0,
+            tipo_arma=None,
             apilable=True,
             cantidad=1,
             usos=None,
@@ -36,6 +37,7 @@ class Objeto:
         self.durabilidad = durabilidad
         self.desgaste = desgaste
         self.atasco = atasco
+        self.tipo_arma = tipo_arma
 
         #Objetos consumibles
         self.cantidad = cantidad
@@ -112,8 +114,14 @@ class Objeto:
         return self.reparable and self.tiene_durabilidad()
 
     def es_arma(self):
-
         return self.tipo == "arma"
+
+    def es_arma_de_fuego(self):
+        return self.tipo == "arma" and self.tipo_arma == "fuego"
+
+    def es_arma_cuerpo_a_cuerpo(self):
+        return self.tipo == "arma" and self.tipo_arma == "cuerpo"
+
 
     def es_municion(self):
 
@@ -174,6 +182,7 @@ class Objeto:
             "durabilidad": self.durabilidad,
             "desgaste": self.desgaste,
             "atasco": self.atasco,
+            "tipo_arma": self.tipo_arma,
             "apilable": self.apilable,
             "cantidad": self.cantidad,
             "usos": self.usos,
