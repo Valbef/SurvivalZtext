@@ -1,4 +1,4 @@
-from SurvivalZtext.combate import GREEN
+
 from objeto import Objeto
 from efectos import write, writefast, writeslow
 
@@ -263,7 +263,7 @@ def reparar_objeto(jugador, objeto):
         )
 
         writefast(
-            f"{GREEN}🔧 Has reparado {objeto.nombre} {RESET} "
+            f"🔧 Has reparado {objeto.nombre} "
             f"+{reparacion} durabilidad."
         )
 
