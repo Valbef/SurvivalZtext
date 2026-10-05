@@ -26,6 +26,10 @@ BOTIN_ENEMIGOS = {
         ("Piel", 70),
         ("Carne infectada cruda", 15)
     ],
+    "Oso infectado": [
+        ("Piel", 80, 1, 4),
+        ("Carne infectada cruda", 25)
+    ],
 
     # -------------------------
     # INFECTADOS
@@ -59,7 +63,7 @@ BOTIN_ENEMIGOS = {
 
     "Experimento fallido": [
         ("Metal", 20),
-        ("Componentes electronicos", 40, 1, 2),
+        ("Componentes electronicos", 20, 1, 2),
         ("Carne infectada cruda", 20, 1, 2)
     ],
 
@@ -70,6 +74,7 @@ BOTIN_ENEMIGOS = {
     "Saqueador": [
         ("Metal", 40),
         ("Tela", 30),
+        ("Botiquín", 5),
         ("Hierbas", 15),
         ("Cuerda", 20),
         ("Carne cruda", 20, 1, 2)
@@ -82,6 +87,7 @@ BOTIN_ENEMIGOS = {
     "Vagabundo": [
         ("Tela", 25),
         ("Metal", 20),
+        ("Tornillo",15 ,1 ,3),
         ("Hierbas", 20, 1 , 2),
         ("Cuerda", 15, 1, 2),
         ("Componentes electronicos", 30),

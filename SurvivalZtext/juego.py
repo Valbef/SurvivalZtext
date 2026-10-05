@@ -6,7 +6,7 @@ from enemigos import enemigo_aleatorio
 from combate import iniciar_combate
 from eventos import evento_aleatorio
 from saqueo import saquear
-from motor_escenas import ejecutar_escena,comprobar_escena
+from motor_escenas import comprobar_escena
 from efectos import write, writefast
 from copy import deepcopy
 from crafteo import menu_crafteo
@@ -34,45 +34,47 @@ class Juego:
     def introduccion(self):
 
         print(f"""{RED}
-    =========================================================
-                        SURVIVAL Z 2030
-    ========================================================={RESET}""")
+  ====================================================
+                     SURVIVAL Z 2030
+  ===================================================={RESET}""")
         write(f"""{WHITE}
-    Año 2030.
+  Año 2030.
 
-    Todo comenzó hace apenas una semana.
+  Todo comenzó hace apenas una semana.
 
-    Una extraña enfermedad apareció en varias ciudades del
-    mundo. Al principio parecía una gripe especialmente
-    agresiva, pero los hospitales pronto quedaron desbordados.
+  Una extraña enfermedad apareció en varias ciudades,
+  algo se habia extendido por todo el mundo.
+  Al principio parecía una gripe especialmente agresiva,
+  pero los hospitales pronto quedaron desbordados.
     
-    Las carreteras quedaron bloqueadas, las comunicaciones
-    dejaron de funcionar, el gobierno declaró el estado de
-    emergencia y ordenó un confinamiento hasta nueva orden. 
-    Nadie ha vuelto a saber nada de las autoridades.
+  Las carreteras quedaron bloqueadas,
+  las comunicaciones dejaron de funcionar,
+  el gobierno declaró el estado de emergencia 
+  y ordenó un confinamiento hasta nueva orden. 
+  Nadie ha vuelto a saber nada de las autoridades...
 
-    Ahora los supermercados están vacíos, las calles son un
-    cementerio y cada superviviente lucha únicamente por seguir
-    con vida un día más.
+  Ahora los supermercados están vacíos,
+  las calles son un cementerio y cada superviviente lucha
+  únicamente por seguir con vida un día más.
     {RESET}""")
 
         input("\nPulsa ENTER para continuar...")
 
         write(f"""{WHITE}
-    Has conseguido refugiarte en una pequeña casa a las
-    afueras de la ciudad.
+  Has conseguido refugiarte en una pequeña casa
+  a las afueras de la ciudad.
 
-    No sabes si existen zonas seguras.
-    No sabes si queda algún ejército organizado.
-    No sabes cuánto tiempo podrás sobrevivir.
+  No sabes si existen zonas seguras.
+  No sabes si queda algún ejército organizado.
+  No sabes cuánto tiempo podrás sobrevivir.
 
-    Solo sabes una cosa...
+     Solo sabes una cosa...
 
-    Si quieres vivir, tendrás que salir ahí fuera.
+  Si quieres vivir, tendrás que salir ahí fuera.
     {RESET}""")
-        writefast(f"""{RED}  ========================================================={RESET}""")
-        write(f"""{WHITE}                Comienza tu historia...{RESET}""")
-        writefast(f"""{RED}  ========================================================={RESET}
+        writefast(f"""{RED}  ======================================================{RESET}""")
+        write(f"""{WHITE}               Comienza tu historia...{RESET}""")
+        writefast(f"""{RED}  ======================================================{RESET}
     """)
         write(f"{WHITE}   Cuanto tiempo crees que sobrevivirás?{RESET}")
 
@@ -113,10 +115,10 @@ class Juego:
 
     def muerte(self):
 
-        print("""
+        print(f"""{RED}
     ============================
             HAS MUERTO
-    ============================
+    ============================{RESET}
 
     Tu historia termina aquí.
 

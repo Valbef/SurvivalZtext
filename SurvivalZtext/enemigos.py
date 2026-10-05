@@ -85,6 +85,17 @@ def crear_enemigos():
             zonas=None
         ),
 
+        "oso": Enemigo(
+            "Oso infectado",
+            90,
+            25,
+            5,
+            50,
+            probabilidad=2,
+            zonas=["Cueva montaña",
+                   "Montaña"]
+        ),
+
 
         "corredor": Enemigo(
             "Infectado corredor",
