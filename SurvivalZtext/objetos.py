@@ -963,6 +963,7 @@ def lista_objetos():
                 tipo="historia",
                 peso=0.5,
                 descripcion="Un mapa de la ciudad.",
+                efecto=consultar_mapa,
                 apilable=False,
                 durabilidad=100,
                 desgaste=7,
