@@ -22,6 +22,16 @@ def writefast(texto, velocidad=0.03):
 
     print()
 
+def writeslow(texto, velocidad=0.1):
+
+    for letra in texto:
+
+        print(letra, end="", flush=True)
+
+        time.sleep(velocidad)
+
+    print()
+
 def pausa():
 
     input("\n Pulsa ENTER para continuar...")

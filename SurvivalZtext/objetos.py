@@ -1,7 +1,15 @@
+from SurvivalZtext.combate import GREEN
 from objeto import Objeto
-from efectos import write
+from efectos import write, writefast, writeslow
 
-
+RESET = "\033[0m"
+BOLD = "\033[1m"  #(Negrita)
+GREEN = "\033[92m"
+LIGHT_GREEN = "\033[92m"
+CYAN = "\033[96m"
+YELLOW = "\033[93m"
+RED = "\033[91m"
+WHITE = "\033[97m"
 
 # ===========================
 # EFECTOS DE LOS OBJETOS
@@ -16,7 +24,7 @@ def comer_lata(jugador):
 
 def beber_agua(jugador):
 
-    jugador.sed -= 40
+    jugador.sed -= 35
     jugador.vida += 3
     jugador.moral += 2
 
@@ -45,8 +53,8 @@ def comer_carne_infectada_cruda(jugador):
     jugador.moral -= 15
 
     write("¿En serio te has comido esto?..")
-    write("...")
-    write("...")
+    writeslow("...")
+    writeslow("...")
     write("Te encuentras mal, tu salud y tu moral bajan...")
 
 
@@ -64,18 +72,15 @@ def comer_carne_infectada_cocinada(jugador):
     jugador.moral -= 10
 
     write("¿En que estabas pensando?")
-    write("...")
+    writeslow("...")
     write("Esto sabe realmente mal...")
-    write("...")
+    writeslow("...")
     write("Por lo menos no te duele el estomago.")
-
 
 
 def curar(jugador):
 
     jugador.vida += 40
-
-
 
 
 def fumar_cigarrillos(jugador):
@@ -101,7 +106,7 @@ def fumar_cigarrillos(jugador):
 
     if caja_cerillas is None:
 
-        print(
+        writefast(
             "\n❌ No tienes cerillas para encender el cigarrillo."
         )
 
@@ -129,7 +134,7 @@ def fumar_cigarrillos(jugador):
             caja_cerillas
         )
 
-        print(
+        write(
             "\n🔥 Has usado la última cerilla."
         )
 
@@ -143,7 +148,7 @@ def fumar_cigarrillos(jugador):
     jugador.moral += 4
 
 
-    print(
+    writefast(
         "\n🚬 Has fumado un cigarrillo."
     )
 
@@ -230,7 +235,7 @@ def reparar_objeto(jugador, objeto):
 
     if kit is None and herramientas is None:
 
-        print(
+        writefast(
             "\n❌ No tienes Kits de reparación "
             "ni Herramientas."
         )
@@ -258,8 +263,8 @@ def reparar_objeto(jugador, objeto):
             f"\n🧰 Has usado un Kit de reparación."
         )
 
-        print(
-            f"🔧 Has reparado {objeto.nombre} "
+        writefast(
+            f"{GREEN}🔧 Has reparado {objeto.nombre} {RESET} "
             f"+{reparacion} durabilidad."
         )
 
@@ -306,7 +311,7 @@ def reparar_objeto(jugador, objeto):
         - 1
     ) // herramientas.usos
 
-    print(
+    writefast(
         f"\n🔧 Has reparado {objeto.nombre} "
         f"+{reparacion} durabilidad."
     )
@@ -324,7 +329,7 @@ def reparar_objeto(jugador, objeto):
 
         jugador.inventario.remove(herramientas)
 
-        print(
+        writefast(
             "\n🔧 Tus Herramientas se han agotado."
         )
 
@@ -344,7 +349,7 @@ def escuchar_radio(jugador):
 
     if pilas is None or pilas.usos_restantes <= 0:
 
-        print("\n🔋 La radio no tiene pilas.")
+        writefast("\n🔋 La radio no tiene pilas.")
 
         return False
 
@@ -356,9 +361,9 @@ def escuchar_radio(jugador):
     if jugador.moral > 100:
         jugador.moral = 100
 
-    print("\n📻 Escuchas la radio.")
+    write("\n📻 Escuchas la radio.")
 
-    print("🔋 Has gastado 1 pila.")
+    writefast("🔋 Has gastado 1 pila.")
 
     if pilas.usos_restantes <= 0:
 
