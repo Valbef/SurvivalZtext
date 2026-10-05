@@ -216,7 +216,7 @@ def saquear(jugador, objetos):
                 f"""{RED}
         🩸 ¡Ataque sorpresa!{RESET}
 
-        {YELLOW}¡Un {enemigo.nombre} te golpea antes de que puedas reaccionar!{RESET}
+{YELLOW}¡Un {enemigo.nombre} te golpea antes de que puedas reaccionar!{RESET}
 
         {RED}Pierdes {daño} de vida.
         Tu moral ha bajado.{RESET}
@@ -237,9 +237,8 @@ def saquear(jugador, objetos):
                 "\nPulsa ENTER para enfrentarte al enemigo..."
             )
 
-            print(
-                f"\n{YELLOW}🧟 Defiéndete del {enemigo.nombre}.{RESET}"
-            )
+            print(f"\n{YELLOW} Defiéndete del {enemigo.nombre}.{RESET}")
+
 
             resultado = iniciar_combate(
                 jugador,

@@ -15,6 +15,7 @@ import random
 import guardar
 
 RESET = "\033[0m"
+LIGHT_RED = "\033[91m"
 RED = "\033[91m"
 WHITE = "\033[97m"
 
@@ -54,8 +55,8 @@ class Juego:
   Nadie ha vuelto a saber nada de las autoridades...
 
   Ahora los supermercados están vacíos,
-  las calles son un cementerio y cada superviviente lucha
-  únicamente por seguir con vida un día más.
+  las calles son un cementerio y cada superviviente
+  lucha únicamente por seguir con vida un día más.
     {RESET}""")
 
         input("\nPulsa ENTER para continuar...")
@@ -119,8 +120,8 @@ class Juego:
     ============================
             HAS MUERTO
     ============================{RESET}
-
-    Tu historia termina aquí.
+    {LIGHT_RED}
+    Tu historia termina aquí.{RESET}
 
     ¿Qué quieres hacer?
 
