@@ -122,12 +122,11 @@ def crear_enemigos():
             "Experimento fallido",
             80,
             22,
-            7,
+            6,
             80,
             probabilidad=2,
             zonas=["Laboratorio"]
         ),
-
 
         "saqueador": Enemigo(
             "Saqueador",
@@ -157,8 +156,8 @@ def crear_enemigos():
                    "Hospital",
                    "Supermercado",
                    "Gasolinera",
-                   "Iglesia"
-                   "Cueva montaña"
+                   "Iglesia",
+                   "Cueva montaña",
                    "Camping"]
         )
 

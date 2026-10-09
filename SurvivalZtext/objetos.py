@@ -20,6 +20,18 @@ def comer_lata(jugador):
     jugador.vida += 10
     jugador.moral += 3
 
+def comer_caramelos(jugador):
+
+    jugador.hambre -= 5
+    jugador.vida += 1
+    jugador.moral += 5
+
+def comer_jamon(jugador):
+
+    jugador.hambre -= 10
+    jugador.vida += 5
+    jugador.moral += 15
+
 
 def beber_agua(jugador):
 
@@ -460,12 +472,38 @@ def lista_objetos():
                 usos=2
             ),
 
+        "Caramelos":
+
+            Objeto(
+                "Caramelos",
+                "comida",
+                0.15,
+                "Caramelos comunes.",
+                efecto=comer_caramelos,
+                apilable=True,
+                cantidad=1,
+                usos=2
+            ),
+
+        "Jamón Ibérico":
+
+            Objeto(
+                "Jamón Ibérico",
+                "comida",
+                0.5,
+                "Un trozo de jamón bien conservado.",
+                efecto=comer_jamon,
+                apilable=True,
+                cantidad=1,
+                usos=2
+            ),
+
         "Botella de agua":
 
             Objeto(
                 "Botella de agua",
                 "agua",
-                2,
+                1.5,
                 "Agua potable.",
                 efecto=beber_agua,
                 apilable=True,
@@ -479,7 +517,7 @@ def lista_objetos():
             Objeto(
                 "Cerveza",
                 "bebida",
-                2,
+                0.5,
                 "Una lata de cerveza...",
                 efecto=beber_cerveza,
                 apilable=True,
@@ -524,7 +562,7 @@ def lista_objetos():
                 efecto=comer_carne_infectada_cocinada,
                 apilable=True,
                 cantidad=1,
-                usos=1
+                usos=2
             ),
 
         "Carne cocinada":
@@ -537,7 +575,7 @@ def lista_objetos():
                 efecto=comer_carne_cocinada,
                 apilable=True,
                 cantidad=1,
-                usos=1
+                usos=2
             ),
 
         "Botiquín":
@@ -559,7 +597,7 @@ def lista_objetos():
             Objeto(
                 "Caja de cigarrillos",
                 "tabaco",
-                0.5,
+                0.3,
                 "Una caja de cigarillos.",
                 efecto=fumar_cigarrillos,
                 apilable=True,
@@ -752,7 +790,7 @@ def lista_objetos():
             Objeto(
                 nombre="Caja de cerillas",
                 tipo="utilidad",
-                peso=0.5,
+                peso=0.25,
                 descripcion="Una caja con 30 cerillas.",
                 apilable=True,
                 cantidad=1,
@@ -768,7 +806,7 @@ def lista_objetos():
             Objeto(
                 nombre="Tela",
                 tipo="material",
-                peso=0.75,
+                peso=0.5,
                 descripcion="Un trozo de tela, útil para fabricar objetos.",
                 apilable=True,
                 cantidad=1,
@@ -930,7 +968,7 @@ def lista_objetos():
             Objeto(
                 nombre="Mochila grande",
                 tipo="mochila",
-                peso=3,
+                peso=2.5,
                 descripcion="Una mochila grande que aumenta la capacidad de carga en 35 kg.",
                 capacidad=35,
                 apilable=False,
@@ -946,7 +984,7 @@ def lista_objetos():
             Objeto(
                 nombre="Radio",
                 tipo="historia",
-                peso=1.5,
+                peso=1,
                 descripcion="Una radio portátil que puede captar señales.",
                 apilable=False,
                 efecto=escuchar_radio,
@@ -961,7 +999,7 @@ def lista_objetos():
             Objeto(
                 nombre="Mapa",
                 tipo="historia",
-                peso=0.5,
+                peso=0.25,
                 descripcion="Un mapa de la ciudad.",
                 efecto=consultar_mapa,
                 apilable=False,

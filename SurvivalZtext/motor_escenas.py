@@ -1,30 +1,27 @@
 import random
 from copy import deepcopy
 from escenas import ESCENAS_POR_ZONA, escenas
+from inventario import añadir_objeto_inventario
 
 
 def comprobar_escena(jugador, objetos):
 
     zona = jugador.localizacion
 
-
     if zona not in ESCENAS_POR_ZONA:
-        return
-
+        return None
 
     # Probabilidad de escena
     if random.randint(1, 100) > 30:
-        return
+        return None
 
-
-    escena = random.choice(
+    nombre_escena = random.choice(
         ESCENAS_POR_ZONA[zona]
     )
 
-
-    ejecutar_escena(
+    return ejecutar_escena(
         jugador,
-        escena,
+        nombre_escena,
         objetos
     )
 
@@ -35,16 +32,13 @@ def ejecutar_escena(jugador, nombre_escena, objetos):
 
         print("Escena no encontrada.")
 
-        return
-
+        return None
 
     escena = escenas[nombre_escena]
-
 
     print("\n====================")
     print(escena["texto"])
     print("====================")
-
 
     for numero, opcion in escena["opciones"].items():
 
@@ -52,11 +46,9 @@ def ejecutar_escena(jugador, nombre_escena, objetos):
             f"{numero}. {opcion['texto']}"
         )
 
-
     while True:
 
         eleccion = input("\n> ")
-
 
         if eleccion in escena["opciones"]:
 
@@ -70,12 +62,9 @@ def ejecutar_escena(jugador, nombre_escena, objetos):
 
             return resultado.get("destino")
 
-
-
         else:
 
             print("Opción no válida.")
-
 
 
 def aplicar_efectos(jugador, opcion, objetos):
@@ -129,72 +118,24 @@ def aplicar_efectos(jugador, opcion, objetos):
 
         # Si es un solo objeto, lo convertimos en lista
         if isinstance(objetos_encontrados, str):
-            objetos_encontrados = [objetos_encontrados]
+
+            objetos_encontrados = [
+                objetos_encontrados
+            ]
 
         for nombre in objetos_encontrados:
 
-            if nombre not in objetos:
-                print(
-                    f"\n❌ El objeto '{nombre}' no existe."
-                )
-                continue
-
-            nuevo = deepcopy(
-                objetos[nombre]
+            conseguido = añadir_objeto_inventario(
+                jugador,
+                objetos,
+                nombre
             )
 
-            # =========================
-            # OBJETOS APILABLES
-            # =========================
-
-            if nuevo.apilable:
-
-                encontrado = False
-
-                for objeto in jugador.inventario:
-
-                    if objeto.nombre == nombre:
-
-                        objeto.cantidad += nuevo.cantidad
-
-                        if objeto.usos is not None:
-
-                            objeto.usos_restantes += (
-                                nuevo.usos_restantes
-                            )
-
-                        print(
-                            f"\n🎒 Has conseguido otro "
-                            f"{nombre}."
-                        )
-
-                        encontrado = True
-                        break
-
-                if not encontrado:
-
-                    jugador.inventario.append(
-                        nuevo
-                    )
-
-                    print(
-                        f"\n🎒 Has conseguido: {nombre}"
-                    )
-
-            # =========================
-            # OBJETOS NO APILABLES
-            # =========================
-
-            else:
-
-                jugador.inventario.append(
-                    nuevo
-                )
+            if conseguido:
 
                 print(
                     f"\n🎒 Has conseguido: {nombre}"
                 )
-
 
     # =========================
     # COMBATE
@@ -227,7 +168,6 @@ def aplicar_efectos(jugador, opcion, objetos):
                 f"\n❌ Enemigo no encontrado: "
                 f"{nombre_enemigo}"
             )
-
 
     # =========================
     # ESTADÍSTICAS
