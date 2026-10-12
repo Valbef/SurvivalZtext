@@ -93,6 +93,8 @@ def curar(jugador):
 
     jugador.vida += 40
 
+    write(f"{LIGHT_GREEN}Has recuperado 40 de vida")
+
 
 def fumar_cigarrillos(jugador):
 
@@ -155,7 +157,7 @@ def fumar_cigarrillos(jugador):
 
     jugador.sed += 2
     jugador.hambre +=1
-    jugador.vida += 2
+    jugador.vida += 1
     jugador.moral += 4
 
 

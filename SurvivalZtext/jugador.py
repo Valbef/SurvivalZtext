@@ -58,7 +58,8 @@ class Jugador:
             self.vida_maxima += 10
             self.vida = self.vida_maxima
 
-            self.moral += 5
+            self.moral_maxima += 5
+            self.moral = self.moral_maxima
 
             write(
                 f"\n🎉 Has subido al nivel {self.nivel}"
@@ -230,7 +231,9 @@ class Jugador:
             f"{self.vida}/{self.vida_maxima}")
         print(f"🍖 Hambre   [{barra(self.hambre)}] {self.hambre}/100")
         print(f"💧 Sed      [{barra(self.sed)}] {self.sed}/100")
-        print(f"😊 Moral    [{barra(self.moral)}] {self.moral}/100")
+        print(
+            f"😊 Moral    [{barra(self.moral, self.moral_maxima)}] "
+            f"{self.moral}/{self.moral_maxima}")
         print(f"⭐ Nivel: {self.nivel}")
         print(f"✨ Experiencia: "f"{self.experiencia}/{self.experiencia_siguiente}")
         print("---")
@@ -368,12 +371,14 @@ class Jugador:
             "nombre":self.nombre,
 
             "vida":self.vida,
+            "vida_maxima":self.vida_maxima,
 
             "hambre":self.hambre,
 
             "sed":self.sed,
 
             "moral":self.moral,
+            "moral_maxima": self.moral_maxima,
 
             "nivel": self.nivel,
             "experiencia": self.experiencia,
@@ -412,9 +417,11 @@ class Jugador:
         self.nombre = datos["nombre"]
 
         self.vida = datos["vida"]
+        self.vida_maxima = datos.get("vida_maxima", 100)
         self.hambre = datos["hambre"]
         self.sed = datos["sed"]
         self.moral = datos["moral"]
+        self.moral_maxima = datos.get("moral_maxima", 100)
 
         self.nivel = datos.get("nivel", 1)
         self.experiencia = datos.get("experiencia", 0)
