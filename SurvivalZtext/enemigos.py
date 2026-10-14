@@ -46,6 +46,7 @@ def crear_enemigos():
             zonas=["Bosque",
                    "Centro Ciudad",
                    "Gasolinera",
+                   "Desguace",
                    "Hospital",
                    "Laboratorio",
                    "Supermercado"]
@@ -71,7 +72,21 @@ def crear_enemigos():
             zonas=["Bosque",
                    "Camping",
                    "Montaña",
-                   "Cueva Montaña"
+                   "Cueva Montaña",
+                   "Torre Radio"]
+        ),
+
+        "Jabalí": Enemigo(
+            "Jabalí",
+            40,
+            10,
+            5,
+            20,
+            probabilidad=15,
+            zonas=["Bosque",
+                   "Camping",
+                   "Montaña",
+                   "Cueva Montaña",
                    "Torre Radio"]
         ),
 

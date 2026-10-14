@@ -142,7 +142,8 @@ EVENTOS_POR_ZONA = {
 
         {
             "texto": "\n🧑‍⚕️ Una enfermera superviviente te ayuda.",
-            "companero": "Laura"
+            "objeto": "Botiquín",
+            "moral": 15
         },
 
         {

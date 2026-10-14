@@ -63,6 +63,7 @@ TABLAS_BOTIN = {
         ("Jamón Ibérico", 5),
         ("Caja de cigarrillos", 10),
         ("Caja de cerillas", 10),
+        ("Sal", 2),
         ("Botella de agua", 5)
     ],
 
@@ -114,6 +115,9 @@ TABLAS_BOTIN = {
         ("Jamón Ibérico", 2),
         ("Caramelos", 5),
         ("Cuerda", 10),
+        ("Sal", 5),
+        ("Harina", 2),
+        ("Levadura", 2),
         ("Caja de cerillas", 20),
         ("Pilas", 10)
     ],

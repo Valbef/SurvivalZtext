@@ -22,6 +22,11 @@ BOTIN_ENEMIGOS = {
         ("Carne infectada cruda", 25)
     ],
 
+    "Jabalí": [
+        ("Piel", 80, 1, 2),
+        ("Carne de jabalí cruda", 25, 1, 2)
+    ],
+
     "Gato infectado": [
         ("Piel", 70),
         ("Carne infectada cruda", 15)

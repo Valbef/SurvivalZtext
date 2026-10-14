@@ -139,6 +139,39 @@ RECETAS = {
     # cocina
     # =========================
 
+    "Pan": {
+        "materiales": {
+        "Harina": 1,
+        "Levadura": 1,
+        "Sal": 1
+        },
+        "tipo": "hoguera"
+    },
+
+    "Jamón Ibérico": {
+        "materiales": {
+            "Carne de jabalí": 1,
+            "Sal": 4
+        },
+        "tipo": "cualquier_lugar"
+    },
+
+    "Bocadillo de Jamón": {
+        "materiales": {
+            "Pan": 1,
+            "Jamón Ibérico": 1
+        },
+        "tipo": "cualquier_lugar"
+    },
+
+    "Carne de jabalí cocinada": {
+        "materiales": {
+            "Carne de jabalí cruda": 1,
+            "Sal": 1
+        },
+        "tipo": "hoguera"
+    },
+
     "Carne cocinada": {
         "materiales": {
         "Carne cruda": 1

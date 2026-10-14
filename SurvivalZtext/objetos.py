@@ -20,6 +20,18 @@ def comer_lata(jugador):
     jugador.vida += 10
     jugador.moral += 3
 
+def comer_pan(jugador):
+
+    jugador.hambre -= 10
+    jugador.vida += 5
+    jugador.moral += 1
+
+def comer_bocadillo_jamon(jugador):
+
+    jugador.hambre -= 300
+    jugador.vida += 25
+    jugador.moral += 30
+
 def comer_caramelos(jugador):
 
     jugador.hambre -= 5
@@ -56,6 +68,13 @@ def comer_carne_cruda(jugador):
 
     write("Lo importante es sobrevivir...")
 
+def comer_carne_jabali_cruda(jugador):
+
+    jugador.hambre -= 5
+    jugador.vida += 2
+    jugador.moral -= 5
+
+    write("Esto sabe mejor cocinado...")
 
 def comer_carne_infectada_cruda(jugador):
 
@@ -76,6 +95,12 @@ def comer_carne_cocinada(jugador):
 
     write("Parece que sabe mejor cocinada...")
 
+def comer_carne_jabali_cocinada(jugador):
+    jugador.hambre -= 40
+    jugador.vida += 25
+    jugador.moral += 15
+
+    write("Posiblemente la mejor carne que puedo comer...")
 
 def comer_carne_infectada_cocinada(jugador):
     jugador.hambre -= 15
@@ -230,11 +255,11 @@ def reparar_objeto(jugador, objeto):
     # COMPROBAR OBJETO
     # =========================
 
-    if objeto.durabilidad is None:
+    #if objeto.durabilidad is None:
 
-        print("\n❌ Este objeto no se puede reparar.")
+        #print("\n❌ Este objeto no se puede reparar.")
 
-        return False
+        #return False
 
     if objeto.durabilidad >= 100:
 
@@ -369,7 +394,7 @@ def escuchar_radio(jugador):
     # Consumir una pila
     pilas.usos_restantes -= 1
 
-    jugador.moral += 30
+    jugador.moral += 20
 
     if jugador.moral > 100:
         jugador.moral = 100
@@ -466,12 +491,25 @@ def lista_objetos():
             Objeto(
                 "Lata de comida",
                 "comida",
-                2,
+                1,
                 "Una lata que todavía parece segura.",
                 efecto=comer_lata,
                 apilable=True,
                 cantidad=1,
                 usos=2
+            ),
+
+        "Pan":
+
+            Objeto(
+                "Pan",
+                "comida",
+                0.7,
+                "Una barra de pan.",
+                efecto=comer_pan,
+                apilable=True,
+                cantidad=1,
+                usos=4
             ),
 
         "Caramelos":
@@ -485,6 +523,19 @@ def lista_objetos():
                 apilable=True,
                 cantidad=1,
                 usos=2
+            ),
+
+        "Bocadillo de Jamón":
+
+            Objeto(
+                "Bocadillo de Jamón",
+                "comida",
+                0.8,
+                "Un gran bocadillo de jamón.",
+                efecto=comer_bocadillo_jamon,
+                apilable=True,
+                cantidad=1,
+                usos=4
             ),
 
         "Jamón Ibérico":
@@ -552,6 +603,32 @@ def lista_objetos():
                 apilable=True,
                 cantidad=1,
                 usos=1
+            ),
+
+        "Carne de jabalí cruda":
+
+            Objeto(
+                "Carne de jabalí cruda",
+                "comida",
+                0.7,
+                "Carne cruda de jabalí, deberias de cocinarla o algo...",
+                efecto=comer_carne_jabali_cruda,
+                apilable=True,
+                cantidad=1,
+                usos=1
+            ),
+
+        "Carne de jabalí cocinada":
+
+            Objeto(
+                "Carne de jabalí cocinada",
+                "comida",
+                0.5,
+                "Carne cocinada de jabalí.",
+                efecto=comer_carne_jabali_cocinada,
+                apilable=True,
+                cantidad=1,
+                usos=2
             ),
 
         "Carne infectada cocinada":
@@ -822,6 +899,42 @@ def lista_objetos():
                 tipo="material",
                 peso=0.5,
                 descripcion="Hierbas medicinales de el campo.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Sal":
+
+            Objeto(
+                nombre="Sal",
+                tipo="material",
+                peso=0.25,
+                descripcion="Un sobre de sal.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Levadura":
+
+            Objeto(
+                nombre="Levadura",
+                tipo="material",
+                peso=0.25,
+                descripcion="Un sobre de Levadura.",
+                apilable=True,
+                cantidad=1,
+                accion_principal="Usar"
+            ),
+
+        "Harina":
+
+            Objeto(
+                nombre="Harina",
+                tipo="material",
+                peso=0.5,
+                descripcion="Un paquete de harina.",
                 apilable=True,
                 cantidad=1,
                 accion_principal="Usar"
