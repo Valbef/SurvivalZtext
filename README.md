@@ -32,6 +32,19 @@ git pull
 
 ---Instalacion en Windows:
 
+1. Descarga solo el archivo EXE, ponlo dentro de una carpeta y haz doble click,
+
+   en esa carpeta se creara la carpeta "partidas" donde se guardaran las partidas...
+
+   para actualizarlo descargar el nuevo archivo EXE desde mi pagina de github y sustituir el anterior.
+
+   No borrar la carpeta partidas si quieres mantener las partidas anteriores.
+
+
+
+SEGUNDA OPCION PARA WINDOWS (RECOMENDADA)
+
+
 Descarga Python desde la página oficial:
 
 https://www.python.org/downloads/windows/
@@ -61,3 +74,4 @@ y descargar el ".ZIP".
 descomprimir el archivo.
 
 Abrir la carpeta del archivo y dar doble click en "main.py"
+O click derecho en main.py, "abrir con" Python
