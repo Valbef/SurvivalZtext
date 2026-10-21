@@ -1,7 +1,7 @@
 import os
 import sys
-import colorama
-colorama.just_fix_windows_console()
+#import colorama
+#colorama.just_fix_windows_console()
 os.environ["PYTHONIOENCODING"] = "utf-8"
 from juego import Juego
 
