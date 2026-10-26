@@ -74,10 +74,10 @@ TABLAS_BOTIN = {
     ],
 
     "Comisaría": [
-        ("Lata de comida", 15),
-        ("Caja de munición", 20),
+        ("Lata de comida", 10),
+        ("Caja de munición", 17),
         ("Caja de cigarrillos", 10),
-        ("Caja de cerillas", 15),
+        ("Caja de cerillas", 10),
         ("Botiquín", 5)
     ],
 
